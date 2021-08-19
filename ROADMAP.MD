@@ -41,4 +41,5 @@
 
 
 ## Online EEGNet Analysis Tool
-- [ ] Meeting with Brainstorm Developpers for Solutions to use MatLab online
+- [ ] Meeting with Brainstorm Developpers for Solutions to use MatLab Online
+- [ ] Contact Felix-Antoine Fortin for Potential Solutions
