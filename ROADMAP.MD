@@ -1,4 +1,4 @@
-# Roadmap (as of 24-08-2021)
+# Roadmap (date: 24-08-2021)
 
 ## Analysis Tool
 ### MEG Pre-processing
