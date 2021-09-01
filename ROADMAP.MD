@@ -1,13 +1,13 @@
 # Roadmap (24-08-2021)
 
 ## Analysis Tool
-### MEG Pre-processing
+### MEG Pre-processing (July 2021)
 - [x] Convert Epochs to Continue
 - [x] Detect Artifact
 - [x] Remove Simultaneous Events
 - [x] Signal-Space Projection (SSP)
 
-### EEG Pre-processing
+### EEG Pre-processing (August 2021)
 - [x] Add EEG Positions
 - [x] Refine Registration
 - [x] Project Electrodes on Scalp
@@ -16,7 +16,7 @@
 - [x] Average Reference
 - [x] Independent Component Analysis (ICA)
 
-### MEG/EEG Pre-processing
+### MEG/EEG Pre-processing (July 2021)
 - [x] Noth Filter
 - [x] Band-Pass Filter
 - [x] Power Spectrum Density
@@ -29,7 +29,7 @@
 - [ ] Statistics
 - [ ] Connectivity
 
-### File Formats
+### File Formats (September 2021)
 - [ ] BIDS
 - [x] Events File
 - [ ] Provenance File
