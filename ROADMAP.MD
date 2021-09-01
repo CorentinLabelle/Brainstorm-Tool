@@ -33,6 +33,7 @@
 - [ ] BIDS
 - [x] Events File
 - [ ] Provenance File
+- [ ] Evaluate Potential Loss of Data when Converting to EDF
 
 
 ## Analysis Tool Testing
