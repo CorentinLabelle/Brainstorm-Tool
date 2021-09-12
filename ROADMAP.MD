@@ -21,7 +21,7 @@
 - [x] Band-Pass Filter
 - [x] Power Spectrum Density
 
-### Processing
+### Processing (October-november 2021)
 - [ ] Import Events
 - [ ] Reject Trials
 - [ ] Evoked Response
@@ -30,17 +30,17 @@
 - [ ] Connectivity
 
 ### File Formats (September 2021)
-- [ ] BIDS
+- [x] BIDS
 - [x] Events File
-- [ ] Provenance File
-- [ ] Evaluate Potential Loss of Data when Converting to EDF
+- [x] Provenance File
+- [x] Evaluate Potential Loss of Data when Converting to EDF
 
 
-## Analysis Tool Testing
+## Analysis Tool Testing (October 2021)
 - [ ] Fix Bugs Detected by Students
 - [ ] Improve Tool Based on Students Reviews
 
 
-## Online EEGNet Analysis Tool
+## Online EEGNet Analysis Tool (September 2021)
 - [ ] Meeting with Brainstorm Developpers for Solutions to use MatLab Online
 - [ ] Contact Felix-Antoine Fortin for Potential Solutions
