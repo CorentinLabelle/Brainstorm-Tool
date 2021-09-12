@@ -36,7 +36,7 @@
 - [x] Evaluate Potential Loss of Data when Converting to EDF
 
 
-## Analysis Tool Testing (October 2021)
+## Analysis Tool Testing (September-October 2021)
 - [ ] Fix Bugs Detected by Students
 - [ ] Improve Tool Based on Students Reviews
 
