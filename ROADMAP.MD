@@ -44,4 +44,4 @@
 
 ## Online EEGNet Analysis Tool (September-October 2021)
 - [ ] Meeting with Brainstorm Developpers for Solutions to use MatLab Online
-- [ ] Contact Felix-Antoine Fortin for Potential Solutions
+- [x] Contact Felix-Antoine Fortin for Potential Solutions
