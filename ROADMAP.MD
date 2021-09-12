@@ -1,6 +1,12 @@
 # Roadmap (12-09-2021)
 
 ## Analysis Tool
+
+### MEG/EEG Pre-processing (July 2021)
+- [x] Noth Filter
+- [x] Band-Pass Filter
+- [x] Power Spectrum Density
+
 ### MEG Pre-processing (July 2021)
 - [x] Convert Epochs to Continue
 - [x] Detect Artifact
@@ -16,10 +22,11 @@
 - [x] Average Reference
 - [x] Independent Component Analysis (ICA)
 
-### MEG/EEG Pre-processing (July 2021)
-- [x] Noth Filter
-- [x] Band-Pass Filter
-- [x] Power Spectrum Density
+### File Formats (September 2021)
+- [x] BIDS
+- [x] Events File
+- [x] Provenance File
+- [x] Evaluate Potential Loss of Data when Converting to EDF
 
 ### Processing (October-November 2021)
 - [ ] Import Events
@@ -28,12 +35,6 @@
 - [ ] Time/Frequency
 - [ ] Statistics
 - [ ] Connectivity
-
-### File Formats (September 2021)
-- [x] BIDS
-- [x] Events File
-- [x] Provenance File
-- [x] Evaluate Potential Loss of Data when Converting to EDF
 
 
 ## Analysis Tool Testing (September 2021)
