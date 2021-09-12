@@ -21,7 +21,7 @@
 - [x] Band-Pass Filter
 - [x] Power Spectrum Density
 
-### Processing (October-november 2021)
+### Processing (October-November 2021)
 - [ ] Import Events
 - [ ] Reject Trials
 - [ ] Evoked Response
