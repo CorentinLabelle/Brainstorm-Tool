@@ -36,11 +36,11 @@
 - [x] Evaluate Potential Loss of Data when Converting to EDF
 
 
-## Analysis Tool Testing (September-October 2021)
+## Analysis Tool Testing (September 2021)
 - [ ] Fix Bugs Detected by Students
 - [ ] Improve Tool Based on Students Reviews
 
 
-## Online EEGNet Analysis Tool (September 2021)
+## Online EEGNet Analysis Tool (September-October 2021)
 - [ ] Meeting with Brainstorm Developpers for Solutions to use MatLab Online
 - [ ] Contact Felix-Antoine Fortin for Potential Solutions
