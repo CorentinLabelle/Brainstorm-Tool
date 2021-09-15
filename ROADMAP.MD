@@ -1,13 +1,19 @@
-# Roadmap (24-08-2021)
+# Roadmap (12-09-2021)
 
 ## Analysis Tool
-### MEG Pre-processing
+
+### MEG/EEG Pre-processing (July 2021)
+- [x] Noth Filter
+- [x] Band-Pass Filter
+- [x] Power Spectrum Density
+
+### MEG Pre-processing (July 2021)
 - [x] Convert Epochs to Continue
 - [x] Detect Artifact
 - [x] Remove Simultaneous Events
 - [x] Signal-Space Projection (SSP)
 
-### EEG Pre-processing
+### EEG Pre-processing (August 2021)
 - [x] Add EEG Positions
 - [x] Refine Registration
 - [x] Project Electrodes on Scalp
@@ -16,12 +22,13 @@
 - [x] Average Reference
 - [x] Independent Component Analysis (ICA)
 
-### MEG/EEG Pre-processing
-- [x] Noth Filter
-- [x] Band-Pass Filter
-- [x] Power Spectrum Density
+### File Formats (September 2021)
+- [x] BIDS
+- [x] Events File
+- [x] Provenance File
+- [x] Evaluate Potential Loss of Data when Converting to EDF
 
-### Processing
+### Processing (October-November 2021)
 - [ ] Import Events
 - [ ] Reject Trials
 - [ ] Evoked Response
@@ -29,17 +36,12 @@
 - [ ] Statistics
 - [ ] Connectivity
 
-### File Formats
-- [ ] BIDS
-- [x] Events File
-- [ ] Provenance File
 
-
-## Analysis Tool Testing
+## Analysis Tool Testing (September 2021)
 - [ ] Fix Bugs Detected by Students
 - [ ] Improve Tool Based on Students Reviews
 
 
-## Online EEGNet Analysis Tool
+## Online EEGNet Analysis Tool (September-October 2021)
 - [ ] Meeting with Brainstorm Developpers for Solutions to use MatLab Online
-- [ ] Contact Felix-Antoine Fortin for Potential Solutions
+- [x] Contact Felix-Antoine Fortin for Potential Solutions
