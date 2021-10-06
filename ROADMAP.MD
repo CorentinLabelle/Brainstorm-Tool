@@ -39,7 +39,7 @@
 
 ## Analysis Tool Testing (September 2021)
 - [ ] Fix Bugs Detected by Students
-- [ ] Improve Tool Based on Students Reviews
+- [x] Improve Tool Based on Students Reviews
 
 
 ## Online EEGNet Analysis Tool (September-October 2021)
