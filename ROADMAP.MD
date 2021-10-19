@@ -27,8 +27,9 @@
 - [x] Events File
 - [x] Provenance File
 - [x] Evaluate Potential Loss of Data when Converting to EDF
+- [x] Allow conversion to BIDS for raw and pre-processed studies
 
-### Processing (October-November 2021)
+### Processing (November 2021)
 - [ ] Import Events
 - [ ] Reject Trials
 - [ ] Evoked Response
@@ -37,11 +38,13 @@
 - [ ] Connectivity
 
 
+## Pipeline Builder (Ocotber 2021)
+- [ ] Add possibility to build, save and import pipelines to run on new dataset.
+
 ## Analysis Tool Testing (September 2021)
-- [ ] Fix Bugs Detected by Students
+- [x] Fix Bugs Detected by Students
 - [x] Improve Tool Based on Students Reviews
 
 
 ## Online EEGNet Analysis Tool (September-October 2021)
-- [ ] Meeting with Brainstorm Developpers for Solutions to use MatLab Online
 - [x] Contact Felix-Antoine Fortin for Potential Solutions
