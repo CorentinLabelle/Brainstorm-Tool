@@ -1,4 +1,4 @@
-function cFile = Pipeline_Template(processes, sFiles, AnalysisType, strPipeline)
+function cFiles = Pipeline_Template(processes, sFiles, AnalysisType, strPipeline)
 
 % strPipeline: La seule valeur possible est "Pipeline" lorsque l'on
 % veut utiliser cette fonction avec une structutre Pipeline.
@@ -196,6 +196,10 @@ if(isfield(processes,'SSP'))
 end
 
 %% Return cell
-cFile = sFiles.FileName;
+if exist('sFiles','var')
+    cFiles = sFiles.FileName;
+else
+    cFiles = [];
+end   
 return
 end

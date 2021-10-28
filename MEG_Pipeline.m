@@ -80,7 +80,11 @@ if(isfield(processes, 'DetectArtifact'))
     end
 end
 
-cFiles = sFiles.FileName;
+if exist('sFiles','var')
+    cFiles = sFiles.FileName;
+else
+    cFiles = [];
+end   
 return
 end
 
