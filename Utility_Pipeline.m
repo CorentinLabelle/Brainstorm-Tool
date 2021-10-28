@@ -1,5 +1,6 @@
-function cFiles = Utility_Processes(process)
-
+function cFiles = Utility_Pipeline(process)
+%%
+addpath('/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/rg/toolboxes/brainstorm3');
 
 %% Import Anatomy
 
@@ -82,13 +83,13 @@ if(isfield(process,'ConvertToBIDS'))
 end              
 
 
-
+%% Return cFile
 if exist('sFiles','var')
     cFiles = sFiles.FileName;
 else
     cFiles = [];
 end    
-
 return
+
 end
 

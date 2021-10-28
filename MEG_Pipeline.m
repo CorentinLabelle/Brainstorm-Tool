@@ -1,26 +1,18 @@
-function cFiles = MEG_PIPELINE(processes, sFiles, AnalysisType, strPipeline)
-
-% strPipeline: La seule valeur possible est "Pipeline" lorsque l'on
-% veut utiliser cette fonction avec une structutre Pipeline.
-
+function cFiles = MEG_Pipeline(sFiles, processes)
 %%
-
 addpath('/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/rg/toolboxes/brainstorm3');
 
 %% Import Pipeline .mat
 
-if exist('strPipeline','var')
+if ~exist('processes','var')
 
     [fileName, folderPath] = uigetfile('*.mat', 'Select MAT file');
 
     pipLoad = load(strcat(folderPath, fileName));
 
-    processes = pipLoad.Pipeline.Processes;
+    processes = pipLoad.Processes;
 
-    sensorType = pip.Load.Pipeline.Type;
-
-else
-    sensorType = AnalysisType;
+    sensorType = 'MEG';
 end
 
 
@@ -80,11 +72,13 @@ if(isfield(processes, 'DetectArtifact'))
     end
 end
 
+%% Return cFile
 if exist('sFiles','var')
     cFiles = sFiles.FileName;
 else
     cFiles = [];
 end   
 return
+
 end
 

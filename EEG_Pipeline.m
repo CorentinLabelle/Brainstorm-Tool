@@ -1,28 +1,20 @@
-function cFiles = Pipeline_Template(processes, sFiles, AnalysisType, strPipeline)
-
-% strPipeline: La seule valeur possible est "Pipeline" lorsque l'on
-% veut utiliser cette fonction avec une structutre Pipeline.
-
+function cFiles = EEG_Pipeline(sFiles, processes)
 %%
-
 addpath('/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/rg/toolboxes/brainstorm3');
 
 %% Import Pipeline .mat
 
-if exist('strPipeline','var')
+if ~exist('processes','var')
 
     [fileName, folderPath] = uigetfile('*.mat', 'Select MAT file');
 
     pipLoad = load(strcat(folderPath, fileName));
 
-    processes = pipLoad.Pipeline.Processes;
+    processes = pipLoad.Processes;
 
-    sensorType = pip.Load.Pipeline.Type;
-
-else
-    sensorType = AnalysisType;
+    sensorType = 'EEG';
+    
 end
-
 
 %% sfile
 %sFiles = {'Frodo/@rawP8_B1/data_0raw_P8_B1.mat'};
@@ -147,7 +139,8 @@ if(isfield(processes,'ICA'))
     
     nbComponents = processes.ICA.NumberOfComponents;
     
-    message = uiconfirm(app.UIFigure, 'This might take a couple a minutes... You have time ti grab a cup of coffee.', 'loading');
+    message = uiconfirm(app.UIFigure, ...
+        'This might take a couple a minutes... You have time ti grab a cup of coffee.', 'loading');
 
     sFiles = bst_process('CallProcess', 'process_ica', sFiles, [], ...
                 'timewindow', [], ...
@@ -195,11 +188,12 @@ if(isfield(processes,'SSP'))
 
 end
 
-%% Return cell
+%% Return cFile
 if exist('sFiles','var')
     cFiles = sFiles.FileName;
 else
     cFiles = [];
 end   
 return
+
 end
