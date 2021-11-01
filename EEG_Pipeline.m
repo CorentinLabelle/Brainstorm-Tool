@@ -1,21 +1,31 @@
 function cFiles = EEG_Pipeline(sFiles, processes)
-%%
+% The argument sFiles is actually a cFiles
+
+%% Add Path
 addpath('/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/rg/toolboxes/brainstorm3');
 
+%% Initialisation of variables
+sensorType = 'EEG';
+
 %% Import Pipeline .mat
+% If function called with no processes structure, ask to import pipeline
+% (.mat)
+
+%assert(empty(sFiles), 'Vous devez sélectionner des études!');
 
 if ~exist('processes','var')
 
     [fileName, folderPath] = uigetfile('*.mat', 'Select MAT file');
-
-    pipLoad = load(strcat(folderPath, fileName));
-
-    processes = pipLoad.Processes;
-
-    sensorType = 'EEG';
     
-end
+    if (fileName == 0)
+        return
+    end
+        
+        pipLoad = load(strcat(folderPath, fileName));
 
+        processes = pipLoad.Processes;
+        
+end
 %% sfile
 %sFiles = {'Frodo/@rawP8_B1/data_0raw_P8_B1.mat'};
 
@@ -23,17 +33,17 @@ end
 
 if(isfield(processes,'AddEEGPosition'))
     
-    if processe.AddEEGPosition.FileOrigin == "Default"
-        capNumber = processes.AddEEGPosition.Parameters.CapNumber;  
+    if processes.AddEEGPosition.FileType == "Use Default Pattern"
+        capNumber = processes.AddEEGPosition.CapNumber;  
 
         % Process: Add EEG positions
-           bst_process('CallProcess', 'process_channel_addloc', sFiles, [], ...
+      sFiles =  bst_process('CallProcess', 'process_channel_addloc', sFiles, [], ...
                 'channelfile', {'', ''}, ...
                 'usedefault',  capNumber, ...
                 'fixunits',    1, ...
                 'vox2ras',     1);
             
-    elseif processe.AddEEGPosition.FileOrigin == "Import"
+    elseif processes.AddEEGPosition.FileType == "Import"
         
         bst_process('CallProcess', 'process_channel_addloc', sFiles, [], ...
                                 'channelfile', {file, 'XENSOR'}, ...
@@ -48,7 +58,7 @@ end
 if(isfield(processes,'RefineRegistration'))
     
     % Process: Refine registration
-    bst_process('CallProcess', 'process_headpoints_refine', sFiles, []);
+    sFiles = bst_process('CallProcess', 'process_headpoints_refine', sFiles, []);
     
 end
 
@@ -56,8 +66,24 @@ end
 if(isfield(processes,'ProjectElectrodeOnScalp'))
     
     % Process: Project electrodes on scalp
-    bst_process('CallProcess', 'process_channel_project', sFiles, []);
+    sFiles = bst_process('CallProcess', 'process_channel_project', sFiles, []);
     
+end
+
+%% Detect Heartbeats
+
+if(isfield(processes, 'DetectArtifact'))
+    
+    if(isfield(processes.DetectArtifact, 'Cardiac'))
+        
+        channelName = processes.DetectArtifact.Cardiac.Channel;
+        eventName = processes.DetectArtifact.Cardiac.EventName;
+        
+        sFiles = bst_process('CallProcess', 'process_evt_detect_ecg', sFiles, [], ...
+                            'channelname', channelName, ...
+                            'timewindow',  [], ...
+                            'eventname',   eventName);
+    end
 end
 %% Notch Filter
     
@@ -97,7 +123,7 @@ end
 
 if(isfield(processes,'PowerSpectrumDensity'))
     
-    processes.PowerSpectrumDensity.WindowLength = winLength;
+    winLength = processes.PowerSpectrumDensity.WindowLength;
     
     bst_process('CallProcess', 'process_psd', sFiles, [], ...
                 'timewindow',  [], ...
@@ -123,7 +149,7 @@ if(isfield(processes,'AverageReference'))
     
     bst_process('CallProcess', 'process_eegref', sFiles, [], ...
              'eegref', 'AVERAGE', ...
-             'sensortypes', app.SensorType);
+             'sensortypes', sensorType);
 
     for i = 1:length(sFiles)
          view_timeseries(sFiles{i});
@@ -139,8 +165,8 @@ if(isfield(processes,'ICA'))
     
     nbComponents = processes.ICA.NumberOfComponents;
     
-    message = uiconfirm(app.UIFigure, ...
-        'This might take a couple a minutes... You have time ti grab a cup of coffee.', 'loading');
+    %message = uiconfirm(app.UIFigure, ...
+        %'This might take a couple a minutes... You have time ti grab a cup of coffee.', 'loading');
 
     sFiles = bst_process('CallProcess', 'process_ica', sFiles, [], ...
                 'timewindow', [], ...
@@ -157,7 +183,7 @@ if(isfield(processes,'ICA'))
                 'select', []);
             
 
-    delete(message);
+    %delete(message);
     
         for i = 1:length(sFiles)
             view_timeseries(sFiles(i).FileName);
@@ -168,32 +194,21 @@ if(isfield(processes,'ICA'))
 end
 
 
-%% SSP
 
-if(isfield(processes,'SSP'))
-
-    eventName = processes.SSP.EventName;
-    
-    bst_process('CallProcess', 'process_ssp_ecg', sFiles, [], ...
-                    'eventname',   eventName, ...
-                    'sensortypes', sensorType, ...
-                    'usessp',      1, ...
-                    'select',      1);
-
-    for i = 1:length(sFiles)
-        view_timeseries(sFiles{i}.FileName);
-        panel_ssp_selection('OpenRaw');
-        waitfor(errordlg("Click when you are done choosing"));
-    end
-
-end
 
 %% Return cFile
-if exist('sFiles','var')
-    cFiles = sFiles.FileName;
-else
-    cFiles = [];
-end   
-return
+
+    if class(sFiles) ~= "cell"
+        cFiles = cell(1, length(sFiles));
+        for i = 1:length(sFiles)
+            cFiles{i} = sFiles(i).FileName;
+        end
+    end
+    
+     msg = msgbox('Opération Terminée', 'Opération Terminée');
+     pause(2)
+     delete(msg);
+     
+    return
 
 end

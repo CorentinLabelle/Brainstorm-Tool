@@ -1,6 +1,12 @@
-function cFiles = Utility_Pipeline(process)
+function cFiles = Utility_Pipeline(process, sFiles)
 %%
 addpath('/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/rg/toolboxes/brainstorm3');
+
+if ~exist('sFiles','var')
+
+    sFiles = [];
+    
+end
 
 %% Import Anatomy
 
@@ -58,10 +64,10 @@ end
 
 if(isfield(process,'ConvertToBIDS'))
     
-    cFilesEDF = process.ConvertToBIDS.cFile;
+    cFiles = process.ConvertToBIDS.cFile;
     BIDSpath = process.ConvertToBIDS.BIDSpath;
     
-    bst_process('CallProcess', 'process_export_bids', cFilesEDF, [], ...
+    bst_process('CallProcess', 'process_export_bids', cFiles, [], ...
          'bidsdir',       {BIDSpath, 'BIDS'}, ...
          'subscheme',     2, ...  % Number index
          'sesscheme',     1, ...  % Acquisition date
@@ -84,12 +90,19 @@ end
 
 
 %% Return cFile
-if exist('sFiles','var')
-    cFiles = sFiles.FileName;
-else
-    cFiles = [];
-end    
-return
+
+     if class(sFiles) ~= "cell"
+        cFiles = cell(1, length(sFiles));
+        for i = 1:length(sFiles)
+            cFiles{i} = sFiles(i).FileName;
+        end
+     end
+    
+    msg = msgbox('Opération Terminée', 'Opération Terminée');
+    pause(2)
+    delete(msg);
+    
+    return
 
 end
 
