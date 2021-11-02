@@ -40,8 +40,8 @@ November 2021
 ### Processing 
 November 2021
 - [x] Import Events
-- [ ] Reject Trials
-- [ ] Evoked Response
+- [ ] Reject Bad Trials 
+- [ ] Evoked Response (Average by Condition)
 - [ ] Time/Frequency
 - [ ] Statistics
 - [ ] Connectivity
