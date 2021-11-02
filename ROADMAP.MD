@@ -30,7 +30,7 @@
 - [x] Allow conversion to BIDS for raw and pre-processed studies
 
 ### Processing (November 2021)
-- [ ] Import Events
+- [x] Import Events
 - [ ] Reject Trials
 - [ ] Evoked Response
 - [ ] Time/Frequency
@@ -39,7 +39,7 @@
 
 
 ## Pipeline Builder (Ocotber 2021)
-- [ ] Add possibility to build, save and import pipelines to run on new dataset.
+- [x] Add possibility to build, save and import pipelines to run on new dataset.
 
 ## Analysis Tool Testing (September 2021)
 - [x] Fix Bugs Detected by Students
