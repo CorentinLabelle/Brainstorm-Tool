@@ -28,6 +28,7 @@
 - [x] Provenance File
 - [x] Evaluate Potential Loss of Data when Converting to EDF
 - [x] Allow conversion to BIDS for raw and pre-processed studies
+- [ ] Testing on new Dataset to support different File Format
 
 ### Processing (November 2021)
 - [x] Import Events
