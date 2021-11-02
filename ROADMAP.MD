@@ -1,5 +1,5 @@
 # Roadmap
-(Last updated: November 2nd, 2021)
+Last updated: November 2nd, 2021
 
 ## Analysis Tool
 
@@ -9,13 +9,15 @@ July 2021
 - [x] Band-Pass Filter
 - [x] Power Spectrum Density
 
-### MEG Pre-processing (July 2021)
+### MEG Pre-processing 
+July 2021
 - [x] Convert Epochs to Continue
 - [x] Detect Artifact
 - [x] Remove Simultaneous Events
 - [x] Signal-Space Projection (SSP)
 
-### EEG Pre-processing (August 2021)
+### EEG Pre-processing 
+August 2021
 - [x] Add EEG Positions
 - [x] Refine Registration
 - [x] Project Electrodes on Scalp
@@ -24,15 +26,19 @@ July 2021
 - [x] Average Reference
 - [x] Independent Component Analysis (ICA)
 
-### File Formats (September 2021)
+### File Formats 
+September 2021
 - [x] BIDS
 - [x] Events File
 - [x] Provenance File
 - [x] Evaluate Potential Loss of Data when Converting to EDF
 - [x] Allow conversion to BIDS for raw and pre-processed studies
+
+November 2021
 - [ ] Testing on new Datasets to support different File Format
 
-### Processing (November 2021)
+### Processing 
+November 2021
 - [x] Import Events
 - [ ] Reject Trials
 - [ ] Evoked Response
@@ -41,7 +47,8 @@ July 2021
 - [ ] Connectivity
 
 
-## Pipeline Builder (Ocotber 2021)
+## Pipeline Builder
+Ocotber 2021
 - [x] Add possibility to build, save and import pipelines to run on new dataset.
 
 ## Analysis Tool Testing (September 2021)
