@@ -1,8 +1,10 @@
-# Roadmap (Last updated: October 19th, 2021)
+# Roadmap
+(Last updated: November 2nd, 2021)
 
 ## Analysis Tool
 
-### MEG/EEG Pre-processing (July 2021)
+### MEG/EEG Pre-processing
+July 2021
 - [x] Noth Filter
 - [x] Band-Pass Filter
 - [x] Power Spectrum Density
@@ -28,7 +30,7 @@
 - [x] Provenance File
 - [x] Evaluate Potential Loss of Data when Converting to EDF
 - [x] Allow conversion to BIDS for raw and pre-processed studies
-- [ ] Testing on new Dataset to support different File Format
+- [ ] Testing on new Datasets to support different File Format
 
 ### Processing (November 2021)
 - [x] Import Events
