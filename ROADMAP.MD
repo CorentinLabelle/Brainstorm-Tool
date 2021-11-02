@@ -51,10 +51,12 @@ November 2021
 Ocotber 2021
 - [x] Add possibility to build, save and import pipelines to run on new dataset.
 
-## Analysis Tool Testing (September 2021)
+## Analysis Tool Testing
+September 2021
 - [x] Fix Bugs Detected by Students
 - [x] Improve Tool Based on Students Reviews
 
 
-## Online EEGNet Analysis Tool (September-October 2021)
+## Online EEGNet Analysis Tool
+September-October 2021
 - [x] Contact Felix-Antoine Fortin for Potential Solutions
