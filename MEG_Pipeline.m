@@ -3,7 +3,7 @@ function cFiles = MEG_Pipeline(sFiles, processes)
 
 %% Add Path
 addpath('/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/rg/toolboxes/brainstorm3');
-addpath('/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/rg/bs_db');
+
 %% Initialisation of variables
 sensorType = 'MEG';
 
@@ -29,7 +29,6 @@ end
 
 %% sfile
 %sFiles = {'Frodo/@rawP8_B1/data_0raw_P8_B1.mat'};
-
 
 %% Convert Epoch To Continue
 

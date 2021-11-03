@@ -8,6 +8,9 @@ if ~exist('sFiles','var')
     
 end
 
+%% Start a new report
+bst_report('Start', sFiles);
+
 %% Import Anatomy
 
 if(isfield(process,'ImportAnatomy'))
@@ -88,6 +91,35 @@ if(isfield(process,'ConvertToBIDS'))
 
 end              
 
+
+%% Import Events
+
+if(isfield(process,'ImportEvent'))
+    
+    subjectName = process.ImportEvent.SubjectName;
+    event = process.ImportEvent.Event;
+    epochTime = process.ImportEvent.EpochTime;
+    
+    sFiles = bst_process('CallProcess', 'process_import_data_event', sFiles, [], ...
+    'subjectname', subjectName, ...
+    'condition',   '', ...
+    'eventname',   event, ...
+    'timewindow',  [], ...
+    'epochtime',   epochTime, ...
+    'createcond',  1, ...
+     'ignoreshort', 1, ...
+     'usectfcomp',  1, ...
+     'usessp',      1, ...
+     'freq',        [], ...
+     'baseline',    []);
+
+end
+
+%% Save and display report
+ReportFile = bst_report('Save', sFiles);
+bst_report('Open', ReportFile);
+%pause(1);
+%delete() or close() ?;
 
 %% Return cFile
 

@@ -26,6 +26,7 @@ if ~exist('processes','var')
         processes = pipLoad.Processes;
         
 end
+
 %% sfile
 %sFiles = {'Frodo/@rawP8_B1/data_0raw_P8_B1.mat'};
 
