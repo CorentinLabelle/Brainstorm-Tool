@@ -8,6 +8,7 @@ July 2021
 - [x] Noth Filter
 - [x] Band-Pass Filter
 - [x] Power Spectrum Density
+- [x] Independent Component Analysis (ICA)
 
 ### MEG Pre-processing 
 July 2021
@@ -24,7 +25,6 @@ August 2021
 - [x] Detect Heartbeat
 - [x] Import Events
 - [x] Average Reference
-- [x] Independent Component Analysis (ICA)
 
 ### File Formats 
 September 2021
@@ -39,24 +39,28 @@ November 2021
 
 ### Processing 
 November 2021
-- [x] Import Events
-- [ ] Reject Bad Trials 
-- [ ] Evoked Response (Average by Condition)
-- [ ] Time/Frequency
+- [x] Import Events: Epoching for every Event occurance (Time Window, Baseline)
+- [ ] Reject Bad Trials: Remove trials with anecdotic Artifacts
+- [ ] Evoked Response: Averaging by Condition or by Subject
+- [ ] Time/Frequency: Time Frequency Decomposition / Morlet's Wavelength / Multitaper
+- [ ] Hilbert: "Zooming on one Frequence"
+- [ ] Connectivity: Phase Locking Value/ Coherence 
 - [ ] Statistics
-- [ ] Connectivity
 
-
-## Pipeline Builder
-Ocotber 2021
-- [x] Add possibility to build, save and import pipelines to run on new dataset.
 
 ## Analysis Tool Testing
 September 2021
 - [x] Fix Bugs Detected by Students
 - [x] Improve Tool Based on Students Reviews
 
+## Pipeline Builder
+Ocotber 2021
+- [x] Add possibility to build, save and import pipelines to run on new dataset.
 
 ## Online EEGNet Analysis Tool
 September-October 2021
 - [x] Contact Felix-Antoine Fortin for Potential Solutions
+
+December 2021
+- [ ] Waiting for the Technical Committee to define priorities
+- [ ] Testing import of Datasets in EEGNet
