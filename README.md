@@ -25,8 +25,16 @@ This side App allows the user to create, save and modify pipelines. The pipeline
 The MatLab structure contains a field for every process selected. Each process field contains subfield that contains the parameters for that process.
 Example of a typical structure:
 ```mermaid
-graph LR
-A --> B;
+├── dir1
+│   ├── file11.ext
+│   └── file12.ext
+├── dir2
+│   ├── file21.ext
+│   ├── file22.ext
+│   └── file23.ext
+├── dir3
+├── file_in_root.ext
+└── README.md
 ```
 
 # Scripts
@@ -34,7 +42,7 @@ A --> B;
 
 This script contains all the process that can be applied on an EEG study. It takes as input (1) a list of the studies to analyze and (2) a MatLab structure with the processes to apply.
 
-Functions:
+Functions available:
 - Add EEG Position
 - Refine Registration
 - Project Electrode on Scalp
@@ -48,11 +56,9 @@ Functions:
 
 ## MEG_Pipeline
 
-This script contains all the process that can be applied on an MEG study.
-Input: Structure and sFiles
+This script contains all the process that can be applied on an MEG study. It takes as input (1) a list of the studies to analyze and (2) a MatLab structure with the processes to apply.
 
-Functions:
-
+Functions available:
 - Convert Epoch To Continue
 - Notch Filter
 - Band Pass Filter
@@ -64,10 +70,9 @@ Functions:
 
 ## Utility_Pipeline
 
-This script contains all the process needed to run the basic operations for the Analysis Tool.
-Input: Structure
+This script contains all the process needed to run the basic operations for the Analysis Tool. It takes as input (1) a MatLab structure with the processes to apply.
 
-Functions:
+Functions available:
 - Import Anatomy
 - Review Raw Files
 - Convert to BIDS
