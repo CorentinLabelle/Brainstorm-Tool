@@ -25,16 +25,20 @@ This side App allows the user to create, save and modify pipelines. The pipeline
 The MatLab structure contains a field for every process selected. Each process field contains subfield that contains the parameters for that process.
 Example of a typical structure:
 ```mermaid
-├── dir1
-│   ├── file11.ext
+├── DateOfCreation
+│   ├── YYYY-MM-DD-HH-MM-SS
+├── Folder
+│   ├── C:\...
+├── Name
+│   ├── PipelineName
+├── NumberOfProcesses
+│   ├── X
+├── Process
+│   ├── NotchFilter
 │   └── file12.ext
-├── dir2
-│   ├── file21.ext
-│   ├── file22.ext
-│   └── file23.ext
-├── dir3
-├── file_in_root.ext
-└── README.md
+├── Type
+│   ├── EEG
+└── 
 ```
 
 # Scripts
