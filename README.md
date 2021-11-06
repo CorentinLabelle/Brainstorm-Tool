@@ -25,6 +25,7 @@ This side App allows the user to create, save and modify pipelines. The pipeline
 The MatLab structure contains a field for every process selected. Each process field contains subfield that contains the parameters for that process.
 Example of a typical structure:
 ```mermaid
+Structure
 ├── DateOfCreation
 │   ├── YYYY-MM-DD-HH-MM-SS
 ├── Folder
@@ -32,10 +33,24 @@ Example of a typical structure:
 ├── Name
 │   ├── PipelineName
 ├── NumberOfProcesses
-│   ├── X
+│   ├── 3
 ├── Process
+│   ├── AddEEGPosition
+│   │   ├── FileType
+│   │   │   ├── Use Default Pattern
+│   │   ├── Cap
+│   │   │   ├── Colin27: BrainProducts EasyCap 128
 │   ├── NotchFilter
-│   └── file12.ext
+│   │   ├── Frequence
+│   │   │   ├── 60, 120, 180
+│   ├── BandPassFilter
+│   │   ├── LowFreq
+│   │   │   ├── 20
+│   │   ├── HighFreq
+│   │   │   ├── 140
+│   └── ICA
+│   │   ├── NumberOfComponents
+│   │   │   ├── 32
 ├── Type
 │   ├── EEG
 └── 
