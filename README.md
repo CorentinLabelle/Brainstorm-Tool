@@ -21,7 +21,7 @@ When creating a new subject, there is the possibility to use a default anatomy o
 
 This side App allows the user to create, save and modify pipelines. The pipeline are saved as a MatLab structure (.mat) that can be imported in the Analysis Tool and applied on studies. 
 
-## MatLab Structure
+### MatLab Structure
 The MatLab structure contains a field for every process selected. Each process field contains subfield that contains the parameters for that process.
 Example of a typical structure:
 ```mermaid
