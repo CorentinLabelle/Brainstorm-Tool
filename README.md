@@ -24,7 +24,9 @@ This side App allows the user to create, save and modify pipelines. The pipeline
 ## MatLab Structure
 The MatLab structure contains a field for every process selected. Each process field contains subfield that contains the parameters for that process.
 Example of a typical structure:
-``` 
+```mermaid
+graph LR
+A --> B
 |---allo
 |------bonjour
 
