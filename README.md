@@ -26,10 +26,7 @@ The MatLab structure contains a field for every process selected. Each process f
 Example of a typical structure:
 ```mermaid
 graph LR
-A --> B
-|---allo
-|------bonjour
-
+A --> B;
 ```
 
 # Scripts
