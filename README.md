@@ -27,33 +27,33 @@ Example of a typical structure:
 ```mermaid
 Structure
 ├── DateOfCreation
-│   ├── YYYY-MM-DD-HH-MM-SS
+│   └── YYYY-MM-DD-HH-MM-SS
 ├── Folder
-│   ├── C:\...
+│   └── C:\...
 ├── Name
-│   ├── PipelineName
+│   └── PipelineName
 ├── NumberOfProcesses
-│   ├── 3
+│   └── 4
 ├── Process
 │   ├── AddEEGPosition
 │   │   ├── FileType
-│   │   │   ├── Use Default Pattern
-│   │   ├── Cap
-│   │   │   ├── Colin27: BrainProducts EasyCap 128
+│   │   │   └── Use Default Pattern
+│   │   └── Cap
+│   │       └── Colin27: BrainProducts EasyCap 128
 │   ├── NotchFilter
-│   │   ├── Frequence
-│   │   │   ├── 60, 120, 180
+│   │   └── Frequence
+│   │       └── 60, 120, 180
 │   ├── BandPassFilter
 │   │   ├── LowFreq
-│   │   │   ├── 20
-│   │   ├── HighFreq
-│   │   │   ├── 140
+│   │   │   └── 20
+│   │   └── HighFreq
+│   │       └── 140
 │   └── ICA
-│   │   ├── NumberOfComponents
-│   │   │   ├── 32
-├── Type
-│   ├── EEG
-└── 
+│       └── NumberOfComponents
+│           └── 32
+└── Type
+    └── EEG
+ 
 ```
 
 # Scripts
