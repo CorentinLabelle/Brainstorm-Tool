@@ -10,7 +10,7 @@ The other way is to apply a pipeline. From the Analysis Tool App, the user can i
 Here is the list of the supported recording software and file format. We will be adding new software and file format as we go!
 - BrainVision (.eeg, .vhdr, .vmrk)
 - BioSemi (.eeg, .vhdr, .vmrk)
-- NeuroLite - Coherance Software (.bin, .elc, .vmrk)
+- NeuroLite - Coherance Software (.bin, .elc)
 - CTF MEG 275 ()
 
 
@@ -19,13 +19,21 @@ When creating a new subject, there is the possibility to use a default anatomy o
 
 ## Pipeline_Builder
 
-This side App allows the user to create, save and modify pipelines. The pipeline are saved as a MatLab structure (.mat) that can be imported in the Analysis Tool and applied on studies. The MatLab structure contains a field for every process selected. Each process field contains subfield that contains the parameter for that process.
+This side App allows the user to create, save and modify pipelines. The pipeline are saved as a MatLab structure (.mat) that can be imported in the Analysis Tool and applied on studies. 
+
+## MatLab Structure
+The MatLab structure contains a field for every process selected. Each process field contains subfield that contains the parameters for that process.
+Example of a typical structure:
+'''
+|---allo
+|------bonjour
+
+'''
 
 # Scripts
 ## EEG_Pipeline
 
-This script contains all the process that can be applied on an EEG study.
-Input: Structure and sFiles
+This script contains all the process that can be applied on an EEG study. It takes as input (1) a list of the studies to analyze and (2) a MatLab structure with the processes to apply.
 
 Functions:
 - Add EEG Position
