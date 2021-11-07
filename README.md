@@ -64,8 +64,8 @@ Structure
 This script contains all the process that can be applied on an EEG study. It takes as input (1) a list of the studies to analyze and (2) a MatLab structure with the processes to apply.
 
 Processes available:
-* _**Add EEG Position:**_ Import the positions of the electrodes.
-* _**Refine Registration:**_ Finds a better registration between the head shape defined by the electrodes and the head surface coming from the MRI. Note that this works only if have accurate head shapes (i.e. for a specific anatomy) and electrodes positions.
+- _**Add EEG Position:**_ Import the positions of the electrodes.
+- _**Refine Registration:**_ Finds a better registration between the head shape defined by the electrodes and the head surface coming from the MRI. Note that this works only if have accurate head shapes (i.e. for a specific anatomy) and electrodes positions.
 - _**Project Electrode on Scalp:**_ Ensures all the electrodes touch the skin surface (only for specific anatomy).
 - _**Notch Filter:**_ Notch filters are adapted for removing well identified contaminations from systems oscillating at very stable frequencies.
 - _**Band Pass Filter:**_ A band-pass filter is the combination of a low-pass filter and a high-pass filter, it removes all the frequencies outside of the frequency band of interest.
