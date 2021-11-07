@@ -67,21 +67,20 @@ Processes available:
 - Add EEG Position: Import the positions of the electrodes.
 - Refine Registration: Finds a better registration between the head shape defined by the electrodes and the head surface coming from the MRI. Note that this works only if have accurate head shapes (i.e. for a specific anatomy) and electrodes positions.
 - Project Electrode on Scalp: Ensures all the electrodes touch the skin surface (only for specific anatomy).
-- Detect Heartbeats
-- Notch Filter
-- Band Pass Filter
-- Power Spectrum Density
+- Notch Filter: Notch filters are adapted for removing well identified contaminations from systems oscillating at very stable frequencies.
+- Band Pass Filter: A band-pass filter is the combination of a low-pass filter and a high-pass filter, it removes all the frequencies outside of the frequency band of interest.
+- Power Spectrum Density: This process evaluates the power of the MEG/EEG signals at different frequencies, using the Welch's method.
 - Average Reference
-- ICA
+- ICA : Identifies spatial topographies (components that areindependent in time) specific to an artifact and then removes them from the recordings.
 
 ## MEG_Pipeline
 This script contains all the process that can be applied on an MEG study. It takes as input (1) a list of the studies to analyze and (2) a MatLab structure with the processes to apply.
 
 Processes available:
 - Convert Epoch To Continue: Brainstorm automatically imports data as epoched files. This process convert epoched files to continous files.
-- Notch Filter: Notch filters are adapted for removing well identified contaminations from systems oscillating at very stable frequencies.
-- Band Pass Filter: A band-pass filter is the combination of a low-pass filter and a high-pass filter, it removes all the frequencies outside of the frequency band of interest.
-- Power Spectrum Density: This process evaluates the power of the MEG/EEG signals at different frequencies, using the Welch's method.
+- Notch Filter: 
+- Band Pass Filter: 
+- Power Spectrum Density: 
 - Detect Artifact: This process can be used for detecting any kind of event (heartbeat, blink or other) based on the signal power in a specific frequency band.
 - Remove Simultaneous Events: In order to clean the signal effectively (using SSP), each artifact should be defined precisely and as independently as possible from the other artifacts. This means that we should try to avoid having two different artifacts marked at the same time.
 - SSP: The general SSP objective is to identify the sensor topographies that are typical of a specific artifact, then to create spatial projectors to remove the contributions of these topographies from the recordings.
