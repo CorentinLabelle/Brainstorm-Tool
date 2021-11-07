@@ -24,7 +24,7 @@ This side App allows the user to create, save and modify pipelines. The pipeline
 ### MatLab Structure
 The MatLab structure contains a field for every process selected. Each process field contains subfield that contains the parameters for that process.
 Example of a typical structure:
-```mermaid
+```
 Structure
 ├── DateOfCreation
 │   └── YYYY-MM-DD-HH-MM-SS
@@ -52,8 +52,7 @@ Structure
 │       └── NumberOfComponents
 │           └── 32
 └── Type
-    └── EEG
- 
+    └── EEG 
 ```
 
 # Scripts
@@ -96,3 +95,24 @@ Functions available:
 - Review Raw Files
 - Convert to BIDS
 - Import Events
+
+### Conversion to BIDS
+
+```
+BIDS
+├── derivatives
+│   └── bst_db_mapping.mat
+├── sub-<label>
+│   └── ses-YYYYMMDD
+│       ├── anat
+│       │   └── sub-<label>_ses-YYYYMMDD_T1w.nii.gz
+│       ├── eeg
+│       │   ├── sub-<label>[_ses-<label>]_task-<label>[_acq-<label>][_run-<index>]_eeg.edf
+│       │   ├── sub-<label>[_ses-<label>]_task-<label>[_acq-<label>][_run-<index>]_eeg.json
+│       │   ├── <label>_events.tsv
+│       │   ├── <label>_events.json
+│       │   └── <label>_provenance.json
+│       └── sub-0001_ses-YYYYMMDD_scans.tsv
+├── dataset_description.json
+└── README
+```
