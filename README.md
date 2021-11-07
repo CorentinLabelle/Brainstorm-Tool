@@ -18,10 +18,12 @@ Here is the list of the supported recording software and file format that can be
 ### Anatomy
 When creating a new subject, there is the possibility to use a default anatomy or import a specific anatomy. 
 
-The default anatomy is a template provided by Brainstorm. Multiple templates are available (template for babies, children, young adults, adults, etc.). If the user wants to import a specific anatomy, the minimum requirements is a MRI of the subjects (T1). The user will then have to mark the fiducials points (nasion, left ear, right ear, anterior commissure, posterior commissure, inter-hemispheric point)
+The default anatomy is a template provided by Brainstorm. Multiple templates are available (template for babies, children, young adults, adults, etc.). 
+
+If the user wants to import a specific anatomy, the minimum requirement is a MRI of the subjects (T1 file). The user will then have to mark the fiducials points (nasion, left ear, right ear, anterior commissure, posterior commissure, inter-hemispheric point).
 
 ## Pipeline_Builder
-This side App allows the user to create, save and modify pipelines. The pipeline are saved as a MatLab structure (.mat) that can be imported in the Analysis Tool and applied on studies. 
+This side app allows the user to create, save and modify pipelines. The pipeline are saved as a MatLab structure (.mat) that can be imported in the Analysis Tool and applied on studies. 
 
 ### MatLab Structure
 The MatLab structure contains a field for every process selected. Each process field contains subfield that contains the parameters for that process.
@@ -36,7 +38,7 @@ Structure
 │   └── PipelineName
 ├── NumberOfProcesses
 │   └── 4
-├── Process
+├── Processes
 │   ├── AddEEGPosition
 │   │   ├── FileType
 │   │   │   └── Use Default Pattern
@@ -61,7 +63,7 @@ Structure
 ## EEG_Pipeline
 This script contains all the process that can be applied on an EEG study. It takes as input (1) a list of the studies to analyze and (2) a MatLab structure with the processes to apply.
 
-Functions available:
+Processes available:
 - Add EEG Position
 - Refine Registration
 - Project Electrode on Scalp
@@ -75,7 +77,7 @@ Functions available:
 ## MEG_Pipeline
 This script contains all the process that can be applied on an MEG study. It takes as input (1) a list of the studies to analyze and (2) a MatLab structure with the processes to apply.
 
-Functions available:
+Processes available:
 - Convert Epoch To Continue
 - Notch Filter
 - Band Pass Filter
@@ -88,7 +90,7 @@ Functions available:
 ## Utility_Pipeline
 This script contains all the process needed to run the basic operations for the Analysis Tool. It takes as input (1) a MatLab structure with the processes to apply.
 
-Functions available:
+Processes available:
 - Import Anatomy
 - Review Raw Files
 - Convert to BIDS
