@@ -23,7 +23,7 @@ The default anatomy is a template provided by Brainstorm. Multiple templates are
 If the user wants to import a specific anatomy, the minimum requirement is a MRI of the subjects (T1 file). The user will then have to mark the fiducials points (nasion, left ear, right ear, anterior commissure, posterior commissure, inter-hemispheric point).
 
 ## Pipeline_Builder
-This side app allows the user to create, save and modify pipelines. The pipeline are saved as a MatLab structure (.mat) that can be imported in the Analysis Tool and applied on studies. 
+`<addr>` This side app allows the user to create, save and modify pipelines. The pipeline are saved as a MatLab structure (.mat) that can be imported in the Analysis Tool and applied on studies. 
 
 ### MatLab Structure
 The MatLab structure contains a field for every process selected. Each process field contains subfield that contains the parameters for that process.
