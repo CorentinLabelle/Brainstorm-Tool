@@ -20,17 +20,15 @@ When creating a new subject, there is the possibility to use a default anatomy o
 
 The default anatomy is a template provided by Brainstorm. Multiple templates are available (template for babies, children, young adults, adults, etc.). 
 
-If the user wants to import a specific anatomy, the minimum requirement is a MRI of the subjects (T1 file). The user will then have to mark the fiducials points (nasion, left ear, right ear, anterior commissure, posterior commissure, inter-hemispheric point).
-For estimating the brain sources of the MEG/EEG signals, the anatomy of the subject must include at least three files: a T1-weighted MRI volume, the envelope of the cortex and the surface of the head.
+There is also the possibility to import the anatomy of the subject. For estimating the brain sources of the MEG/EEG signals, the anatomy of the subject must include at least three files: a T1-weighted MRI volume, the envelope of the cortex and the surface of the head. The user will then have to mark the fiducials points (nasion, left ear, right ear, anterior commissure, posterior commissure, inter-hemispheric point).
+
 
 ## Pipeline_Builder
-This side app allows the user to create, save and modify pipelines. The pipeline are saved as a MatLab structure (.mat) that can be imported in the Analysis Tool and applied on studies. 
+This app allows the user to create, save and modify pipelines. It can be opened from the main app. The pipeline is saved as a MatLab structure (.mat) that can be imported in the Analysis Tool and applied on studies. 
 
 ### MatLab Structure
-The MatLab structure contains a field for every process selected. Each process field contains subfield that contains the parameters for that process.
-Example of a typical structure:
+Here is an example of a Pipeline structure:
 ```
-Structure
 ├── DateOfCreation
 │   └── YYYY-MM-DD-HH-MM-SS
 ├── Folder
