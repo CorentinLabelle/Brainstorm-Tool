@@ -64,14 +64,14 @@ Structure
 This script contains all the process that can be applied on an EEG study. It takes as input (1) a list of the studies to analyze and (2) a MatLab structure with the processes to apply.
 
 Processes available:
-* _**Add EEG Position:_** Import the positions of the electrodes.
-* _**Refine Registration:_** Finds a better registration between the head shape defined by the electrodes and the head surface coming from the MRI. Note that this works only if have accurate head shapes (i.e. for a specific anatomy) and electrodes positions.
-- _**Project Electrode on Scalp:_** Ensures all the electrodes touch the skin surface (only for specific anatomy).
-- _**Notch Filter:_** Notch filters are adapted for removing well identified contaminations from systems oscillating at very stable frequencies.
-- _**Band Pass Filter:_** A band-pass filter is the combination of a low-pass filter and a high-pass filter, it removes all the frequencies outside of the frequency band of interest.
-- _**Power Spectrum Density:_** This process evaluates the power of the MEG/EEG signals at different frequencies, using the Welch's method.
-- _**Average Reference_**
-- _**ICA_** : Identifies spatial topographies (components that areindependent in time) specific to an artifact and then removes them from the recordings.
+* _**Add EEG Position:**_ Import the positions of the electrodes.
+* _**Refine Registration:**_ Finds a better registration between the head shape defined by the electrodes and the head surface coming from the MRI. Note that this works only if have accurate head shapes (i.e. for a specific anatomy) and electrodes positions.
+- _**Project Electrode on Scalp:**_ Ensures all the electrodes touch the skin surface (only for specific anatomy).
+- _**Notch Filter:**_ Notch filters are adapted for removing well identified contaminations from systems oscillating at very stable frequencies.
+- _**Band Pass Filter:**_ A band-pass filter is the combination of a low-pass filter and a high-pass filter, it removes all the frequencies outside of the frequency band of interest.
+- _**Power Spectrum Density:**_ This process evaluates the power of the MEG/EEG signals at different frequencies, using the Welch's method.
+- _**Average Reference**_
+- _**ICA:**_ Identifies spatial topographies (components that areindependent in time) specific to an artifact and then removes them from the recordings.
 
 ## MEG_Pipeline
 This script contains all the process that can be applied on an MEG study. It takes as input (1) a list of the studies to analyze and (2) a MatLab structure with the processes to apply.
