@@ -77,14 +77,14 @@ Processes available:
 This script contains all the process that can be applied on an MEG study. It takes as input (1) a list of the studies to analyze and (2) a MatLab structure with the processes to apply.
 
 Processes available:
-- Convert Epoch To Continue: Brainstorm automatically imports data as epoched files. This process convert epoched files to continous files.
-- Notch Filter: 
-- Band Pass Filter: 
-- Power Spectrum Density: 
-- Detect Artifact: This process can be used for detecting any kind of event (heartbeat, blink or other) based on the signal power in a specific frequency band.
-- Remove Simultaneous Events: In order to clean the signal effectively (using SSP), each artifact should be defined precisely and as independently as possible from the other artifacts. This means that we should try to avoid having two different artifacts marked at the same time.
-- SSP: The general SSP objective is to identify the sensor topographies that are typical of a specific artifact, then to create spatial projectors to remove the contributions of these topographies from the recordings.
-- ICA
+- _**Convert Epoch To Continue:** Brainstorm automatically imports data as epoched files. This process convert epoched files to continous files.
+- _**Notch Filter:**
+- _**Band Pass Filter:**
+- _**Power Spectrum Density:** 
+- _**Detect Artifact:** This process can be used for detecting any kind of event (heartbeat, blink or other) based on the signal power in a specific frequency band.
+- _**Remove Simultaneous Events:** In order to clean the signal effectively (using SSP), each artifact should be defined precisely and as independently as possible from the other artifacts. This means that we should try to avoid having two different artifacts marked at the same time.
+- _**SSP:** The general SSP objective is to identify the sensor topographies that are typical of a specific artifact, then to create spatial projectors to remove the contributions of these topographies from the recordings.
+- _**ICA:**
 
 ## Utility_Pipeline
 This script contains all the process needed to run the basic operations for the Analysis Tool. It takes as input (1) a MatLab structure with the processes to apply.
