@@ -10,9 +10,9 @@ The other way is to run a pipeline. From the main app, the user can import a pip
 
 ### Supported File Format
 Here is the list of the supported recording software and file format that can be imported. We will be adding new software and file format as we go!
-- BrainVision (*.eeg, .vhdr, .vmrk*)
-- BioSemi (*.eeg, .vhdr, .vmrk*)
-- NeuroLite - Coherance Software (*.bin, .elc*)
+- BrainVision (.eeg, .vhdr, .vmrk)
+- BioSemi (.eeg, .vhdr, .vmrk)
+- NeuroLite - Coherance Software (.bin, .elc)
 - CTF MEG 275 ()
 
 ### Anatomy
@@ -24,7 +24,7 @@ If the user wants to import a specific anatomy, the minimum requirement is a MRI
 For estimating the brain sources of the MEG/EEG signals, the anatomy of the subject must include at least three files: a T1-weighted MRI volume, the envelope of the cortex and the surface of the head.
 
 ## Pipeline_Builder
-This side app allows the user to create, save and modify pipelines. The pipeline are saved as a MatLab structure (*.mat*) that can be imported in the Analysis Tool and applied on studies. 
+This side app allows the user to create, save and modify pipelines. The pipeline are saved as a MatLab structure (.mat) that can be imported in the Analysis Tool and applied on studies. 
 
 ### MatLab Structure
 The MatLab structure contains a field for every process selected. Each process field contains subfield that contains the parameters for that process.
@@ -93,7 +93,7 @@ This script contains all the process needed to run the basic operations for the 
 Processes available:
 - _**Import Anatomy:**_ 
 - _**Review Raw Files:**_ Creates a link to the original EEG files.
-- _**Convert to BIDS:**_ Export EEG and MEG files following the standard data organization of the Brain Imaging Data Structure (BIDS). The data files will previously be converted to *.edf*.
+- _**Convert to BIDS:**_ Export EEG and MEG files following the standard data organization of the Brain Imaging Data Structure (BIDS). The data files will previously be converted to .edf.
 - _**Import in database:**_ 
 
 ### Conversion to BIDS
