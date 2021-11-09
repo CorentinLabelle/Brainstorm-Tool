@@ -2,11 +2,13 @@ This repository contains all the files (2 apps and 3 scripts) necessary to run t
 
 # Applications
 ## Analysis Tool
-The Analysis Tool App is the main app. It allows the user to perform MEG or EEG analysis. The user can create/delete protocol/subjects/studies, import anatomy/data and apply multiple processes. There is two ways to perfom an analysis. 
+The Analysis Tool App is the main app. It allows the user to perform MEG or EEG analysis. The user can create or delete protocol/subjects/studies, import anatomy/data and apply multiple processes. There is two ways to perfom an analysis. 
 
-One way is to apply each process individually, which allows the user to view the data between each process. The user can also view and modify (creating, renaming, deleting) the events or consult the history of each study.
+One way is to apply each process individually, which allows the user to view the data between each process. The user can also view and modify (create, rename or delete) the events or consult the history of each study.
 
 The other way is to run a pipeline. From the main app, the user can import a pipeline previously created with the Pipeline Builder (explained later) and apply it to multiples studies.
+
+The code in the main app serves the purpose of running the interface, asking the user for information, organizing files and foldesr, throwing errors when needed, etc. When the user applies a process, the main app calls the appropriate script (EEG_Pipeline, MEG_Pipeline or Utility_Pipeline) that contains all the processes.
 
 ### Supported File Format
 Here is the list of the supported recording software and file format that can be imported. We will be adding new software and file format as we go!
