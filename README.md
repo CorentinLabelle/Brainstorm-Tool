@@ -102,6 +102,7 @@ Before the conversion to BIDS, the data files are converted to .edf. When conver
 - <label>_events.json: Meta data about every event.
 - <label>_provenance.json: History of all the process applied on the data.
 - <label>_channelCoordinates.json: Channel coordinates.
+
 Here is the structure of a BIDS folder:
 ```
 BIDS
