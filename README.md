@@ -79,16 +79,16 @@ This script contains all the process that can be applied on an MEG study. When a
 
 Processes available:
 - _**Convert Epoch To Continue:**_ Brainstorm automatically imports data as epoched files. This process convert epoched files to continous files.
-- _**Notch Filter:**_
-- _**Band Pass Filter:**_
-- _**Power Spectrum Density:**_
+- _**Notch Filter:**_ Notch filters are adapted for removing well identified contaminations from systems oscillating at very stable frequencies.
+- _**Band Pass Filter:**_ A band-pass filter is the combination of a low-pass filter and a high-pass filter, it removes all the frequencies outside of the frequency band of interest.
+- _**Power Spectrum Density:**_ This process evaluates the power of the MEG/EEG signals at different frequencies, using the Welch's method.
 - _**Detect Artifact:**_ This process can be used for detecting any kind of event (heartbeat, blink or other) based on the signal power in a specific frequency band.
 - _**Remove Simultaneous Events:**_ In order to clean the signal effectively (using SSP), each artifact should be defined precisely and as independently as possible from the other artifacts. This means that we should try to avoid having two different artifacts marked at the same time.
 - _**SSP:**_ The general SSP objective is to identify the sensor topographies that are typical of a specific artifact, then to create spatial projectors to remove the contributions of these topographies from the recordings.
-- _**ICA:**_
+- _**ICA:**_ Identifies spatial topographies (components that areindependent in time) specific to an artifact and then removes them from the recordings.
 
 ## Utility_Pipeline
-This script contains all the process needed to run the basic operations for the Analysis Tool. It takes as input (1) a MatLab structure with the processes to apply.
+This script contains all the process needed to run the basic operations that do not affect the data (import anatomy, review raw files, etc.). It takes as input (1) a MatLab structure with the processes to apply.
 
 Processes available:
 - _**Import Anatomy:**_ 
@@ -97,11 +97,12 @@ Processes available:
 - _**Import in database:**_ 
 
 ### Conversion to BIDS
-When converting to BIDS, a function is ran to create 4 files:
+Before the conversion to BIDS, the data files are converted to .edf. When converting to BIDS, a function is ran to create 4 files:
 - <label>_events.tsv: List of all the occurence of an event.
 - <label>_events.json: Meta data about every event.
 - <label>_provenance.json: History of all the process applied on the data.
 - <label>_channelCoordinates.json: Channel coordinates.
+Here is the structure of a BIDS folder:
 ```
 BIDS
 ├── derivatives
