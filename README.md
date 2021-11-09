@@ -8,7 +8,7 @@ One way is to apply each process individually, which allows the user to view the
 
 The other way is to run a pipeline. From the main app, the user can import a pipeline previously created with the Pipeline Builder (explained later) and apply it to multiples studies.
 
-The code in the main app serves the purpose of running the interface, asking the user for information, organizing files and foldesr, throwing errors when needed, etc. When the user applies a process, the main app calls the appropriate script (EEG_Pipeline, MEG_Pipeline or Utility_Pipeline) that contains all the processes.
+The code in the main app serves the purpose of running the interface, asking the user for information, organizing files and folders, throwing errors when needed, etc. When the user applies a process, the main app calls the appropriate script (EEG_Pipeline, MEG_Pipeline or Utility_Pipeline) that contains all the processes.
 
 ### Supported File Format
 Here is the list of the supported recording software and file format that can be imported. We will be adding new software and file format as we go!
@@ -26,7 +26,7 @@ There is also the possibility to import the anatomy of the subject. For estimati
 
 
 ## Pipeline_Builder
-This app allows the user to create, save and modify pipelines. It can be opened from the main app. The pipeline is saved as a MatLab structure (.mat) that can be imported in the Analysis Tool and applied on studies. 
+This app allows the user to create, save and modify pipelines. It can be opened from the main app. To build the pipeline, the user select the process and enters the information needed for each process. The pipeline is then saved as a MatLab structure (.mat) that can be imported in the main app and applied on studies. 
 
 ### MatLab Structure
 Here is an example of a Pipeline structure:
@@ -62,7 +62,7 @@ Here is an example of a Pipeline structure:
 
 # Scripts
 ## EEG_Pipeline
-This script contains all the process that can be applied on an EEG study. It takes as input (1) a list of the studies to analyze and (2) a MatLab structure with the processes to apply.
+This script contains all the process that can be applied on an EEG study. When an EEG process is called from the main app, this script is called. It takes as input (1) a cell of the studies (the path to the study .mat file) on which to apply the study and (2) a MatLab structure with the processes to apply.
 
 Processes available:
 - _**Add EEG Position:**_ Import the positions of the electrodes.
@@ -75,7 +75,7 @@ Processes available:
 - _**ICA:**_ Identifies spatial topographies (components that areindependent in time) specific to an artifact and then removes them from the recordings.
 
 ## MEG_Pipeline
-This script contains all the process that can be applied on an MEG study. It takes as input (1) a list of the studies to analyze and (2) a MatLab structure with the processes to apply.
+This script contains all the process that can be applied on an MEG study. When an MEG process is called from the main app, this script is called. It takes as input (1) a cell of the studies (the path to the study .mat file) on which to apply the study and (2) a MatLab structure with the processes to apply.
 
 Processes available:
 - _**Convert Epoch To Continue:**_ Brainstorm automatically imports data as epoched files. This process convert epoched files to continous files.
