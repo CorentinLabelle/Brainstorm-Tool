@@ -1,8 +1,8 @@
-# EEG-MEG ANALYSIS TOOL
+# 1. EEG-MEG ANALYSIS TOOL
 This repository contains all the files (2 apps and 3 scripts) necessary to run the Analysis Tool.
 
-## Applications
-### Analysis Tool
+## 1. Applications
+### 1. Analysis Tool
 The Analysis Tool App is the main app. It allows the user to perform MEG or EEG analysis. The user can create or delete protocol/subjects/studies, import anatomy/data and apply multiple processes. There is two ways to perfom an analysis. 
 
 One way is to apply each process individually, which allows the user to view the data between each process. The user can also view and modify (create, rename or delete) the events or consult the history of each study.
