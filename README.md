@@ -104,7 +104,7 @@ Before the conversion to BIDS, the data files are converted to .edf. When conver
 - <label>_provenance.json: History of all the process applied on the data.
 - <label>_channelCoordinates.json: Channel coordinates.
 
-Here is the structure of a BIDS folder:
+Here is the structure of a BIDS folder (based on the [BIDS specifications for Electroencephalography] (https://bids-specification.readthedocs.io/en/stable/04-modality-specific-files/03-electroencephalography.html):
 ```
 BIDS
 ├── derivatives
