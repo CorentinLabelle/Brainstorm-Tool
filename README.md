@@ -9,7 +9,7 @@ The **EEG-MEG Analysis Tool** can be used to convert, process and analyze EEG an
 - process EEG and MEG data,
 - create, save, share and load custom pipelines.
 
-The tool is written in MatLab (#VERSION#) and is based heavily on the [Brainstorm](https://neuroimage.usc.edu/brainstorm/Introduction) (#VERSION#) software. It is made up of two applications ([Analysis Tool](#11-analysis-tool) and [Pipeline Builder](#12-pipelinebuilder)) as well as three scripts, which are each outlined below.
+The tool is written in MatLab R2021a and is based heavily on the [Brainstorm](https://neuroimage.usc.edu/brainstorm/Introduction) (v3.211101) software. It is made up of two applications ([Analysis Tool](#11-analysis-tool) and [Pipeline Builder](#12-pipeline_builder)) as well as three scripts, which are each outlined below.
 
 ## 1. Applications
 ### 1.1 Analysis Tool
@@ -30,7 +30,7 @@ There are two ways to perfom an analysis:
 
 2. **_Running a pipeline:_** From the main app, the user can import a pipeline previously created with the [Pipeline Builder](#12-pipelinebuilder) and apply it to multiple studies.
 
-The code in the main app serves the purpose of running the interface, asking the user for information, organizing files and folders, throwing errors when needed, etc. When the user applies a process, the main app calls the appropriate script ([EEG_Pipeline](#21-eegpipeline), [MEG_Pipeline](#22-megpipeline) or [Utility_Pipeline](#23-utilitypipeline)) that contains all the processes.
+The code in the main app serves the purpose of running the interface, asking the user for information, organizing files and folders, throwing errors when needed, etc. When the user applies a process, the main app calls the appropriate script ([EEG_Pipeline](#21-eeg_pipeline), [MEG_Pipeline](#22-meg_pipeline) or [Utility_Pipeline](#23-utility_pipeline)) that contains all the processes.
 
 #### Supported File Formats
 Here is the list of the supported recording softwares and file formats that can be imported. We will be adding new software and file formats as we go!
@@ -129,7 +129,7 @@ Before the conversion to BIDS, the data files are converted to .edf. When conver
 - <label>_provenance.json: History of all the process applied on the data.
 - <label>_channelCoordinates.json: Channel coordinates.
 
-Here is the structure of a BIDS folder (based on the [BIDS specifications for Electroencephalography (#VERSION#)](https://bids-specification.readthedocs.io/en/stable/04-modality-specific-files/03-electroencephalography.html)):
+Here is the structure of a BIDS folder (based on the [BIDS specifications for Electroencephalography v1.6.0](https://bids-specification.readthedocs.io/en/stable/04-modality-specific-files/03-electroencephalography.html)):
     
 ```
 BIDS
