@@ -3,7 +3,7 @@
 The **EEG-MEG Analysis Tool** can be used to convert, process and analyze EEG and MEG data. The tool offers many features and allows users to:
 - create subjects,
 - import subject anatomy,
-- import data from any [supported recording software](#supported-file-format),
+- import data from any [supported recording software](#supported-file-formats),
 - create multiple studies and protocols,
 - convert to BIDS,
 - process EEG and MEG data,
