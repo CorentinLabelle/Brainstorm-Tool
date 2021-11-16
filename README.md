@@ -150,3 +150,15 @@ BIDS
 ├── dataset_description.json
 └── README
 ```
+
+## Future Directions
+The next objectives will be to add the processing steps for EGG and MEG data. The processing steps include:
+- Import Events: Epoching for every Event occurrence (Time Window, Baseline)
+- Reject Bad Trials: Remove trials with anecdotic Artifacts
+- Evoked Response: Averaging by Condition or by Subject
+- Time/Frequency: Time Frequency Decomposition / Morlet's Wavelength / Multitaper
+- Hilbert: "Zooming on one Frequence"
+- Connectivity: Phase Locking Value/ Coherence 
+- Statistics:
+    
+We will also be working on allowing different file formats (i.e. data recorded with different recording systems) to be imported and analyzed. Finally, we will be adding features as we go based on the reviews and the needs of the users.
