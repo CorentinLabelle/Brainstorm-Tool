@@ -21,20 +21,17 @@ if ~exist('processes','var')
         return
     end
         
-        pipLoad = load(strcat(folderPath, fileName));
+    pipLoad = load(strcat(folderPath, fileName));
 
-        processes = pipLoad.Processes;
+    processes = pipLoad.Processes;
         
 end
-
-%% sfile
-%sFiles = {'Frodo/@rawP8_B1/data_0raw_P8_B1.mat'};
 
 %% Add EEG Position
 
 if(isfield(processes,'AddEEGPosition'))
     
-    if processes.AddEEGPosition.FileType == "Use Default Pattern"
+    if processes.AddEEGPosition.FileType == "Default"
         capNumber = processes.AddEEGPosition.CapNumber;  
 
         % Process: Add EEG positions
@@ -86,6 +83,7 @@ if(isfield(processes, 'DetectArtifact'))
                             'eventname',   eventName);
     end
 end
+
 %% Notch Filter
     
 if(isfield(processes,'NotchFilter'))
@@ -143,7 +141,6 @@ if(isfield(processes,'PowerSpectrumDensity'))
             
 end
 
-
 %% Average Reference
 
 if(isfield(processes,'AverageReference'))
@@ -165,9 +162,6 @@ end
 if(isfield(processes,'ICA'))
     
     nbComponents = processes.ICA.NumberOfComponents;
-    
-    %message = uiconfirm(app.UIFigure, ...
-        %'This might take a couple a minutes... You have time ti grab a cup of coffee.', 'loading');
 
     sFiles = bst_process('CallProcess', 'process_ica', sFiles, [], ...
                 'timewindow', [], ...
@@ -183,19 +177,13 @@ if(isfield(processes,'ICA'))
                 'method', 1, ...
                 'select', []);
             
-
-    %delete(message);
-    
-        for i = 1:length(sFiles)
-            view_timeseries(sFiles(i).FileName);
-            panel_ssp_selection('OpenRaw');
-            waitfor(msgbox("Click when you are done choosing. It will skip to the next study."));
-        end
+    for i = 1:length(sFiles)
+        view_timeseries(sFiles(i).FileName);
+        panel_ssp_selection('OpenRaw');
+        waitfor(msgbox("Click when you are done choosing. It will skip to the next study."));
+    end
 
 end
-
-
-
 
 %% Return cFile
 
@@ -205,10 +193,6 @@ end
             cFiles{i} = sFiles(i).FileName;
         end
     end
-    
-     msg = msgbox('Opération Terminée', 'Opération Terminée');
-     pause(2)
-     delete(msg);
      
     return
 

@@ -9,11 +9,11 @@ if ~exist('sFiles','var')
 end
 
 %% Start a new report
-bst_report('Start', sFiles);
+% bst_report('Start', sFiles);
 
 %% Import Anatomy
 
-if(isfield(process,'ImportAnatomy'))
+if (isfield(process,'ImportAnatomy'))
     
     subjectName = process.ImportAnatomy.SubjectName;
     anatomyPath = process.ImportAnatomy.AnatomyPath;
@@ -45,7 +45,7 @@ end
 
 %% Review Raw Files
 
-if(isfield(process,'ReviewRawFiles'))
+if (isfield(process,'ReviewRawFiles'))
 
     ChannelAlign = process.ReviewRawFiles.ChannelAlign;
     SubjectName = process.ReviewRawFiles.SubjectName;
@@ -61,11 +61,26 @@ if(isfield(process,'ReviewRawFiles'))
                                 
 end
 
+%% Select Files (select only good trial from an imported study).
 
+if (isfield(process,'SelectFiles'))
+    
+    subjectName = process.SelectFiles.SubjectName;
+    condition = process.SelectFiles.Condition;
+
+    sFiles = bst_process('CallProcess', 'process_select_files_data', sFiles, [], ...
+        'subjectname',   subjectName, ...
+        'condition',     condition, ...
+        'tag',           '', ...    Select file that include the tag
+        'includebad',    0, ...     1/0
+        'includeintra',  0, ...     1/0
+        'includecommon', 0);        %1/0
+    
+end
 
 %% Convert to BIDS
 
-if(isfield(process,'ConvertToBIDS'))
+if (isfield(process,'ConvertToBIDS'))
     
     cFiles = process.ConvertToBIDS.cFile;
     BIDSpath = process.ConvertToBIDS.BIDSpath;
@@ -94,7 +109,7 @@ end
 
 %% Import Events
 
-if(isfield(process,'ImportEvent'))
+if (isfield(process,'ImportEvent'))
     
     subjectName = process.ImportEvent.SubjectName;
     event = process.ImportEvent.Event;
@@ -115,11 +130,70 @@ if(isfield(process,'ImportEvent'))
 
 end
 
+
+%% Reject Bad Trials (Peak to Peak)
+
+if (isfield(process, 'RejectTrial'))
+    
+    
+    megGrad = [];
+    megMagneto = [];
+    eeg = [];
+    seeg_ecog = [];
+    eog = [];
+    ecg = [];
+    
+    if (isfield(process.RejectTrial, 'MEGgrad'))
+        megGrad = process.RejectTrial.MEGgrad;
+
+    elseif (isfield(process.RejectTrial, 'MEGmagneto'))
+        megMagneto = process.RejectTrial.MEGmagneto;
+        
+    elseif (isfield(process.RejectTrial, 'EEG'))
+        eeg = process.RejectTrial.EEG;
+        
+    elseif (isfield(process.RejectTrial, 'SEEG_ECOG'))
+        seeg_ecog = process.RejectTrial.SEEG_ECOG;
+        
+    elseif (isfield(process.RejectTrial, 'EOG'))
+        eog = process.RejectTrial.EOG;
+        
+    elseif (isfield(process.RejectTrial, 'ECG'))
+        ecg = process.RejectTrial.ECG;
+
+    end
+    
+
+    sFiles = bst_process('CallProcess', 'process_detectbad', sFiles, [], ...
+        'timewindow', [], ...
+        'meggrad',    megGrad, ...
+        'megmag',     megMagneto, ...
+        'eeg',        eeg, ...
+        'ieeg',       seeg_ecog, ...
+        'eog',        eog, ...
+        'ecg',        ecg, ...
+        'rejectmode', 2);  % Reject the entire trial
+
+end
+
+%% Average
+
+if isfield(process, 'Average')
+    
+    averageType = process.Average.AverageTypeNumber;
+    averageFunction = process.Average.AverageFunctionNumber;
+
+    sFiles = bst_process('CallProcess', 'process_average', sFiles, [], ...
+        'avgtype',       averageType, ...  % By folder (grand average)
+        'avg_func',      averageFunction, ...  % Average absolute values:  mean(abs(x))
+        'weighted',      0, ...
+        'keepevents',    0);
+
+end
+
 %% Save and display report
-ReportFile = bst_report('Save', sFiles);
-bst_report('Open', ReportFile);
-%pause(1);
-%delete() or close() ?;
+% ReportFile = bst_report('Save', sFiles);
+% bst_report('Open', ReportFile);
 
 %% Return cFile
 
@@ -129,11 +203,7 @@ bst_report('Open', ReportFile);
             cFiles{i} = sFiles(i).FileName;
         end
      end
-    
-    msg = msgbox('Opération Terminée', 'Opération Terminée');
-    pause(2)
-    delete(msg);
-    
+     
     return
 
 end

@@ -21,14 +21,11 @@ if ~exist('processes','var')
         return
     end
         
-        pipLoad = load(strcat(folderPath, fileName));
+    pipLoad = load(strcat(folderPath, fileName));
 
-        processes = pipLoad.Processes;
+    processes = pipLoad.Processes;
         
 end
-
-%% sfile
-%sFiles = {'Frodo/@rawP8_B1/data_0raw_P8_B1.mat'};
 
 %% Convert Epoch To Continue
 
@@ -37,7 +34,6 @@ if(isfield(processes,'ConvertEpochToContinue'))
     sFiles = bst_process('CallProcess', 'process_ctf_convert', sFiles, [], ...
                     'rectype', 2);
 end
-
 
 %% Notch Filter
     
@@ -219,9 +215,6 @@ if(isfield(processes,'ICA'))
     
     nbComponents = processes.ICA.NumberOfComponents;
     
-    %message = uiconfirm(app.UIFigure, ...
-        %'This might take a couple a minutes... You have time ti grab a cup of coffee.', 'loading');
-
     sFiles = bst_process('CallProcess', 'process_ica', sFiles, [], ...
                 'timewindow', [], ...
                 'eventname', '', ...
@@ -235,17 +228,15 @@ if(isfield(processes,'ICA'))
                 'saveerp', 0, ...
                 'method', 1, ...
                 'select', []);
-            
-
-    %delete(message);
     
-        for i = 1:length(sFiles)
-            view_timeseries(sFiles(i).FileName);
-            panel_ssp_selection('OpenRaw');
-            waitfor(msgbox("Click when you are done choosing. It will skip to the next study."));
-        end
+    for i = 1:length(sFiles)
+        view_timeseries(sFiles(i).FileName);
+        panel_ssp_selection('OpenRaw');
+        waitfor(msgbox("Click when you are done choosing. It will skip to the next study."));
+    end
 
 end
+
 %% Return cFile
     
     if class(sFiles) ~= "cell"
@@ -255,9 +246,6 @@ end
         end
     end
     
-    msg = msgbox('Opération Terminée', 'Opération Terminée');
-    pause(2)
-    delete(msg);
     return
 
 end
