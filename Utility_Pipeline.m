@@ -78,35 +78,6 @@ if (isfield(process,'SelectFiles'))
     
 end
 
-%% Convert to BIDS
-
-if (isfield(process,'ConvertToBIDS'))
-    
-    cFiles = process.ConvertToBIDS.cFile;
-    BIDSpath = process.ConvertToBIDS.BIDSpath;
-    
-    bst_process('CallProcess', 'process_export_bids', cFiles, [], ...
-         'bidsdir',       {BIDSpath, 'BIDS'}, ...
-         'subscheme',     2, ...  % Number index
-         'sesscheme',     1, ...  % Acquisition date
-         'emptyroom',     'emptyroom, noise', ...
-         'defacemri',     0, ...
-         'overwrite',     0, ...
-         'powerline',     2, ...  % 60 Hz
-         'dewarposition', 'Upright', ...
-         'eegreference',  'Cz', ...
-         'edit',          struct(...
-         'ProjName',    [], ...
-         'ProjID',      [], ...
-         'ProjDesc',    [], ...
-         'Categories',  [], ...
-         'JsonDataset', ['{' 10 '  "License": "PD"' 10 '}'], ...
-         'JsonMeg',     ['{' 10 '  "TaskDescription": "My task"' 10 '}']));
-
-
-end              
-
-
 %% Import Events
 
 if (isfield(process,'ImportEvent'))
@@ -129,7 +100,6 @@ if (isfield(process,'ImportEvent'))
      'baseline',    []);
 
 end
-
 
 %% Reject Bad Trials (Peak to Peak)
 
