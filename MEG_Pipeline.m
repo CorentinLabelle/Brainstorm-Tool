@@ -1,4 +1,4 @@
-function cFiles = MEG_Pipeline(sFiles, processes)
+function cFiles = MEG_Pipeline(sFiles, processes, app)
 % The argument sFiles is actually a cFiles
 
 %% Add Path
@@ -238,13 +238,13 @@ if(isfield(processes,'ICA'))
 end
 
 %% Conversion to BIDS
-if (isfield(process,'ConvertToBIDS'))
+if (isfield(processes,'ConvertToBIDS'))
     
-    if (isfield(process.ConvertToBIDS, 'cFile'))
-        sFiles = process.ConvertToBIDS.cFile;
+    if (isfield(processes.ConvertToBIDS, 'cFile'))
+        sFiles = processes.ConvertToBIDS.cFile;
     end
     
-    BIDSpath = process.ConvertToBIDS.BIDSpath;
+    BIDSpath = processes.ConvertToBIDS.BIDSpath;
     
     bst_process('CallProcess', 'process_export_bids', sFiles, [], ...
          'bidsdir',       {BIDSpath, 'BIDS'}, ...

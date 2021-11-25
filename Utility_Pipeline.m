@@ -61,6 +61,26 @@ if (isfield(process,'ReviewRawFiles'))
                                 
 end
 
+%% Export to EDF (European Data Fromat)
+
+if (isfield(process,'ConvertToEDF'))
+
+    ChannelAlign = process.ConvertToEDF.ChannelAlign;
+    SubjectName = process.ConvertToEDF.SubjectName;
+    RawFilePath = process.ConvertToEDF.RawFilesPath;
+    FileFormat = process.ConvertToEDF.FileFormat;
+
+    for i = 1:length(cFiles)
+                
+        [~, studyName, ~, ~, channelFile] = app.getFilesPathFromcFile(cFiles(i));
+
+        dest = convertStringsToChars(fullfile(destination, strcat(studyName, '.edf')));
+
+        [edfFile] = export_data(cFiles, channelFile, dest, []);
+    end
+             
+end
+
 %% Select Files (select only good trial from an imported study).
 
 if (isfield(process,'SelectFiles'))
