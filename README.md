@@ -9,7 +9,7 @@ The **EEG-MEG Analysis Tool** can be used to convert, process and analyze EEG an
 - process EEG and MEG data,
 - create, save, share and load custom pipelines.
 
-The tool is written in MatLab (version R2021a) and is based heavily on the [Brainstorm](https://neuroimage.usc.edu/brainstorm/Introduction) (v3.211101) software. It is made up of two applications ([Analysis Tool](#11-analysis-tool) and [Pipeline Builder](#12-pipeline_builder)) as well as three scripts, which are each outlined below.
+The tool is written in MatLab (version R2021a) and is based heavily on the [Brainstorm](https://neuroimage.usc.edu/brainstorm/Introduction) (v3.211101) software. It is made up of two applications ([Analysis Tool](#11-analysis-tool) and [Pipeline Builder](#12-pipeline_builder)).
 
 ## 1. Applications
 ### 1.1 Analysis Tool
@@ -30,7 +30,7 @@ There are two ways to perfom an analysis:
 
 2. **_Running a pipeline:_** From the main app, the user can import a pipeline previously created with the [Pipeline Builder](#12-pipeline_builder) and apply it to multiple studies.
 
-The code in the main app serves the purpose of running the interface, asking the user for information, organizing files and folders, throwing errors when needed, etc. When the user applies a process, the main app calls the appropriate script ([EEG_Pipeline](#21-eeg_pipeline), [MEG_Pipeline](#22-meg_pipeline) or [Utility_Pipeline](#23-utility_pipeline)) that contains all the processes.
+The code in the main app serves the purpose of running the interface, asking the user for information, organizing files and folders, throwing errors when needed, etc.
 
 #### Supported File Formats
 Here is the list of the supported recording softwares and file formats that can be imported. We will be adding new software and file formats as we go!
@@ -86,9 +86,13 @@ Here is an example of a pipeline structure:
     └── EEG 
 ```
 
-## 2. Scripts
-### 2.1 EEG_Pipeline
-This script contains all the process that can be applied on an EEG study. When an EEG process is applied from the main app, this script is called. It takes as input (1) a cell of the studies (the path to the study .mat file) on which to apply the process and (2) a MatLab structure with the parameters of the process to apply.
+## 2. Classes
+
+### 2.1 App Functions
+This class contains all the functions needed for the app to work (create files, update interface, etc.). 
+
+### 2.2 EEG Basic Functions
+This class contains all the process that can be applied on an EEG study. It is derived from the Common Basic Functions class.
 
 #### Processes available:
 - _**Add EEG Position:**_ Import the positions of the electrodes.
@@ -100,8 +104,8 @@ This script contains all the process that can be applied on an EEG study. When a
 - _**Average Reference**_ Creates a linear projector that re-references the EEG.
 - _**ICA:**_ Identifies spatial topographies (components that areindependent in time) specific to an artifact and then removes them from the recordings.
 
-### 2.2 MEG_Pipeline
-This script contains all the process that can be applied on a MEG study. When a MEG process is applied from the main app, this script is called. It takes as input (1) a cell of the studies (the path to the study .mat file) on which to apply the process and (2) a MatLab structure with the parameters of the process to apply.
+### 2.3 MEG Basic Functions
+This class contains all the process that can be applied on a MEG study. It is derived from the Common Basic Functions class.
 
 #### Processes available:
 - _**Convert Epoch To Continue:**_ Brainstorm automatically imports data as epoched files. This process convert epoched files to continous files.
@@ -113,8 +117,8 @@ This script contains all the process that can be applied on a MEG study. When a 
 - _**SSP:**_ The general SSP objective is to identify the sensor topographies that are typical of a specific artifact, then to create spatial projectors to remove the contributions of these topographies from the recordings.
 - _**ICA:**_ Identifies spatial topographies (components that are independent in time) specific to an artifact and then removes them from the recordings.
 
-### 2.3 Utility_Pipeline
-This script contains all the process needed to run the basic operations that do not affect the data (import anatomy, review raw files, etc.). It takes as input (1) a MatLab structure with the parameters of the process to apply.
+### 2.4 Common Basic Functions
+This class contains all the process needed to run the basic operations that do not affect the data (import anatomy, review raw files, etc.).
 
 #### Processes available:
 - _**Import Anatomy:**_ Creates a specific (or default) anatomy for the subject.
@@ -161,4 +165,4 @@ The next objectives will be to add the processing steps for EGG and MEG data. Th
 - Connectivity: Phase Locking Value/ Coherence 
 - Statistics:
     
-We will also be working on allowing different file formats (i.e. data recorded with different recording systems) to be imported and analyzed. Finally, we will be adding features as we go based on the reviews and the needs of the users.
+We will also be working on a standalone version of this app that could easily be shared.
