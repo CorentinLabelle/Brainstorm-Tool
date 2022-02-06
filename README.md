@@ -13,10 +13,16 @@ The tool is written in MatLab (version R2021a) and is based heavily on the [Brai
 
 ## 1. Applications
 ### 1.1 Analysis Tool
-<p float="left">
+
+![image](https://github.com/CorentinLabelle/EEG-MEG-Analysis-Tool/blob/main/EEG_Image.PNG)
+![image](https://github.com/CorentinLabelle/EEG-MEG-Analysis-Tool/blob/main/MEG_Image.PNG)
+
+<!---
+<p float="left">  
     <img src="https://user-images.githubusercontent.com/88212708/141159087-339d6ff9-8404-4e87-ad3d-972087b1b93b.PNG" width="475"/>
     <img src="https://user-images.githubusercontent.com/88212708/141159544-cc9ad06c-11aa-47fa-97d8-49318bfa2910.PNG" width="475"/>
 </p>
+--->
 
 The **Analysis Tool** is the main application. It allows users to perform MEG or EEG analysis. A user can
 (1) create or delete protocols, subjects and studies;
