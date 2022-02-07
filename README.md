@@ -164,13 +164,8 @@ BIDS
 ```
 
 ## Future Directions
-The next objectives will be to add the processing steps for EGG and MEG data. The processing steps include:
-- Import Events: Epoching for every Event occurrence (Time Window, Baseline)
-- Reject Bad Trials: Remove trials with anecdotic Artifacts
-- Evoked Response: Averaging by Condition or by Subject
-- Time/Frequency: Time Frequency Decomposition / Morlet's Wavelength / Multitaper
-- Hilbert: "Zooming on one Frequence"
-- Connectivity: Phase Locking Value/ Coherence 
-- Statistics:
     
-We will also be working on a standalone version of this app that could easily be shared.
+The next objectives are to:
+    (1) Work on a standalone version of this app that could easily be shared. Using this app will only require the MATLAB Runtime (no need for a MatLab License).
+    
+    (2) Develop new features such as adding Head Model and the Noise and Data Covariance Matrices.
