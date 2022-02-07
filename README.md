@@ -97,7 +97,7 @@ Here is an example of a pipeline structure:
 ### 2.1 App Functions
 This class contains all the functions needed for the app to work (create files, update interface, etc.). 
 
-### 2.2 EEG Basic Functions
+### 2.2 EEG Functions
 This class contains all the process that can be applied on an EEG study. It is derived from the Common Basic Functions class.
 
 #### Processes available:
@@ -110,7 +110,7 @@ This class contains all the process that can be applied on an EEG study. It is d
 - _**Average Reference**_ Creates a linear projector that re-references the EEG.
 - _**ICA:**_ Identifies spatial topographies (components that areindependent in time) specific to an artifact and then removes them from the recordings.
 
-### 2.3 MEG Basic Functions
+### 2.3 MEG Functions
 This class contains all the process that can be applied on a MEG study. It is derived from the Common Basic Functions class.
 
 #### Processes available:
@@ -123,7 +123,7 @@ This class contains all the process that can be applied on a MEG study. It is de
 - _**SSP:**_ The general SSP objective is to identify the sensor topographies that are typical of a specific artifact, then to create spatial projectors to remove the contributions of these topographies from the recordings.
 - _**ICA:**_ Identifies spatial topographies (components that are independent in time) specific to an artifact and then removes them from the recordings.
 
-### 2.4 Common Basic Functions
+### 2.4 Basic Functions
 This class contains all the process needed to run the basic operations that do not affect the data (import anatomy, review raw files, etc.).
 
 #### Processes available:
@@ -131,6 +131,8 @@ This class contains all the process needed to run the basic operations that do n
 - _**Review Raw Files:**_ Creates a link to the original EEG files.
 - _**Convert to BIDS:**_ Export EEG and MEG files following the standard data organization of the Brain Imaging Data Structure (BIDS). The data files will previously be converted to .edf.
 - _**Import in database:**_ Extracts events from processed files and import them in the database.
+- _**Reject Bad Trials:**_ Reject Trials based on threshold values.
+- _**Average:**_ Compute average by subject, by file group or by folder.
 
 #### Conversion to BIDS
 Before the conversion to BIDS, the data files are converted to .edf. When converting to BIDS, a function is run to create 4 files:
