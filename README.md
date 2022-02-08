@@ -165,7 +165,4 @@ BIDS
 
 ## Future Directions
     
-The next objectives are to:
-    (1) Work on a standalone version of this app that could easily be shared. Using this app will only require the MATLAB Runtime (no need for a MatLab License).
-    
-    (2) Develop new features such as adding Head Model and the Noise and Data Covariance Matrices.
+The next objectives are to work on a standalone version of this app that could easily be shared. Using this app will only require the MATLAB Runtime (no need for a MatLab License). We will then develop new features such as adding Head Model and the Noise and Data Covariance Matrices.
