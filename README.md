@@ -13,10 +13,16 @@ The tool is written in MatLab (version R2021a) and is based heavily on the [Brai
 
 ## 1. Applications
 ### 1.1 Analysis Tool
-<p float="left">
+
+![image](https://github.com/CorentinLabelle/EEG-MEG-Analysis-Tool/blob/main/EEG_Image.PNG)
+![image](https://github.com/CorentinLabelle/EEG-MEG-Analysis-Tool/blob/main/MEG_Image.PNG)
+
+<!---
+<p float="left">  
     <img src="https://user-images.githubusercontent.com/88212708/141159087-339d6ff9-8404-4e87-ad3d-972087b1b93b.PNG" width="475"/>
     <img src="https://user-images.githubusercontent.com/88212708/141159544-cc9ad06c-11aa-47fa-97d8-49318bfa2910.PNG" width="475"/>
 </p>
+--->
 
 The **Analysis Tool** is the main application. It allows users to perform MEG or EEG analysis. A user can
 (1) create or delete protocols, subjects and studies;
@@ -91,7 +97,7 @@ Here is an example of a pipeline structure:
 ### 2.1 App Functions
 This class contains all the functions needed for the app to work (create files, update interface, etc.). 
 
-### 2.2 EEG Basic Functions
+### 2.2 EEG Functions
 This class contains all the process that can be applied on an EEG study. It is derived from the Common Basic Functions class.
 
 #### Processes available:
@@ -104,7 +110,7 @@ This class contains all the process that can be applied on an EEG study. It is d
 - _**Average Reference**_ Creates a linear projector that re-references the EEG.
 - _**ICA:**_ Identifies spatial topographies (components that areindependent in time) specific to an artifact and then removes them from the recordings.
 
-### 2.3 MEG Basic Functions
+### 2.3 MEG Functions
 This class contains all the process that can be applied on a MEG study. It is derived from the Common Basic Functions class.
 
 #### Processes available:
@@ -117,7 +123,7 @@ This class contains all the process that can be applied on a MEG study. It is de
 - _**SSP:**_ The general SSP objective is to identify the sensor topographies that are typical of a specific artifact, then to create spatial projectors to remove the contributions of these topographies from the recordings.
 - _**ICA:**_ Identifies spatial topographies (components that are independent in time) specific to an artifact and then removes them from the recordings.
 
-### 2.4 Common Basic Functions
+### 2.4 Basic Functions
 This class contains all the process needed to run the basic operations that do not affect the data (import anatomy, review raw files, etc.).
 
 #### Processes available:
@@ -125,6 +131,8 @@ This class contains all the process needed to run the basic operations that do n
 - _**Review Raw Files:**_ Creates a link to the original EEG files.
 - _**Convert to BIDS:**_ Export EEG and MEG files following the standard data organization of the Brain Imaging Data Structure (BIDS). The data files will previously be converted to .edf.
 - _**Import in database:**_ Extracts events from processed files and import them in the database.
+- _**Reject Bad Trials:**_ Reject Trials based on threshold values.
+- _**Average:**_ Compute average by subject, by file group or by folder.
 
 #### Conversion to BIDS
 Before the conversion to BIDS, the data files are converted to .edf. When converting to BIDS, a function is run to create 4 files:
@@ -156,13 +164,5 @@ BIDS
 ```
 
 ## Future Directions
-The next objectives will be to add the processing steps for EGG and MEG data. The processing steps include:
-- Import Events: Epoching for every Event occurrence (Time Window, Baseline)
-- Reject Bad Trials: Remove trials with anecdotic Artifacts
-- Evoked Response: Averaging by Condition or by Subject
-- Time/Frequency: Time Frequency Decomposition / Morlet's Wavelength / Multitaper
-- Hilbert: "Zooming on one Frequence"
-- Connectivity: Phase Locking Value/ Coherence 
-- Statistics:
     
-We will also be working on a standalone version of this app that could easily be shared.
+The next objectives are to work on a standalone version of this app that could easily be shared. Using this app will only require the MATLAB Runtime (no need for a MatLab License). We will then develop new features such as adding Head Model and the Noise and Data Covariance Matrices.
