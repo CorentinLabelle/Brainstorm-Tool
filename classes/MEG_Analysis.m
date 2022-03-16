@@ -1,10 +1,10 @@
-classdef MegBstFunctions < BasicBstFunctions
+classdef MEG_Analysis < Basic_Analysis
     properties
         sensorType = 'MEG';
     end
     
     methods
-        function obj = MegBstFunctions()
+        function obj = MEG_Analysis()
         end
         
         function sFiles = convertEpochsToContinue(~, sFiles)

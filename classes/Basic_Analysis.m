@@ -1,7 +1,15 @@
-classdef BasicBstFunctions
+classdef Basic_Analysis
+    
+    properties
+        
+        Util Utility;
+        
+    end
     
     methods (Access = public)
-        function obj = BasicBstFunctions()
+        
+        function obj = Basic_Analysis()
+            obj.Util = Utility();
         end
         
         function createProtocol(~, ProtocolName)
@@ -36,15 +44,25 @@ classdef BasicBstFunctions
          
         function sFiles = notchFilter(~, sFiles, sensorType, frequence)
             
+            % Get date from original file
+            %date = obj.Util.getDateFromBrainstormStudyMAT(sFiles);
+            
             sFiles = bst_process('CallProcess', 'process_notch', sFiles, [], ...
                     'sensortypes', sensorType, ...
                     'freqlist',    frequence, ...
                     'cutoffW',     1, ...
                     'useold',      0, ...
-                    'read_all',    0); 
+                    'read_all',    0);
+            
+            % Modify date in Brainstormstudy.mat of new file
+            %obj.Util.modifyBrainstormStudyMATDate(sFiles, date); 
         end
         
         function sFiles = bandPassFilter(~, sFiles, sensorType, frequence)
+            
+            % Get date from original file
+            %date = obj.Util.getDateFromBrainstormStudyMAT(sFiles);
+            
             sFiles = bst_process('CallProcess', 'process_bandpass', sFiles, [], ...
                 'sensortypes', sensorType, ...
                 'highpass',    frequence(1), ...
@@ -54,9 +72,12 @@ classdef BasicBstFunctions
                 'ver',         '2019', ...  % 2019
                 'mirror',      0, ...
                 'read_all',    0);
+            
+            % Modify date in Brainstormstudy.mat of new file
+            %obj.Util.modifyBrainstormStudyMATDate(sFiles, date); 
         end
         
-        function powerSpectrumDensity(~, sFiles, sensorType, windowLength)
+        function sFiles = powerSpectrumDensity(~, sFiles, sensorType, windowLength)
             bst_process('CallProcess', 'process_psd', sFiles, [], ...
                 'timewindow',  [], ...
                 'win_length',  windowLength, ...
@@ -73,7 +94,7 @@ classdef BasicBstFunctions
                 'SaveKernel', 0));
         end
         
-        function detectCardiacArtifact(~, sFiles, channelName, eventName)
+        function sFiles = detectCardiacArtifact(~, sFiles, channelName, eventName)
                         
             bst_process('CallProcess', 'process_evt_detect_ecg', sFiles, [], ...
                         'channelname', channelName, ...
@@ -81,7 +102,7 @@ classdef BasicBstFunctions
                         'eventname',   eventName);                                
         end
         
-        function detectBlinkArtifact(~, sFiles, channelName, eventName)
+        function sFiles = detectBlinkArtifact(~, sFiles, channelName, eventName)
             
             bst_process('CallProcess', 'process_evt_detect_eog', sFiles, [], ...
                         'channelname', channelName, ...
@@ -89,7 +110,7 @@ classdef BasicBstFunctions
                         'eventname',   eventName);
         end
         
-        function detectOtherArtifact(~, sFiles, sensorType, LowFreq, HighFreq)
+        function sFiles = detectOtherArtifact(~, sFiles, sensorType, LowFreq, HighFreq)
             
             bst_process('CallProcess', 'process_evt_detect_badsegment', sFiles, [], ...
                         'timewindow',  [], ...
@@ -100,38 +121,38 @@ classdef BasicBstFunctions
 
         end
         
-        function importEventFromFile(~, sFiles, filePath, eventName)
+        function sFiles = importEventFromFile(~, sFiles, filePath, eventName)
             bst_process('CallProcess', 'process_evt_import', sFiles, [], ...
                 'evtfile', {filePath, 'ARRAY-TIMES'}, ...
                 'evtname', eventName);
         end
                 
-        function renameEvent(~, sFiles, oldName, newName)
+        function sFiles = renameEvent(~, sFiles, oldName, newName)
             bst_process('CallProcess', 'process_evt_rename', sFiles, [], ...
                 'src',  oldName, ...
                 'dest', newName);
         end
         
-        function deleteEvent(~, sFiles, eventName)
+        function sFiles = deleteEvent(~, sFiles, eventName)
             bst_process('CallProcess', 'process_evt_delete', sFiles, [], ...
                     'eventname', eventName);
         end
         
         function sFiles = ica(obj, sFiles, nbComponents, sensorType)
 
-                bst_process('CallProcess', 'process_ica', sFiles, [], ...
-                    'timewindow', [], ...
-                    'eventname', '', ...
-                    'eventtime', [0, 0], ...
-                    'bandpass', [0, 0], ...
-                    'nicacomp', nbComponents, ... % modifi ici!
-                    'sensortypes', sensorType, ...
-                    'icasort',      '', ...
-                    'usessp', 1, ...
-                    'ignorebad', 1, ...
-                    'saveerp', 0, ...
-                    'method', 1, ...
-                    'select', []);
+            bst_process('CallProcess', 'process_ica', sFiles, [], ...
+                'timewindow', [], ...
+                'eventname', '', ...
+                'eventtime', [0, 0], ...
+                'bandpass', [0, 0], ...
+                'nicacomp', nbComponents, ... % modifi ici!
+                'sensortypes', sensorType, ...
+                'icasort',      '', ...
+                'usessp', 1, ...
+                'ignorebad', 1, ...
+                'saveerp', 0, ...
+                'method', 1, ...
+                'select', []);
 
             viewComponents(obj, sFiles);
         end
@@ -146,6 +167,7 @@ classdef BasicBstFunctions
         end
         
         function convertToBids(~, sFile, BIDSpath)
+            
             bst_process('CallProcess', 'process_export_bids', sFile, [], ...
                      'bidsdir',       {BIDSpath, 'BIDS'}, ...
                      'subscheme',     2, ...  % Number index
@@ -164,18 +186,7 @@ classdef BasicBstFunctions
                      'JsonDataset', ['{' 10 '  "License": "PD"' 10 '}'], ...
                      'JsonMeg',     ['{' 10 '  "TaskDescription": "My task"' 10 '}']));
         end
-        
-        function sFiles = selectFiles(~, subjectName, condition)
-
-                sFiles = bst_process('CallProcess', 'process_select_files_data', [], [], ...
-                    'subjectname',   subjectName, ...
-                    'condition',     condition, ...
-                    'tag',           '', ...    Select file that include the tag
-                    'includebad',    0, ...     1/0
-                    'includeintra',  0, ...     1/0
-                    'includecommon', 0);        %1/0
-        end
-        
+       
         function sFiles = importEvents(~, sFile, subjectName, event, epochTime)
 
             sFiles = bst_process('CallProcess', 'process_import_data_event', sFile, [], ...
@@ -192,34 +203,7 @@ classdef BasicBstFunctions
              'baseline',    []); 
         end
         
-        function sFiles = rejectBadTrials(~, sFiles, MEGgrad, MEGmagneto, EEG, SEEG_ECOG, EOG, ECG)
-            megGrad = [];
-            megMagneto = [];
-            eeg = [];
-            seeg_ecog = [];
-            eog = [];
-            ecg = [];
-
-            if (MEGgrad)
-                megGrad = process.RejectTrial.MEGgrad;
-
-            elseif (MEGmagneto)
-                megMagneto = process.RejectTrial.MEGmagneto;
-
-            elseif (EEG)
-                eeg = process.RejectTrial.EEG;
-
-            elseif (SEEG_ECOG)
-                seeg_ecog = process.RejectTrial.SEEG_ECOG;
-
-            elseif (EOG)
-                eog = process.RejectTrial.EOG;
-
-            elseif (ECG)
-                ecg = process.RejectTrial.ECG;
-
-            end
-
+        function sFiles = rejectBadTrials(~, sFiles, megGrad, megMagneto, eeg, seeg_ecog, eog, ecg)
 
             sFiles = bst_process('CallProcess', 'process_detectbad', sFiles, [], ...
                 'timewindow', [], ...
@@ -263,6 +247,7 @@ classdef BasicBstFunctions
                                  'SnrFixed',       3, ...
                                  'FunctionName',   []));
         end
+        
     end
 end
 
