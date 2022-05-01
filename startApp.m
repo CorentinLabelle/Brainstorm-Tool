@@ -1,6 +1,5 @@
 function [manager, builder] = startApp(app, pipeline, type)
 
-    addpath('./Brainstorm_Corentin/brainstorm3');
     addpath('./documentation');
     addpath('./classes');
     addpath('./images');
@@ -22,5 +21,10 @@ function [manager, builder] = startApp(app, pipeline, type)
     if pipeline
         builder = Pipeline_Builder;
     end
+    
+    %rmpath('./documentation');
+    %rmpath('./classes');
+    %rmpath('./images');
+    %rmpath('./interface');
 
 end

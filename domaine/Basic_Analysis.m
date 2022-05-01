@@ -1,23 +1,15 @@
-classdef Basic_Analysis
+classdef Basic_Analysis < handle
     
     properties
         
-        Util Utility;
+        Util = Utility.instance();
         
     end
     
     methods (Access = public)
         
         function obj = Basic_Analysis()
-            obj.Util = Utility();
-        end
-        
-        function createProtocol(~, ProtocolName)
-            gui_brainstorm('CreateProtocol', ProtocolName, 0, 0);
-        end
-        
-        function deleteProtocol(~, ProtocolName)
-            gui_brainstorm('DeleteProtocol', ProtocolName);
+            
         end
         
         function importAnatomy(~, subjectName, anatomyPath, anatomyFileFormat)
@@ -166,9 +158,9 @@ classdef Basic_Analysis
             end
         end
         
-        function convertToBids(~, sFile, BIDSpath)
+        function exportToBids(~, sFiles, BIDSpath)
             
-            bst_process('CallProcess', 'process_export_bids', sFile, [], ...
+            bst_process('CallProcess', 'process_export_bids', sFiles, [], ...
                      'bidsdir',       {BIDSpath, 'BIDS'}, ...
                      'subscheme',     2, ...  % Number index
                      'sesscheme',     1, ...  % Acquisition date

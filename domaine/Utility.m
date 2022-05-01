@@ -1,4 +1,4 @@
-classdef Utility
+classdef Utility < handle
 
     properties
         
@@ -7,23 +7,25 @@ classdef Utility
     end
     
     methods (Access = public)
-         
-        function obj = Utility()
-            
-            obj.DataBase_Path = bst_get('BrainstormDbDir');
-            
-        end
 
-        function [event_path, meta_event_path, provenance_path, electrode_path, coord_path] ...
+        function createProtocol(~, ProtocolName)
+            gui_brainstorm('CreateProtocol', ProtocolName, 0, 0);
+        end
+        
+        function deleteProtocol(~, ProtocolName)
+            gui_brainstorm('DeleteProtocol', ProtocolName);
+        end
+        
+        function [event_path, meta_event_path, provenance_path, channel_path, electrode_path, coord_path] ...
                 = getBIDSpath(~, sFiles, BIDSpath, type)
             
             % Get date of study and convert (ex.: 01-FEB-2003 to 20030201)
             %date = obj.getDateFromBrainstormStudyMAT(sFiles);
-            %date = bst_get('Study', sFiles.iStudy).DateOfStudy;
-            %dateSplit = split(date, '-');
-            %dateContracted = strcat(dateSplit{3}, Utility.monthConversionStrNum(dateSplit{2}), dateSplit{1});
+            date = bst_get('Study', sFiles.iStudy).DateOfStudy;
+            dateSplit = split(date, '-');
+            dateContracted = strcat(dateSplit{3}, Utility.monthConversionStrNum(dateSplit{2}), dateSplit{1});
             
-            %ses_folder = strcat('ses-', dateContracted);
+            ses_folder = strcat('ses-', dateContracted);
             
             % Get the number of subject folder (/sub-000X/)
             contentOfBIDSFolder = dir(BIDSpath);
@@ -80,36 +82,36 @@ classdef Utility
             event_path = strcat(path, '_events.tsv');
             meta_event_path = strcat(path, '_events.json');
             provenance_path = strcat(path, '_provenance.json');
+            channel_path = strcat(path, '_channels.tsv');
             electrode_path = strcat(path, '_electrodes.tsv');
             coord_path = strcat(path, '_coordsystem.json');
             
         end
 
-        function edfFile = exportToEDF(obj, sFile, destination)
-            % Convert brut datas in EDF file format and saves it in BIDS
-            % folder
+        function edfFile = exportData(obj, sFile, folder, extension)
             
-            % Input>    sFile [cell]
-            %           destination [char]: path indicating where to save EDF file
+            assert(any(extension == ['.edf', '.eeg']));
             
-            % Pre-condition
-            assert(length(sFile) == 1, 'Length of sFiles is not equal to one!');
+            for i = 1:length(sFile)
+
+                % Build path to file
+                studyName = sFile(i).Condition;
+                
+                channelFile = obj.getChannelFilePath(sFile(i));
+
+                % Path and FileName
+                path = convertStringsToChars(...
+                    fullfile(folder, strcat(studyName, extension)));
+
+                % Export to EDF
+                [edfFile] = export_data(sFile(i).FileName, channelFile, path, []);
+
+                % Modify Date in EDF file (?)
+    %             date = obj.getDateFromBrainstormStudyMAT(sFile);
+    %             obj.modifyEDFDate(edfFile, date);
+    
+            end
             
-            % Build path to file
-            studyName = sFile.Condition;
-            
-            % RETIRER LE 'FULLFILE'
-            channelFile = fullfile(obj.getChannelFilePath(sFile));
-            
-            % EDF Path and FileName
-            destination = convertStringsToChars(fullfile(destination, strcat(studyName, '.edf')));
-            
-            % Export to EDF
-            [edfFile] = export_data(sFile.FileName, channelFile, destination, []);
-            
-            % Modify Date in EDF file
-%             date = obj.getDateFromBrainstormStudyMAT(sFile);
-%             obj.modifyEDFDate(edfFile, date);
         end
         
         function path = create_Event_File(obj, sFile, path)
@@ -154,6 +156,40 @@ classdef Utility
             movefile(txtPath, path);
         end
   
+        function path = create_Channel_File(obj, sFile, path)
+            
+            % Load Channel File
+            channelFilePath = sFile.ChannelFile;
+            channelFile = load(fullfile(obj.DataBase_Path, bst_get('ProtocolInfo').Comment, 'data', channelFilePath));
+            
+            % Initialiaze tsvElectrodeFile variable with titles
+            tsvChannelFile = strings([1,3]);
+            count = 1;
+            tsvChannelFile(count,:) = ["name" "type" "units"];
+            count = count + 1;
+                
+            % Loop through every channel
+            allChannels = channelFile.Channel;
+            for i = 1:length(allChannels)
+                tsvChannelFile(count,:) = [allChannels(i).Name, allChannels(i).Type, "uV"];
+                count = count + 1;
+            end
+                  
+            % Get extension
+            [folder, file, ext] = fileparts(path);
+            
+            if strcmp(ext, '.tsv')
+                txtPath = fullfile(folder, strcat(file, '.txt'));
+            end
+            
+            % Write file to .txt file
+            writematrix(tsvChannelFile, txtPath, 'Delimiter', 'tab');
+            
+            % Change extension (.txt to .tsv)
+            movefile(txtPath, path);
+            
+        end
+        
         function path = create_Electrode_File(obj, sFile, path)
             
             % Load Channel File
@@ -686,9 +722,30 @@ classdef Utility
         end
     
 
-     end
+    end
+    
+    methods (Access = private)
+        
+        function obj = Utility()
+            
+            obj.DataBase_Path = bst_get('BrainstormDbDir');
+            
+        end
+        
+    end
     
     methods(Static)
+        
+        function obj = instance()
+           
+            persistent uniqueInstance;
+            if isempty(uniqueInstance)
+                obj = Utility();
+                uniqueInstance = obj;
+            else
+                obj = uniqueInstance;
+            end
+        end
         
         function str = formatDateToString(date)
             % Convert YYYY-MM-DD-HH-MM-SS to YYYY-MM-DD-HHh-MMm-SSs
@@ -871,5 +928,6 @@ classdef Utility
         end
         
     end
+    
 end
     

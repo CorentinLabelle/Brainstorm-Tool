@@ -3,13 +3,13 @@ classdef (Abstract) Process < handle & matlab.mixin.Heterogeneous & matlab.mixin
     % Class: Process
     %
     % Process Properties:
-    %   Name - Name of the process                
-    %   fName - Name of the function
-    %   Date - Date of creation
-    %   Parameters - Structure with parameters
-    %   Documentation - Documentation about the process
-    %   sProcess - Structure with information about the function
-    %   History - History
+    %   Name - Name of the process.        
+    %   fName - Name of the function.
+    %   Date - Date of creation.
+    %   Parameters - Structure with parameters.
+    %   Documentation - Documentation about the process.
+    %   sProcess - Structure with information about the function.
+    %   History - History.
     %
     % Process Methods:
     %   Process - Constructor.
@@ -17,7 +17,7 @@ classdef (Abstract) Process < handle & matlab.mixin.Heterogeneous & matlab.mixin
     %   print - Displays the process.
     %   printDocumentation - Displays Documentation
     %   webDocumentation - Open web page with Brainstorm documentation.
-    %   printParameters [Protected] - Format parameters to characters.
+    %   printParametersWithValuesWithValues [Protected] - Format parameters to characters.
     %   addProcessToHistory [Protected] - Adds a new entry to history.
     
     properties (Access = public)
@@ -35,7 +35,7 @@ classdef (Abstract) Process < handle & matlab.mixin.Heterogeneous & matlab.mixin
     properties (Access = protected)
         
         IsGeneral logical;
-        Util = Utility();
+        Util = Utility.instance();
         GeneralProcesses = [...
             "Review Raw Files", ...
             "Notch Filter", ...
@@ -46,49 +46,50 @@ classdef (Abstract) Process < handle & matlab.mixin.Heterogeneous & matlab.mixin
         
     end
     
-    properties (Abstract, Access = public)
-        
-        Type char; % Type of Process (EEG/MEG).
-        
-    end
-    
     properties (Abstract, Access = protected)
         
         Analyzer;
         SpecificProcesses;
+        Type char; % Type of Process (EEG/MEG).
         
     end
     
     methods (Access = public)
                 
-        function obj = Process(nameOrStructure, outervarargin)
-            % Constructor (0, 1 or 2 args).
-            % param[in]: name (keyword) [char]
-            %            parameter [struct] - Optionnal
-            % param[out]: Object created [EEG_Process]
-            
-            assert(nargin > 0, ['You need at least one argument to create ' ...
-                                'a Process (the name or a structure)']);
+        function obj = Process(nameOrStructure, parameterStructure)
             
             obj.Date = Utility.get_Time_Now();
             
-            if isa(nameOrStructure, 'struct')
-                obj = obj.decomposeStructure(nameOrStructure);
-                return
+            if isempty(parameterStructure)
+                
+                if isstruct(nameOrStructure)
+                    obj.constructorWithStructure(nameOrStructure);
+                    return
+                
+                elseif ischar(nameOrStructure)
+                    obj.constructorWithName(nameOrStructure);
+                    return
+                end
+                
+            else
+                
+                if ischar(nameOrStructure) && isstruct(parameterStructure)
+                    obj.constructorWithName(nameOrStructure);
+                    obj.addParameterStructure(parameterStructure);
+                    return
+                end
             end
             
-            obj.Name = strtrim(nameOrStructure);
-            obj.initialization();
-            
-            if ~isempty(outervarargin)
-                obj.Parameters = obj.verifyParameters(outervarargin{1});
-            end
+            error('No constructor available for this input');
         end
         
         function addParameter(obj, field, parameter)
-           % Adds the field 'field' and the value 'parameter' to the parameter structure.
+           % obj.addParameter(field, parameter)
+           % Adds the field 'field' and the corresponding value 'parameter' to the parameter structure of the process 'obj'.
+           %
            % PRECONDITION:  The field must be of type characters.
            %                The field must be a keyword.
+           %
            % param[in]: field [char]
            %            parameter [~]
            
@@ -100,17 +101,20 @@ classdef (Abstract) Process < handle & matlab.mixin.Heterogeneous & matlab.mixin
                parameter
            end
            
-           assert(all(cellfun(@(x) isfield(obj.Parameters, x),field)), ...
+           % Assert the field is valid
+           assert(all(cellfun(@(x) isfield(obj.Parameters, x), field)), ...
                ['Wrong field name.' newline ...
                 'Here are the possible field names:' newline newline ...
                 obj.printParameterFields()]);
            
+           % Assert the parameter class is valid
            assert(all(cellfun(@(x, y) isa(x, class(obj.Parameters.(y))), parameter, field)), ...
                ['Wrong value class.' newline ...
                 'Here are the possible value class for each field:' newline newline ...
                 obj.printParameterFields()]);
            
            
+            % Add field-parameter entry as key-value in the parameter structure.
             for i = 1:length(field)
 
                 obj.Parameters.(field{i}) = parameter{i};
@@ -118,15 +122,28 @@ classdef (Abstract) Process < handle & matlab.mixin.Heterogeneous & matlab.mixin
             end
            
         end
+       
+        function addParameterStructure(obj, parameterStructure)
+            
+            if obj.verifyParameterStructure(parameterStructure)
+                
+                obj.Parameters = parameterStructure;
+            
+            end
+            
+        end
         
         function addDocumentation(obj, documentation)
-            % Modify the documentation.
+            % obj.addDocumentation(documentation)
+            % Add documentation to the process 'obj'.
+            %
             % PRECONDITION: The documentation must be of type characters.
+            %
             % param[in]: documentation [char]
             
             arguments
                 obj Process
-                documentation string % string because it converts double
+                documentation char
             end
             
             obj.Documentation = documentation;
@@ -135,10 +152,11 @@ classdef (Abstract) Process < handle & matlab.mixin.Heterogeneous & matlab.mixin
         
         function ch = print(obj)
             % Displays the process.
+            
             % param[out]: Process formated [char]
             
-            ch = [convertStringsToChars(obj.Name) sprintf('\n\t\t') char(strjoin(obj.printParameters(), '\n\t\t'))];
-
+            ch =    [convertStringsToChars(obj.Name) sprintf('\n\t\t') ...
+                    char(strjoin(obj.printParametersWithValues(), '\n\t\t'))];
         end
         
         function ch = printDocumentation(obj)
@@ -163,13 +181,15 @@ classdef (Abstract) Process < handle & matlab.mixin.Heterogeneous & matlab.mixin
                 sFilesIn struct = [];
             end
             
+           sFilesOut = struct.empty();
+            
            switch obj.fName
                
                case 'process_import_data_raw'
                         for i = 1:length(obj.Parameters.Subjects)
-                            sFilesOut = obj.Analyzer.reviewRawFiles(...
+                            sFilesOut{i} = obj.Analyzer.reviewRawFiles(...
                                 obj.Parameters.Subjects{i}, ...
-                                obj.Parameters.RawFiles{i}, ...
+                                obj.Parameters.RawFiles(:, i), ...
                                 obj.Parameters.Extensions{i});
                         end
                         
@@ -188,7 +208,8 @@ classdef (Abstract) Process < handle & matlab.mixin.Heterogeneous & matlab.mixin
                 case 'process_export_bids'
                     sFilesOut = obj.Analyzer.convertToBids(sFilesIn, obj.Parameters.Folder, ...
                         obj.Parameters.DataFileFormat);   
-           end   
+           end
+           
         end
         
         function isEqual = eq(obj, process)
@@ -220,46 +241,28 @@ classdef (Abstract) Process < handle & matlab.mixin.Heterogeneous & matlab.mixin
             
         end
         
-        function deleteSProcess(obj)
-            
-            %obj.Processes(i).sProcess.Function = char(obj.Processes(i).sProcess.Function);
-            %obj.Processes(i).sProcess.FileTag = char(obj.Processes(i).sProcess.FileTag);
-            obj.sProcess = [];
-            
-        end
-        
-        function quickImport(obj, folderToImport)
+        function quickImport(obj, folderToImport, extension)
             
             arguments
                 obj Process
                 folderToImport char = [];
+                extension char = '.eeg';
             end
             
             % Pre-condition
-            % Make sure the process is Review Raw Files
+            % Assert process is Review Raw Files
             assert(strcmp(obj.fName, 'process_import_data_raw'));
+            
+            % Assert folder to import is not empty
+            assert(isfolder(folderToImport), 'The folder does not exist!')
             
             waitfor(msgbox(['The folder should be organized like this: ' ...
                newline 'the extension is by default .eeg (to change)']));
-
-            
-            % initialize variables
-            subjects = {};
-            rawFiles = {};
-            extension = {};
-            
-            % Get folder
-            % If folder empty (default value)
-            if isempty(folderToImport)
-                folderToImport = uigetdir(pwd);
-                if isequal(folderToImport, 0)
-                    return
-                end
-            end
             
             % Extract files
             contentOfFolder = dir(folderToImport);
             
+            index = 0;
             for i = 1:length(contentOfFolder)
 
                 folder = contentOfFolder(i).name;
@@ -268,34 +271,48 @@ classdef (Abstract) Process < handle & matlab.mixin.Heterogeneous & matlab.mixin
                 if strcmp(folder, '.') || strcmp(folder, '..')
                    continue 
                 end
-
-                % Get all files from folder
-                rf = dir(fullfile(contentOfFolder(i).folder, contentOfFolder(i).name));
-                rfselect = {};
-                for j = 1:length(rf)
-                    
-                    % If eeg file
-                    [~, ~, ext] = fileparts(rf(j).name);
-                    if strcmp(ext, '.eeg')
-                        rfselect = [rfselect {fullfile(rf(j).folder, rf(j).name)}];
-                    end
-                end
-
-                % Add cells to variables
-                rawFiles = [rawFiles {rfselect}];
-                subjects = [subjects folder];
-                extension = [extension {'.eeg'}];
+                
+                index = index + 1;
+                file = dir(fullfile(contentOfFolder(i).folder, contentOfFolder(i).name, strcat('*', extension)));
+                obj.Parameters.RawFiles(1:length(file), index) = string(fullfile({file.folder}, {file.name})');
+                obj.Parameters.Subjects(index) = folder;
+                obj.Parameters.Extensions(index) = extension;
             end
+        end
+        
+        function deleteSProcess(obj)
             
-            % Update Process Parameters
-            obj.Parameters.RawFiles = rawFiles;
-            obj.Parameters.Subjects = subjects;
-            obj.Parameters.Extensions = extension;
+            obj.sProcess = [];
             
         end
+        
     end
     
     methods (Access = protected)
+        
+        function constructorWithStructure(obj, structure)
+            
+            obj.Name = structure.Name;
+            obj.initialization();
+
+            correctFields = intersect(properties(obj), fieldnames(structure));
+            
+            for i = 1:length(correctFields)
+                
+                obj.(correctFields{i}) = structure.(correctFields{i});
+                
+            end
+            
+            obj.switchColumnParameterToVector();
+                
+        end
+        
+        function constructorWithName(obj, nameOrStructure)
+            
+            obj.Name = strtrim(nameOrStructure);
+            obj.initialization();
+            
+        end
         
         function initialization(obj)
             
@@ -306,9 +323,9 @@ classdef (Abstract) Process < handle & matlab.mixin.Heterogeneous & matlab.mixin
 
                 case obj.GeneralProcesses(1)
                     obj.fName = 'process_import_data_raw'; 
-                    obj.Parameters.Subjects = cell.empty();
-                    obj.Parameters.RawFiles = cell.empty();
-                    obj.Parameters.Extensions = cell.empty();
+                    obj.Parameters.Subjects = string.empty();
+                    obj.Parameters.RawFiles = string.empty();
+                    obj.Parameters.Extensions = string.empty();
                 
                 case obj.GeneralProcesses(2)
                     obj.fName = 'process_notch';
@@ -336,12 +353,72 @@ classdef (Abstract) Process < handle & matlab.mixin.Heterogeneous & matlab.mixin
             end
         end
         
-        function strParameters = printParameters(obj)
+        function addToHistory(obj)
+            % Adds an entry to the history of the process everytime the
+            % process is ran. The entry has the name of the process and the
+            % date/time.
+
+            row = size(obj.History, 1);
+            obj.History{row+1, 1} = obj.Name;
+            obj.History{row+1, 2} = Utility.get_Time_Now();
+            
+        end
+              
+        function isValid = verifyParameterStructure(obj, parameters)
+
+            fieldsIn = fieldnames(parameters);
+
+            incorrectFields = setxor(fieldsIn, intersect(fieldsIn, fieldnames(obj.Parameters)));
+
+            assert(isempty(incorrectFields), ...
+                ['Error with field names! The following fieldnames are incorrect:'...
+                newline newline strjoin(incorrectFields, '\n') newline newline ...
+                'Here are the list of fields allowed:' newline newline obj.printParameterFields()]);
+
+            for i = 1:length(fieldsIn)
+                
+               assert(isa(parameters.(fieldsIn{i}), class(obj.Parameters.(fieldsIn{i}))), ...
+                   ['Wrong class!' 'The value for the field ' fieldsIn{i} ' must be a ' class(obj.Parameters.(fieldsIn{i})) '.' ...
+                   ' Right now, your value is of class ' class(parameters.(fieldsIn{i})) '.']);
+                
+            end
+            
+            isValid = true;
+            return
+            
+        end
+        
+        function switchColumnParameterToVector(obj)
+            
+           fields = fieldnames(obj.Parameters);
+           
+           for i = 1:length(fields)
+              
+               param = obj.Parameters.(fields{i});
+               if iscolumn(param)
+                   obj.Parameters.(fields{i}) = param';
+               end
+               
+           end
+        end
+
+        function ch = printSupportedProcess(obj)
+            % Format the supported Processes to characters.
+            % param[out]: Supported Process formated [char]
+            
+            ch = [upper(obj.Type) ' PROCESSES:' ...
+                newline char(strjoin(obj.SpecificProcesses, '\n')) ...
+                newline newline ...
+                'GENERAL PROCESSES:' newline char(strjoin(obj.GeneralProcesses, '\n'))];
+            
+        end
+
+        function strParameters = printParametersWithValues(obj)
             % Format the parameters to characters.
             % param[out]: Parameters formated [char]            
             
             fields = fieldnames(obj.Parameters);
-            if isempty(fields) || any(strcmp(fields, 'ToRun'))
+            if isempty(fields)
                 strParameters = strings(1,1);
                 strParameters(1) =  'No Parameters';
                 return
@@ -355,8 +432,11 @@ classdef (Abstract) Process < handle & matlab.mixin.Heterogeneous & matlab.mixin
                     str_param = ['[' class(param) ']'];
                 elseif isstring(param)
                     str_param = convertStringsToChars(strjoin(param, ', '));
-                elseif iscell(param)
-                    str_param = obj.printCellContent(param);
+                elseif islogical(param)
+                    str_param = 'No';
+                    if (param)
+                        str_param = 'Yes';
+                    end
                 else
                     str_param = num2str(param);
                 end
@@ -384,77 +464,7 @@ classdef (Abstract) Process < handle & matlab.mixin.Heterogeneous & matlab.mixin
             % Join cell
             strParametersFields = strjoin(fieldsAndClass, '\n');
         end
-        
-        function addToHistory(obj)
-            % Adds an entry to the history of the process everytime the
-            % process is ran. The entry has the name of the process and the
-            % date/time.
 
-            row = size(obj.History, 1);
-            obj.History{row+1, 1} = obj.Name;
-            obj.History{row+1, 2} = Utility.get_Time_Now();
-            
-        end
-        
-        function parameters = verifyParameters(obj, parameters)
-
-            fieldsIn = fieldnames(parameters);
-
-            incorrectFields = setxor(fieldsIn, intersect(fieldsIn, fieldnames(obj.Parameters)));
-
-            assert(isempty(incorrectFields), ...
-                ['Error with field names! The following fieldnames are incorrect:'...
-                newline newline strjoin(incorrectFields, '\n') newline newline ...
-                'Here are the list of fields allowed:' newline newline obj.printParameterFields()]);
-
-            for i = 1:length(fieldsIn)
-                
-               assert(isa(parameters.(fieldsIn{i}), class(obj.Parameters.(fieldsIn{i}))), ...
-                   ['Wrong class!' 'The value for the field ' fieldsIn{i} ' must be a ' class(obj.Parameters.(fieldsIn{i})) '.' ...
-                   ' Right now, your value is of class ' class(parameters.(fieldsIn{i})) '.']);
-                
-            end
-            
-        end
-        
-        function ch = printSupportedProcess(obj)
-            % Format the supported Processes to characters.
-            % param[out]: Supported Process formated [char]
-            
-            ch = [upper(obj.Type) ' PROCESSES:' ...
-                newline char(strjoin(obj.SpecificProcesses, '\n')) ...
-                newline newline ...
-                'GENERAL PROCESSES:' newline char(strjoin(obj.GeneralProcesses, '\n'))];
-            
-        end
-        
-        function obj = decomposeStructure(obj, structure)
-            
-            correctFields = intersect(properties(obj), fieldnames(structure));
-            
-            for i = 1:length(correctFields)
-                
-                obj.(correctFields{i}) = structure.(correctFields{i});
-                
-            end
-            
-            obj.switchColumnParameterToVector();
-        end
-        
-        function switchColumnParameterToVector(obj)
-            
-           fields = fieldnames(obj.Parameters);
-           
-           for i = 1:length(fields)
-              
-               param = obj.Parameters.(fields{i});
-               if iscolumn(param)
-                   obj.Parameters.(fields{i}) = param';
-               end
-               
-           end
-        end
-        
         function ch = printCellContent(~, c)
             
             if isa(c{1}, 'char')
@@ -473,6 +483,7 @@ classdef (Abstract) Process < handle & matlab.mixin.Heterogeneous & matlab.mixin
             
             
         end
+             
     end
 
 end

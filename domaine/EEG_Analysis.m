@@ -1,17 +1,25 @@
 classdef EEG_Analysis < Basic_Analysis
     
-    properties (Access = public)
+    properties (Access = private)
         
         Sensor_Type = 'EEG';
         Extension_In_Supported = {'*.eeg'; '*.bin'};
         
     end
     
-    methods (Access = public)
+    methods (Access = private)
         
         function obj = EEG_Analysis()
         end
+        
+    end
+    
+    methods (Access = public)
 
+        function extensions = getExtensionSupported(obj)
+            extensions = obj.Extension_In_Supported;
+        end
+        
         function sFiles = addEegPosition(~, sFiles, fileType, cap, electrodeFile)
             
             switch fileType
@@ -107,11 +115,11 @@ classdef EEG_Analysis < Basic_Analysis
             sFiles = obj.reviewRawFiles@Basic_Analysis(subject_name, raw_files_path, file_format, 0);
 
 %             recording_Date = obj.Util.(funct)(raw_files_path);
-
+%
 %             if ischar(recording_Date)
 %                 recording_Date = {recording_Date};
 %             end
-
+%
 %             % Modify Date of new Study in brainstormstudy.mat
 %             obj.Util.modifyBrainstormStudyMATDate(sFiles, recording_Date);
             
@@ -123,10 +131,14 @@ classdef EEG_Analysis < Basic_Analysis
                 obj EEG_Analysis
                 sFiles struct {mustBeNonempty}
                 bidsFolder char {mustBeNonempty}
-                dataFileFormat char = 'BrainVision';
+                dataFileFormat char;
             end
             
-            %% Create folder
+            if isempty(dataFileFormat)
+               dataFileFormat = 'BrainVision';
+            end
+            
+            % Create folder
             nb_folder = 0;
             while isfolder(bidsFolder)
                 nb_folder = nb_folder + 1;
@@ -137,10 +149,10 @@ classdef EEG_Analysis < Basic_Analysis
             end
             mkdir(bidsFolder);
             
-            %% Get Event Description structure    
+            % Get Event Description structure    
             eventStructure = obj.Util.EventStructure();
             
-            %% Iterate through all studies
+            % Iterate through all studies
             for i = 1:length(sFiles)
                 
                 rawsFiles = obj.Util.getRawsFile(sFiles(i));
@@ -151,8 +163,7 @@ classdef EEG_Analysis < Basic_Analysis
                         
                     case 'EDF'
                         % Export study to EDF
-                        %edf_file = obj.Util.exportToEDF(rawsFiles, pwd);
-                        edf_file = '/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/Science_Advances_2022/@rawactives_electrodes_visual_stim_s1_07.edf';
+                        edf_file = obj.Util.exportData(rawsFiles, pwd);
                             
                         % Reimport EDF file in Brainstorm      
                         sFilesEDF = obj.reviewRawFiles(sFiles(i).SubjectName, ...
@@ -165,16 +176,14 @@ classdef EEG_Analysis < Basic_Analysis
                         bst_process('CallProcess', 'process_delete', sFilesEDF, [], ...
                         'target', 2); % 1: fichier 2: folder 3: subjects
 
-                        %delete(edf_file);
+                        delete(edf_file);
                         
                         rawsFiles = sFilesEDF;
                 end
-
-                
-                
         
                 % Get Path for TSV, JSON and PROVENANCE files.
-                [event_path, meta_event_path, provenance_path, electrode_path, coord_path] = ...
+                [event_path, meta_event_path, provenance_path, channel_path, electrode_path, ...
+                    coord_path] = ...
                     obj.Util.getBIDSpath(rawsFiles, bidsFolder, obj.Sensor_Type);
                 
                 % Create .tsv file (Events)
@@ -182,10 +191,13 @@ classdef EEG_Analysis < Basic_Analysis
         
                 % Create Json event description file
                 obj.Util.create_Event_MetaData_File(rawsFiles, meta_event_path, eventStructure);
-        
+                
                 % Create provenance file
-                obj.Util.create_Provenance_File(rawsFiles, provenance_path);
+                %obj.Util.create_Provenance_File(rawsFiles, provenance_path);
         
+                % Create channel file
+                obj.Util.create_Channel_File(rawsFiles, channel_path);
+                
                 % Create electrode file
                 obj.Util.create_Electrode_File(rawsFiles, electrode_path);
                 
@@ -194,6 +206,21 @@ classdef EEG_Analysis < Basic_Analysis
 
             end
             
+        end
+        
+    end
+    
+    methods(Static)
+        
+        function obj = instance()
+           
+            persistent uniqueInstance;
+            if isempty(uniqueInstance)
+                obj = EEG_Analysis();
+                uniqueInstance = obj;
+            else
+                obj = uniqueInstance;
+            end
         end
         
     end

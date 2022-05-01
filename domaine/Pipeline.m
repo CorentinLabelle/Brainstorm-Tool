@@ -30,14 +30,10 @@ classdef Pipeline < handle & matlab.mixin.Copyable
     
     properties (Access = protected)
 
-      Util = Utility();
+      Util = Utility.instance();
       SupportedFileFormat = {'.mat', '.json'};
       SupportedType = {'EEG', 'MEG'};
       
-    end
-    
-    properties (Dependent)
-        NumberOfProcess double % [Dependant] double
     end
     
     methods
@@ -45,13 +41,17 @@ classdef Pipeline < handle & matlab.mixin.Copyable
         function obj = Pipeline(input)
             
             arguments
-                input char = char.empty();
+                input = [];
             end
             
             % If no input
             if isempty(input)
                 obj.Date = Utility.get_Time_Now();
                 obj.addToHistory();
+                
+            % If input is structure
+            elseif isstruct(input)
+                obj = obj.decomposeStructure(input);
                 
             % If input is a file
             elseif isfile(input)
@@ -61,6 +61,7 @@ classdef Pipeline < handle & matlab.mixin.Copyable
             % Else, assign input as name 
             else
                 obj.asgFile(input);
+                
             end
             
         end
@@ -69,7 +70,7 @@ classdef Pipeline < handle & matlab.mixin.Copyable
            
             arguments
                 obj Pipeline
-                file char {mustBeNonempty} 
+                file char {mustBeNonempty}
             end
             
             % Assign folder name and extension
@@ -85,6 +86,8 @@ classdef Pipeline < handle & matlab.mixin.Copyable
                 obj.Folder = folder;
             end
             
+            % Add to history
+            obj.addToHistory(file);
             
         end
         
@@ -147,6 +150,7 @@ classdef Pipeline < handle & matlab.mixin.Copyable
                 process Process {mustBeNonempty}
                 pos double = length(obj.Processes) + 1;
             end
+            
             % Pre-condition
             % Verify type of process matches type of pipeline
             assert(isa(process, class(obj.Processes)), ['The Process you''re adding ' ...
@@ -154,7 +158,6 @@ classdef Pipeline < handle & matlab.mixin.Copyable
                         ' because the pipeline is of type ' obj.Type '.']);
 
             % Verify if process is not already in pipeline
-            
             for i = 1:length(obj.Processes)
                 
                 assert(process ~= obj.Processes(i), ...
@@ -196,7 +199,7 @@ classdef Pipeline < handle & matlab.mixin.Copyable
             obj.Processes([pos1, pos2]) = obj.Processes([pos2, pos1]);
             
             % Add to history
-            obj.addToHistory();
+            obj.addToHistory(pos1, pos2);
             
         end
         
@@ -396,90 +399,99 @@ classdef Pipeline < handle & matlab.mixin.Copyable
             end
         end
        
-        % GET AND SET METHODS
-        function set.Folder(obj, folder)
+        function obj = previous(obj)
            
-            arguments
-                obj Pipeline
-                folder char {mustBeNonempty}
-            end
-            
-            % Check if valid folder
-            assert(isfolder(folder), ...
-            ['The following path to a folder does not exist: ' newline newline folder]);
-            
-            % Assign folder to property
-            obj.Folder = folder;
+            obj = obj.History{end-1, 3};
             
         end
         
-        function set.Name(obj, name)
-            
-            arguments
-                obj Pipeline
-                name char {mustBeNonempty}
-            end
-            
-            obj.Name = name;
-            
-        end
-        
-        function set.Extension(obj, extension)
+        function deleteSProcess(obj)
+           % This function is only applied to a pipeline before it is saved to .json.
+           % Remove every sProcess of every Process of the pipeline.
+           % The function-handle cannot be saved to a .json.
            
-            arguments
-                obj Pipeline
-                extension char {mustBeNonempty}
-            end
-            
-            % Check if extension is supported
-            assert(any(strcmp(obj.SupportedFileFormat, extension)), ...
-                ['The extension of the pipeline is incorrect (' extension ').' ...
-                'Here are the supported extensions: ' newline newline ...
-                char(strjoin(string(obj.SupportedFileFormat), '\n'))]);
-            
-            % Assign extension
-            obj.Extension = extension;
-            
-        end
-        
-        function set.Type(obj, type)
-           
-            arguments
-                obj Pipeline
-                type char {mustBeNonempty}
-            end
-            
-            type = upper(type);
-            
-            assert(any(strcmp(type, obj.SupportedType)));
-            
-            if ~isempty(obj.Processes)
-                switch upper(type)
-                    case 'EEG'
-                        assert(isa(obj.Processes, 'EEG_Process'));
+           % Loop through all Processes
+            for i = 1:length(obj.Processes)
 
-                    case 'MEG'
-                        assert(isa(obj.Processes, 'MEG_Process'));
-                end
+                obj.Processes(i).deleteSProcess();
+
             end
-            
-            % Assign type to pipeline
-            obj.Type = upper(type);
-            
+
         end
         
-        function set.NumberOfProcess(~, n)
-            
-           assert(n >= 0);
-            
-        end
         
-        function numberOfProcess = get.NumberOfProcess(obj)
-            
-            numberOfProcess = length(obj.Processes);
-            
-        end
-        
+%         % GET AND SET METHODS
+%         function set.Folder(obj, folder)
+%            
+%             arguments
+%                 obj Pipeline
+%                 folder char {mustBeNonempty}
+%             end
+%             
+%             % Check if valid folder
+%             assert(isfolder(folder), ...
+%             ['The following path to a folder does not exist: ' newline newline folder]);
+%             
+%             % Assign folder to property
+%             obj.Folder = folder;
+%             
+%         end
+%         
+%         function set.Name(obj, name)
+%             
+%             arguments
+%                 obj Pipeline
+%                 name char {mustBeNonempty}
+%             end
+%             
+%             obj.Name = name;
+%             
+%         end
+%         
+%         function set.Extension(obj, extension)
+%            
+%             arguments
+%                 obj Pipeline
+%                 extension char {mustBeNonempty}
+%             end
+%             
+%             % Check if extension is supported
+%             assert(any(strcmp(obj.SupportedFileFormat, extension)), ...
+%                 ['The extension of the pipeline is incorrect (' extension ').' ...
+%                 'Here are the supported extensions: ' newline newline ...
+%                 char(strjoin(string(obj.SupportedFileFormat), '\n'))]);
+%             
+%             % Assign extension
+%             obj.Extension = extension;
+%             
+%         end
+%         
+%         function set.Type(obj, type)
+%            
+%             arguments
+%                 obj Pipeline
+%                 type char
+%             end
+%             
+%             type = upper(type);
+%             
+%             assert(any(strcmp(type, obj.SupportedType)));
+%             
+%             if ~isempty(obj.Processes)
+%                 switch upper(type)
+%                     case 'EEG'
+%                         assert(isa(obj.Processes, 'EEG_Process'));
+% 
+%                     case 'MEG'
+%                         assert(isa(obj.Processes, 'MEG_Process'));
+%                 end
+%             end
+%             
+%             % Assign type to pipeline
+%             obj.Type = upper(type);
+%             
+%         end
+%         
     end
 
     methods (Access = protected)
@@ -540,9 +552,9 @@ classdef Pipeline < handle & matlab.mixin.Copyable
                 
                 % When importing Json, the processes are structure (and not
                 % of class Process)
-                if strcmp(field, 'Processes') && isa(structure.(field), 'struct')
+                if strcmp(field, 'Processes') && ~isa(structure.(field), 'Process')
                     
-                    processes = structure.(field); % structure.Processes
+                    processes = structure.(field)'; % structure.Processes
                     
                     % Loop through processes
                     for j = 1:length(processes)
@@ -563,44 +575,46 @@ classdef Pipeline < handle & matlab.mixin.Copyable
         end
         
         function addToHistory(obj, varargin)
-            
-            % Get caller function
-            fctCallStack = dbstack;
-            [~, callerFct] = fctCallStack.name;
-            
-            % Add function name and date/time to history
-            row = size(obj.History, 1);
-            obj.History{row+1, 1} = callerFct;
-            obj.History{row+1, 2} = Utility.get_Time_Now();
-            
+                        
             % Deep copy of Pipeline
             objCopy = copy(obj);
             
-            % Keep only function name and date/time in history
-            if size(obj.History, 2) > 2
-                objCopy.History(:,3:end) = [];
-            end
+            % Get caller function
+            fctCallStack = dbstack;
+            %[~, callerFct] = fctCallStack.name;
             
-            % Delete all sProcess
+            % Add function name and date/time to history
+            row = size(obj.History, 1);
+            %obj.History{row+1, 1} = callerFct;
+            obj.History{row+1, 2} = Utility.get_Time_Now();
+            
+%             % Keep only function name and date/time in history
+%             if size(objCopy.History, 2) > 2
+%                 objCopy.History(:,3:end) = [];
+%             end
+
+            % Delete all sProcess from Pipeline's Processes (because of function handle)
             objCopy.deleteSProcess();
             
             % Add Copy of Current Pipeline to history
             obj.History{row+1, 3} = objCopy;
             
             % varargin represents the data to add in history for that log
+            cellToAdd = {};
             for i = 1:length(varargin)
                 
                 % If Process, deep copy, remove sProcess and add Name of
                 % process to log
-                if any(strcmp(superclasses(varargin{i}),'Process'))
+                if isa(varargin{i},'Process')
                     varargin{i} = copy(varargin{i});
                     varargin{i}.deleteSProcess();
-                    cellToAdd = [varargin(1:i-1) varargin{i}.Name varargin(i:end)];
+                    cellToAdd{end+1} = varargin{i}.Name;
+                    cellToAdd{end+1} = varargin{i};
                 else
-                    cellToAdd = varargin(i);
+                    cellToAdd{end+1} = varargin{i};
                 end
-                obj.History(row+1, 4:4+length(cellToAdd)-1) = cellToAdd;
             end
+            obj.History(row+1, 4:4+length(cellToAdd)-1) = cellToAdd;
             
         end
         
@@ -633,18 +647,18 @@ classdef Pipeline < handle & matlab.mixin.Copyable
             end
         end
         
-        function deleteSProcess(obj)
-           % This function is only applied to a pipeline before it is saved to .json.
-           % Remove every sProcess of every Process of the pipeline.
-           % The function-handle cannot be saved to a .json.
-           
-           % Loop through all Processes
-            for i = 1:length(obj.Processes)
-
-                obj.Processes(i).deleteSProcess();
-
+        function deletePipelinesAndProcessesFromHistory(obj)
+            
+            if size(obj.History, 1) > 0
+                
+                % Delete Proceses
+                obj.History(:, 5) = [];
+                
+                % Delete Pipelines
+                obj.History(:, 3) = [];
+                
             end
-
+            
         end
         
         function objCopy = copyElement(obj)
@@ -667,7 +681,7 @@ classdef Pipeline < handle & matlab.mixin.Copyable
                 return
             end
 
-            % Remove form history
+            % Remove from history
             obj.History(end-n+1:end, :) = [];
             
         end
@@ -688,13 +702,9 @@ classdef Pipeline < handle & matlab.mixin.Copyable
             % Delete sProcess of every Process (function handle
             % cannot be converted to json)
             objCopy.deleteSProcess();
-
-            % Remove Processes and older Pipelines form history
-            % (not useful for json file)
-            if size(objCopy.History, 2) > 4
-                objCopy.History(:, 5:end) = []; % Remove Processes
-            end
-            objCopy.History(:, 3) = []; % Remove Pipelines
+            
+            % Delete Pipelines and Processes from History
+            objCopy.deletePipelinesAndProcessesFromHistory();
 
             % Transpose history cell for a better fit to json file
             objCopy.History = objCopy.History';
@@ -707,4 +717,5 @@ classdef Pipeline < handle & matlab.mixin.Copyable
         end
         
     end
+    
 end

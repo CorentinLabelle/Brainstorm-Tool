@@ -1,27 +1,19 @@
 classdef MEG_Process < Process
 
-    properties (Access = public)
+    properties (Access = protected)
         
-        Analyzer = MEG_Analysis();
+        Analyzer = MEG_Analysis.instance();
         Type = 'MEG';
+        SpecificProcesses = [];
         
     end
     
     
     methods (Access = public)
         
-         function obj = MEG_Process(name, parameters)
-             
-            assert(1 > 0, 'You need at least the name to create a Process');
-            
-            obj.Date = Utility.get_Time_Now();
-            obj.Name = name;
-            %obj.initialization();
-            
-            if nargin == 2
-                obj.Parameters = parameters;
-            end
-         end
+        function obj = MEG_Process(nameOrStruct)
+            obj@Process(nameOrStruct);
+        end
         
         
         function sFiles = run_Process(obj, sFiles)

@@ -12,17 +12,12 @@ classdef EEG_Process < Process
     %   - Power Spectrum Density
     %   - Average Reference
     %   - ICA
-    %   - Export To BIDS    
-    
-    properties (Access = public)
-        
-        Type = 'EEG';
-        
-    end
+    %   - Export To BIDS  
     
     properties (Access = protected)
         
-        Analyzer = EEG_Analysis();
+        Type = 'EEG';
+        Analyzer = EEG_Analysis.instance();
         SpecificProcesses = [...
             "Add EEG Position", ...
             "Refine Registration", ...
@@ -32,8 +27,13 @@ classdef EEG_Process < Process
     
     methods (Access = public)
         
-        function obj = EEG_Process(name, varargin)
-            obj@Process(name, varargin);
+        function obj = EEG_Process(nameOrStruct, parameterStructure)
+            arguments
+                nameOrStruct
+                parameterStructure = [];
+            end
+            
+            obj@Process(nameOrStruct, parameterStructure);
         end
         
         function sFilesOut = run(obj, sFilesIn)
@@ -98,14 +98,17 @@ classdef EEG_Process < Process
                     case obj.SpecificProcesses(2)
                         obj.fName = 'process_headpoints_refine';
                         obj.Parameters.ToRun = logical.empty();
+                        obj.Parameters.ToRun = true;
 
                     case obj.SpecificProcesses(3)
                         obj.fName = 'process_channel_project';
                         obj.Parameters.ToRun = logical.empty();
+                        obj.Parameters.ToRun = true;
 
                     case obj.SpecificProcesses(4)
                         obj.fName = 'process_eegref';
                         obj.Parameters.ToRun = logical.empty();
+                        obj.Parameters.ToRun = true;
 
                     otherwise
                         error(['You entered an invalid process name (' obj.Name '). ' ...
@@ -117,7 +120,6 @@ classdef EEG_Process < Process
             end
             
             obj.sProcess = panel_process_select('GetProcess', obj.fName);
-            obj.Documentation = Documentation(obj.sProcess);
             
         end
         
