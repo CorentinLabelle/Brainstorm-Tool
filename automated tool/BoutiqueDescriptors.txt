@@ -1,0 +1,8 @@
+INPUT
+    Takes the path to a json or mat file.
+    The file should contain:
+        1. The information to create a pipeline (a list of processes is required)
+        2. The datasets of interest
+
+OUTPUT (to confirm)
+    Return a structure with informations about the modified datasets (filename, condition, subjects, etc.).
