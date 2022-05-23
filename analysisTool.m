@@ -1,7 +1,7 @@
 function [toolController, pipBuilderController] = analysisTool(tool, pipBuilder)
      
     % Path to tool and controller
-    paths = "/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/scripts/AnalysisTool/interface";
+    paths = "C:/Users/alab/Desktop/Corentin/AnalysisTool/interface";
     
     for i = 1:length(paths)
         addpath(genpath(paths(i)));

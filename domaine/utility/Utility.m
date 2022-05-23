@@ -24,6 +24,11 @@ classdef Utility < handle
         function str = formatDateToString(date)
             % Convert YYYY-MM-DD-HH-MM-SS to YYYY-MM-DD-HHh-MMm-SSs
             
+            if isempty(date)
+                str = char.empty();
+                return
+            end
+
             date = string(split(date, '-'))';
             
             assert(length(date) == 6);

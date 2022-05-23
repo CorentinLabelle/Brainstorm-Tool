@@ -3,7 +3,7 @@ classdef ControllerAnalysisTool < Controller
     properties
         
         % Paths
-        WorkingFolder = "/home/rg/Desktop";
+        WorkingFolder; % [char]
         BstDataBasePath; % [char]
                 
         % Folder Name
@@ -20,7 +20,13 @@ classdef ControllerAnalysisTool < Controller
         function obj = ControllerAnalysisTool()
             
             obj@Controller();
-            obj.startBrainstorm();
+
+            obj.setDefaultWorkingFolder();
+            
+            if ~isdeployed()
+                obj.startBrainstorm();
+            end
+            
             obj.BstUtil = BstUtility.instance();
             
         end
@@ -165,15 +171,15 @@ classdef ControllerAnalysisTool < Controller
             
         end
         
-        function sFilesOut = sspCardiac(obj, sFiles)
+        function sFilesOut = sspCardiac(obj, sFiles, eventName)
             
-            sFilesOut = obj.Analyzer.sspCardiac(sFiles, eventToRemove, eventToTarget);
+            sFilesOut = obj.Analyzer.sspCardiac(sFiles, eventName);
             
         end
         
-        function sFilesOut = sspBlink(obj, sFiles)
+        function sFilesOut = sspBlink(obj, sFiles, eventName)
            
-            sFilesOut = obj.Analyzer.sspBlink(sFiles, eventToRemove, eventToTarget);
+            sFilesOut = obj.Analyzer.sspBlink(sFiles, eventName);
             
         end
         
@@ -201,6 +207,19 @@ classdef ControllerAnalysisTool < Controller
             
         end
         
+        function setProtocol(obj, protocolIndex)
+
+            obj.BstUtil.setProtocol(protocolIndex);
+
+        end
+
+        function protocolIndex = getProtocolIndex(obj, protocolName)
+           
+            protocolIndex = obj.BstUtil.getProtocolIndex(protocolName);
+
+        end
+
+
         function deleteProtocol(obj, protocolName)
             
             obj.BstUtil.deleteProtocol(protocolName);
@@ -226,7 +245,7 @@ classdef ControllerAnalysisTool < Controller
         end
         
         function allProtocols = getAllProtocols(obj)
-           
+            
             allProtocols = obj.BstUtil.getAllProtocols();
             
         end
@@ -290,6 +309,19 @@ classdef ControllerAnalysisTool < Controller
                 mkdir(obj.getWorkingFolderPath);
             end
             
+        end
+
+        function setDefaultWorkingFolder(obj)
+
+            username = getenv('USERNAME');
+            if ispc
+                obj.WorkingFolder = fullfile("C:/Users/", username, "/Desktop");
+            elseif isunix
+                obj.WorkingFolder = fullfile("/home/", username);
+            elseif ismac
+                obj.WorkingFolder = fullfile("/Users/", username, "/Desktop");
+            end
+
         end
     end
 end

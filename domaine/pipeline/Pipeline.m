@@ -284,7 +284,7 @@ classdef Pipeline < handle & matlab.mixin.Copyable
                 char(strjoin(string(obj.getSupportedExtension), '\n'))]);
             
             % Add to history
-            obj.addToHistory(fullfile(obj.Folder, strcat(obj.Name, obj.Extension)));
+            obj.addToHistory(replace(fullfile(obj.Folder, strcat(obj.Name, obj.Extension)), '\', '/'));
             
             % Save pipeline
             switch obj.Extension
@@ -356,7 +356,7 @@ classdef Pipeline < handle & matlab.mixin.Copyable
             
             arguments
                 obj Pipeline;
-                sFilesIn struct = [];
+                sFilesIn = [];
             end
             
             % Loop through Processes
@@ -584,14 +584,11 @@ classdef Pipeline < handle & matlab.mixin.Copyable
                 if strcmp(field, 'Processes') && ~isa(structure.(field), 'Process')
                     
                     processes = structure.(field)'; % structure.Processes
-                    %if iscell(processes)
-                      %  processes = cell2mat(processes);
-                    %end
                     
                     % Loop through processes
                     for j = 1:length(processes)
                         % Create process with structure input
-                        obj.addProcess(EEG_Process(processes{j}));
+                        obj.addProcess(EEG_Process(processes(j)));
                         
                         % Remove the log that the method addProcess() will
                         % add

@@ -10,8 +10,12 @@ classdef BstUtility < handle
         
         function obj = BstUtility()
             
-            obj.DataBase_Path = bst_get('BrainstormDbDir');
-            
+            if ~isdeployed()
+                obj.DataBase_Path = bst_get('BrainstormDbDir');
+            else
+                obj.DataBase_Path = 'C:';
+            end
+
         end
         
     end
@@ -31,6 +35,20 @@ classdef BstUtility < handle
             gui_brainstorm('CreateProtocol', ProtocolName, 0, 0);
         end
         
+        function setProtocol(~, protocolIndex)
+
+            bst_set('iProtocol', protocolIndex);
+            gui_brainstorm('SetCurrentProtocol', protocolIndex);
+
+        end
+
+        function protocolIndex = getProtocolIndex(~, protocolName)
+
+            protocolIndex = bst_get('Protocol', protocolName);
+
+        end
+
+
         function deleteProtocol(~, ProtocolName)
             gui_brainstorm('DeleteProtocol', ProtocolName);
         end
@@ -547,7 +565,7 @@ classdef BstUtility < handle
 
             eventStructure = struct.empty();
             ans1 = questdlg(['Do you already have a file with your '...
-                            'event description ?']);
+                            'event description ?'], 'Export to BIDS');
 
             switch ans1
                 case 'Yes'
@@ -559,7 +577,7 @@ classdef BstUtility < handle
                     eventStructure = obj.getEventStructureFile(fullfile(folder, file));
                     
                 case 'No'
-                    ans2 = questdlg('Do you want to create it?');
+                    ans2 = questdlg('Do you want to create it?', 'Export to BIDS');
                     
                     switch ans2
                         case 'Yes'

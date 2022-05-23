@@ -132,7 +132,7 @@ classdef EEG_Analyzer < Analyzer
             % Iterate through all studies
             for i = 1:length(sFiles)
                 
-                assert(obj.BstUtil.checkIfsFileIsRaw(sFiles(i)));
+                assert(obj.BstUtil.checkIfsFileIsRaw(sFiles(i)), 'The study you are trying to export to BIDS is not raw!');
                 %rawsFiles = obj.Util.getRawsFile(sFiles(i));
 
                 % Convert study to BIDS

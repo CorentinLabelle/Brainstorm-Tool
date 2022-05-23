@@ -15,7 +15,7 @@ classdef (Abstract) Process < handle & matlab.mixin.Heterogeneous & matlab.mixin
     %   Process - Constructor.
     %   addParameter - Adds a new parameter to the process.
     %   print - Displays the process.
-    %   printDocumentation - Displays Documentation
+    %   printDocumentation - Displays Documentation.
     %   webDocumentation - Open web page with Brainstorm documentation.
     %   printParametersWithValuesWithValues [Protected] - Format parameters to characters.
     %   addProcessToHistory [Protected] - Adds a new entry to history.  
@@ -69,6 +69,13 @@ classdef (Abstract) Process < handle & matlab.mixin.Heterogeneous & matlab.mixin
                 elseif ischar(nameOrStructure)
                     obj.constructorWithName(nameOrStructure);
                     return
+
+                elseif iscell(nameOrStructure)
+                    assert(length(nameOrStructure) == 1, 'Cell should be of length 1.');
+                    assert(isstruct(nameOrStructure{1}, 'The element in the cell should be a stucture.'))
+                    obj.constructorWithStructure(nameOrStructure{1});
+                    return
+                    
                 end
                 
             else
@@ -178,7 +185,7 @@ classdef (Abstract) Process < handle & matlab.mixin.Heterogeneous & matlab.mixin
 
             arguments
                 obj Process
-                sFilesIn struct = [];
+                sFilesIn = [];
             end
             
            sFilesOut = struct.empty();
@@ -205,8 +212,7 @@ classdef (Abstract) Process < handle & matlab.mixin.Heterogeneous & matlab.mixin
                     sFilesOut = obj.Analyzer.ica(sFilesIn, obj.Parameters.NumberOfComponents);
 
                 case 'process_export_bids'
-                    sFilesOut = obj.Analyzer.convertToBids(sFilesIn, obj.Parameters.Folder, ...
-                        obj.Parameters.DataFileFormat);   
+                    sFilesOut = obj.Analyzer.exportToBids(sFilesIn, obj.Parameters.Folder);   
            end
            
         end
@@ -437,6 +443,9 @@ classdef (Abstract) Process < handle & matlab.mixin.Heterogeneous & matlab.mixin
                         str_param = 'Yes';
                     end
                     
+                elseif iscell(param)
+                    str_param = obj.printCellContent(param);
+
                 else
                     str_param = num2str(param);
                     

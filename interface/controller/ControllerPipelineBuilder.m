@@ -88,6 +88,23 @@ classdef ControllerPipelineBuilder < Controller
             
         end
 
+        function [subjects, rawFilesPath] = getReviewRawFiles(obj)
+
+            % When called with only one argument (obj [controller]), this method only return the
+            % current value of subjects and raw files.
+            [subjects, rawFilesPath] = obj.addReviewRawFiles();
+
+        end
+
+        function setReviewRawFiles(obj, subjects, rawFiles)
+
+            % Would be very nice to clear persistent variable within this
+            % class...
+
+            obj.addReviewRawFiles(subjects, rawFiles);
+
+        end
+
         function [subjects, rawFilesPath] = addReviewRawFiles(~, subjectName, rawFilesPath)
            
             persistent Subjects RawFilesPath;
@@ -100,6 +117,8 @@ classdef ControllerPipelineBuilder < Controller
                 RawFilesPath = cell.empty();
             end
             
+            % If called with one argument (obj [controller]), we simply return the
+            % current value of subjects and raw files
             if nargin == 1
                 subjects = Subjects;
                 rawFilesPath = RawFilesPath;
@@ -111,7 +130,7 @@ classdef ControllerPipelineBuilder < Controller
             
             % Add raw files
             classOfCellContent = unique(cellfun(@class, rawFilesPath, 'UniformOutput', false));
-            assert(length(classOfCellContent) == 1);
+            assert(length(classOfCellContent) == 1, 'Only one class buddy');
             
             if (strcmp(classOfCellContent{1}, 'cell'))
                 RawFilesPath(end+1:end+length(rawFilesPath)) = rawFilesPath;

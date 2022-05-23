@@ -3,14 +3,14 @@ classdef Controller < handle
     properties (Access = public)
         
         % Paths
-        PathsToAdd = ["/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/scripts/AnalysisTool/domaine", ...
-                            "/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/scripts/AnalysisTool/interface"
+        PathsToAdd = ["C:\Users\alab\Desktop\Corentin\AnalysisTool\domaine", ...
+                            "C:\Users\alab\Desktop\Corentin\AnalysisTool\interface"
                             ];
-                          
+        BsToolboxPath = "C:\Users\alab\Desktop\Brainstorm\brainstorm3";
+
         CurrentPipeline; % [Pipeline]
         PipelineSearchPath; % [char]
         RawDataSearchPath; % [char]
-        BsToolboxPath = "/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/rg/toolboxes/brainstorm3/";
         Type; % [char] EEG/MEG
         
     end
@@ -48,19 +48,25 @@ classdef Controller < handle
         end
         
         function addPaths(obj)
+
+            if ~isdeployed()
+
+                for i = 1:length(obj.PathsToAdd)
+                    addpath(genpath(obj.PathsToAdd(i)));
+                end
             
-            for i = 1:length(obj.PathsToAdd)
-                addpath(genpath(obj.PathsToAdd(i)));
             end
-            
         end
         
         function removePaths(obj)
             
-            for i = 1:length(obj.PathsToAdd)
-                rmpath(genpath(obj.PathsToAdd(i)));
-            end
+            if ~isdeployed()
+
+                for i = 1:length(obj.PathsToAdd)
+                    rmpath(genpath(obj.PathsToAdd(i)));
+                end
             
+            end
         end
         
         function process = createProcess(obj, name, structure)

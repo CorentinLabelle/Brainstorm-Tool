@@ -3,15 +3,17 @@ classdef App_Manager
     properties
         
         App Analysis_Tool;
-        Util;
+        BstUtil; % [BstUtility]
       
     end
       
     methods
         
         function obj = App_Manager(app)
+            
             obj.App = app;
-            obj.Util = BstUtility.instance();
+            obj.BstUtil = BstUtility.instance();
+
         end
         
         function switch_Analysis_Type(obj, analysisType)
@@ -85,7 +87,7 @@ classdef App_Manager
             
             oldStudies = string.empty();
             count = 0;
-            
+
             subjects = obj.App.Tree.Children;
             for i = 1:length(subjects)
                 
@@ -151,7 +153,7 @@ classdef App_Manager
                     subjectName = studiesChecked(i).Parent.Text;
                     condition = studiesChecked(i).Text;
                     % Select Files
-                    sFile = obj.Util.selectFiles(subjectName, condition);
+                    sFile = obj.BstUtil.selectFiles(subjectName, condition);
                 end
                 j = j + 1;
                 sFiles(j:j+(length(sFile)-1)) = sFile;
@@ -279,12 +281,12 @@ classdef App_Manager
             for i = 1:length(sFiles)
                  % Create Hyperlink
                  if type == "history"
-                    pathToFile = obj.Util.create_Provenance_File(sFiles(i), ...
+                    pathToFile = obj.BstUtil.create_Provenance_File(sFiles(i), ...
                         fullfile(folder, strcat(sFiles(i).Condition, '_provenance.json')));
                     panel = obj.App.HISTORYPanel;
                     
                  elseif type == "event"
-                    pathToFile = obj.Util.create_Event_MetaData_File(sFiles(i), ...
+                    pathToFile = obj.BstUtil.create_Event_MetaData_File(sFiles(i), ...
                         fullfile(folder, strcat(sFiles(i).Condition, '_eventMetaData.json')));
                     panel = obj.App.EVENTSPanel;
                     
@@ -327,11 +329,13 @@ classdef App_Manager
         end
         
         function switch_Parent_Color_Mode(obj, uiObj, backColor, textColor, textColorHyperLink)
+            
             try 
                 children = uiObj.Children;
                 cls = class(uiObj);
                 
                 switch cls
+
                     case 'matlab.ui.Figure'
                        uiObj.Color = backColor; 
                        
@@ -350,9 +354,6 @@ classdef App_Manager
                     case 'matlab.ui.container.Tab'
                         uiObj.BackgroundColor = backColor;
                         
-                    case 'matlab.ui.container.Menu'
-                        %uiObj.ForegroundColor = textColor;
-                        
                 end
         
                 for i = 1:length(children)
@@ -366,21 +367,19 @@ classdef App_Manager
                     throw(ME);
                 end
             end
+
         end
         
         function switch_Children_Color_Mode(~, uiObj, backColor, textColor, textColorHyperLink)
+            
             cls = class(uiObj);
             
             switch cls
+
                 case 'matlab.ui.control.Button'
                     uiObj.FontColor = textColor;
                     uiObj.BackgroundColor = backColor;
-        
-%                 case 'matlab.ui.container.Panel'
-%                     %obj.BackgroundColor = backColor;
-%                     %obj.ForegroundColor = textColor;
-%                     %buttonIntab = obj.Children;
-%                     
+
                 case 'matlab.ui.control.Hyperlink'
                      uiObj.VisitedColor = textColor;
                      uiObj.BackgroundColor = backColor;
@@ -399,10 +398,7 @@ classdef App_Manager
                 case 'matlab.ui.control.DropDown'
                     uiObj.FontColor = textColor;
                     uiObj.BackgroundColor = backColor;
-                    
-%                 case 'matlab.ui.control.CheckBoxTree'
-%                     obj.FontColor = textColor;
-        
+
             end
         end
         
@@ -410,7 +406,7 @@ classdef App_Manager
             open(path)
         end
         
-        function [rawFilesPath, extension] = review_Raw_Files(obj, title, extension_in)
+        function [rawFilesPath, extension] = select_Files_To_Review_Raw_Files(obj, title, extension_in)
 
             % User input to select file
             [folder, rawFileNames, extension] = obj.get_File_Path(title, extension_in, obj.App.controller.getRawDataSearchPath);
