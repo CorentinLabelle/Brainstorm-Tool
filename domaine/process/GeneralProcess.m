@@ -1,15 +1,14 @@
-classdef (InferiorClasses = {?GeneralProcess, ?SpecificProcess, ?Process}) ...
-        EEG_Process < Process
+classdef (InferiorClasses = {?SpecificProcess, ?Process}) GeneralProcess < Process
     
     properties (Constant, Access = private)
         
-        Type = "eeg";
+        Type = "general";
         
     end
     
     methods (Access = {?ProcessFactory, ?ProcessConverter})
         
-        function obj = EEG_Process()
+        function obj = GeneralProcess()
         end
         
     end
@@ -18,7 +17,7 @@ classdef (InferiorClasses = {?GeneralProcess, ?SpecificProcess, ?Process}) ...
         
         function analyzer = getAnalyzer()
         
-            analyzer = EEG_Analyzer.instance;
+            analyzer = Analyzer.instance;
             
         end
         
@@ -28,8 +27,8 @@ classdef (InferiorClasses = {?GeneralProcess, ?SpecificProcess, ?Process}) ...
        
         function type = getType()
            
-            type = eval([mfilename('class') '.Type']);   
-            
+            type = eval([mfilename('class') '.Type']); 
+        
         end
         
     end

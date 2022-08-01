@@ -1,39 +1,31 @@
 classdef MEG_Analyzer < Analyzer
+% Class that encapsulates the Brainstorm 
+% functions for MEG data.
     
-    properties
-        sensorType = 'MEG';
-    end
-    
-    methods (Access = private)
-        function obj = MEG_Analyzer()
-        end
-        
+    properties (Constant, GetAccess = public)
+
+        SensorType = "MEG";
+
     end
     
     methods (Access = public)
         
-        function sFiles = convertEpochsToContinue(~, sFiles)
-            sFiles = bst_process('CallProcess', 'process_ctf_convert', sFiles, [], ...
+        function sFiles = convertEpochsToContinue(~, sParameters, sFiles)
+            
+            toRun = sParameters.to_run;
+            
+            if toRun
+                sFiles = bst_process('CallProcess', 'process_ctf_convert', sFiles, [], ...
                                 'rectype', 2);
+            end
+            
         end
-        
-        function sFiles = detectOtherArtifact(obj, sFiles, LowFreq, HighFreq) 
-           detectOtherArtifact@BasicBstFunctions(obj, sFiles, obj.sensorType, LowFreq, HighFreq);
-        end
-        
-        function sFiles = notchFilter(obj, sFiles, frequence)
-            sFiles = notchFilter@BasicBstFunctions(obj, sFiles, obj.sensorType, frequence);
-        end
-        
-        function sFiles = bandPassFilter(obj, sFiles, frequence)
-            sFiles = bandPassFilter@BasicBstFunctions(obj, sFiles, obj.sensorType, frequence);
-        end
-        
-        function sFiles = powerSpectrumDensity(obj, sFiles)
-            powerSpectrumDensity@BasicBstFunctions(obj, sFiles, obj.sensorType, 4);
-        end
-        
-        function sFiles = removeSimultaneaousEvents(~, sFiles, eventToRemove, eventToTarget)
+                      
+        function sFiles = removeSimultaneaousEvents(~, sParameters, sFiles)
+            
+            eventToRemove = sParameters.event_to_remove;
+            eventToTarget = sParameters.event_to_target;
+            
             bst_process('CallProcess', 'process_evt_remove_simult', sFiles, [], ...
                         'remove', eventToRemove, ...
                         'target', eventToTarget, ...
@@ -41,7 +33,10 @@ classdef MEG_Analyzer < Analyzer
                         'rename', 0);
         end
         
-        function sFiles = sspCardiac(obj, sFiles, eventName)
+        function sFiles = sspCardiac(obj, sParameters, sFiles)
+            
+            eventName = sParameters.event;
+            
             bst_process('CallProcess', 'process_ssp_ecg', sFiles, [], ...
                         'eventname',   eventName, ...
                         'sensortypes', obj.sensorType, ...
@@ -51,8 +46,11 @@ classdef MEG_Analyzer < Analyzer
             viewComponents(obj, sFiles);
         end
         
-        function sFiles = sspBlink(obj, sFiles, eventName)
-           bst_process('CallProcess', 'process_ssp_eog', sFiles, [], ...
+        function sFiles = sspBlink(obj, sParameters, sFiles)
+           
+            eventName = sParameters.event;
+            
+            bst_process('CallProcess', 'process_ssp_eog', sFiles, [], ...
                         'eventname',   eventName, ...
                         'sensortypes', obj.sensorType, ...
                         'usessp',      1, ...
@@ -61,7 +59,10 @@ classdef MEG_Analyzer < Analyzer
             viewComponents(obj, sFiles);
         end
         
-        function sFiles = sspGeneric(obj, sFiles, eventName)
+        function sFiles = sspGeneric(obj, sParameters, sFiles)
+            
+            eventName = sParameters.event;
+            
             bst_process('CallProcess', 'process_ssp', sFiles, [], ...
             'timewindow',  [], ...
             'eventname',   eventName, ...
@@ -76,25 +77,22 @@ classdef MEG_Analyzer < Analyzer
             viewComponents(obj, sFiles);
         
         end
-        
-        function sFiles = ica(obj, sFiles, nbComponents)
-            ica@BasicBstFunctions(obj, sFiles, nbComponents, obj.sensorType);
-        end
+                
     end
     
-    methods(Static)
+    methods (Static, Access = public)
         
         function obj = instance()
            
             persistent uniqueInstance;
             if isempty(uniqueInstance)
-                obj = MEG_Analysis();
+                obj = MEG_Analyzer();
                 uniqueInstance = obj;
             else
                 obj = uniqueInstance;
             end
         end
         
-    end    
+    end
+    
 end
-

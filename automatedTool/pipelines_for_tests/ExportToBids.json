@@ -1,0 +1,18 @@
+{
+  "Protocol": "New_Protocol",
+  "sFiles": [
+    "Ron/@rawb1/data_0raw_b1.mat",
+    "Ron/@rawb2/data_0raw_b2.mat",
+    "Ron/@rawb3/data_0raw_b3.mat",
+    "Ron/@rawb4/data_0raw_b4.mat"
+    ],
+  "Processes": [
+    {
+      "Name": "Export To Bids",
+      "Parameters": {
+        "folder": "/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/scripts/AnalysisTool/automatedTool/pipelines_for_tests/test",
+        "file_format": "brainvision"
+      }
+    }
+  ]
+}

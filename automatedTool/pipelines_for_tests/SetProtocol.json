@@ -1,0 +1,12 @@
+{
+  "Protocol": "New_Protocol",
+  "Processes": [
+    {
+      "Name": "Create Subject",
+      "Parameters": {
+        "Subject_Name": "Harry",
+        "Anatomy_Path": ""
+      }
+    }
+  ]
+}

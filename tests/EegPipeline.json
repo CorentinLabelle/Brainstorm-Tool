@@ -1,0 +1,388 @@
+{
+  "Type": "eeg",
+  "Name": "EegPipeline",
+  "Folder": "/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/scripts/AnalysisTool/tests",
+  "Extension": [
+    ".json",
+    ".mat"
+  ],
+  "DateOfCreation": "28-Jul-2022 10:23:27",
+  "Processes": [
+    {
+      "Name": "create_subject",
+      "Date": "29-Jul-2022 13:24:01",
+      "Parameters": {
+        "subject_name": "Harry",
+        "anatomy_path": ""
+      },
+      "Documentation": "No Documentation",
+      "History": [],
+      "IsGeneral": false
+    },
+    {
+      "Name": "review_raw_files",
+      "Date": "29-Jul-2022 13:24:01",
+      "Parameters": {
+        "subjects": [
+          "Harry"
+        ],
+        "raw_files": [
+          [
+            "/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/data/Nico/Participant_01/Data/b1.eeg",
+            "/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/data/Nico/Participant_01/Data/b2.eeg",
+            "/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/data/Nico/Participant_01/Data/b3.eeg",
+            "/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/data/Nico/Participant_01/Data/b4.eeg",
+            "/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/data/Nico/Participant_01/Data/b5.eeg",
+            "/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/data/Nico/Participant_01/Data/b6.eeg"
+          ]
+        ]
+      },
+      "Documentation": "No Documentation",
+      "History": [],
+      "IsGeneral": false
+    },
+    {
+      "Name": "add_eeg_position",
+      "Date": "29-Jul-2022 13:24:01",
+      "Parameters": {
+        "file_type": "Use Default Pattern",
+        "electrode_file": "",
+        "cap": "Colin27: BrainProducts EasyCap 128"
+      },
+      "Documentation": "No Documentation",
+      "History": [],
+      "IsGeneral": false
+    },
+    {
+      "Name": "refine_registration",
+      "Date": "29-Jul-2022 13:24:01",
+      "Parameters": {
+        "to_run": true
+      },
+      "Documentation": "No Documentation",
+      "History": [],
+      "IsGeneral": false
+    },
+    {
+      "Name": "project_electrode_on_scalp",
+      "Date": "29-Jul-2022 13:24:01",
+      "Parameters": {
+        "to_run": true
+      },
+      "Documentation": "No Documentation",
+      "History": [],
+      "IsGeneral": false
+    },
+    {
+      "Name": "notch_filter",
+      "Date": "29-Jul-2022 13:24:01",
+      "Parameters": {
+        "frequence": [
+          60,
+          120,
+          180
+        ]
+      },
+      "Documentation": "No Documentation",
+      "History": [],
+      "IsGeneral": false
+    },
+    {
+      "Name": "band_pass_filter",
+      "Date": "29-Jul-2022 13:24:01",
+      "Parameters": {
+        "frequence": [
+          50,
+          80
+        ]
+      },
+      "Documentation": "No Documentation",
+      "History": [],
+      "IsGeneral": false
+    },
+    {
+      "Name": "power_spectrum_density",
+      "Date": "29-Jul-2022 13:24:01",
+      "Parameters": {
+        "window_length": 4
+      },
+      "Documentation": "No Documentation",
+      "History": [],
+      "IsGeneral": false
+    },
+    {
+      "Name": "ica",
+      "Date": "29-Jul-2022 13:24:01",
+      "Parameters": {
+        "number_of_components": 32
+      },
+      "Documentation": "No Documentation",
+      "History": [],
+      "IsGeneral": false
+    },
+    {
+      "Name": "average_reference",
+      "Date": "29-Jul-2022 13:24:01",
+      "Parameters": {
+        "to_run": true
+      },
+      "Documentation": "No Documentation",
+      "History": [],
+      "IsGeneral": false
+    },
+    {
+      "Name": "export_to_bids",
+      "Date": "29-Jul-2022 13:24:01",
+      "Parameters": {
+        "folder": "/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/testBids",
+        "data_file_format": "brainvision"
+      },
+      "Documentation": "No Documentation",
+      "History": [],
+      "IsGeneral": false
+    }
+  ],
+  "Documentation": "",
+  "History": [
+    {
+      "Function": "Pipeline.set.Name",
+      "Datetime": "29-Jul-2022 15:33:51",
+      "Parameters": "EegPipeline",
+      "PipelineCopy": []
+    },
+    {
+      "Function": "Pipeline.set.Folder",
+      "Datetime": "29-Jul-2022 15:33:51",
+      "Parameters": "/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/scripts/AnalysisTool/tests",
+      "PipelineCopy": []
+    },
+    {
+      "Function": "Pipeline.set.Extension",
+      "Datetime": "29-Jul-2022 15:33:51",
+      "Parameters": [
+        ".json",
+        ".mat"
+      ],
+      "PipelineCopy": []
+    },
+    {
+      "Function": "Pipeline.addProcess",
+      "Datetime": "29-Jul-2022 15:33:52",
+      "Parameters": [
+        {
+          "Name": "create_subject",
+          "Date": "29-Jul-2022 13:24:01",
+          "Parameters": {
+            "subject_name": "Harry",
+            "anatomy_path": ""
+          },
+          "Documentation": "No Documentation",
+          "History": [],
+          "IsGeneral": false
+        }
+      ],
+      "PipelineCopy": []
+    },
+    {
+      "Function": "Pipeline.addProcess",
+      "Datetime": "29-Jul-2022 15:33:52",
+      "Parameters": [
+        {
+          "Name": "review_raw_files",
+          "Date": "29-Jul-2022 13:24:01",
+          "Parameters": {
+            "subjects": [
+              "Harry"
+            ],
+            "raw_files": [
+              [
+                "/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/data/Nico/Participant_01/Data/b1.eeg",
+                "/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/data/Nico/Participant_01/Data/b2.eeg",
+                "/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/data/Nico/Participant_01/Data/b3.eeg",
+                "/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/data/Nico/Participant_01/Data/b4.eeg",
+                "/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/data/Nico/Participant_01/Data/b5.eeg",
+                "/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/data/Nico/Participant_01/Data/b6.eeg"
+              ]
+            ]
+          },
+          "Documentation": "No Documentation",
+          "History": [],
+          "IsGeneral": false
+        }
+      ],
+      "PipelineCopy": []
+    },
+    {
+      "Function": "Pipeline.addProcess",
+      "Datetime": "29-Jul-2022 15:33:52",
+      "Parameters": [
+        {
+          "Name": "add_eeg_position",
+          "Date": "29-Jul-2022 13:24:01",
+          "Parameters": {
+            "file_type": "Use Default Pattern",
+            "electrode_file": "",
+            "cap": "Colin27: BrainProducts EasyCap 128"
+          },
+          "Documentation": "No Documentation",
+          "History": [],
+          "IsGeneral": false
+        }
+      ],
+      "PipelineCopy": []
+    },
+    {
+      "Function": "Pipeline.addProcess",
+      "Datetime": "29-Jul-2022 15:33:52",
+      "Parameters": [
+        {
+          "Name": "refine_registration",
+          "Date": "29-Jul-2022 13:24:01",
+          "Parameters": {
+            "to_run": true
+          },
+          "Documentation": "No Documentation",
+          "History": [],
+          "IsGeneral": false
+        }
+      ],
+      "PipelineCopy": []
+    },
+    {
+      "Function": "Pipeline.addProcess",
+      "Datetime": "29-Jul-2022 15:33:52",
+      "Parameters": [
+        {
+          "Name": "project_electrode_on_scalp",
+          "Date": "29-Jul-2022 13:24:01",
+          "Parameters": {
+            "to_run": true
+          },
+          "Documentation": "No Documentation",
+          "History": [],
+          "IsGeneral": false
+        }
+      ],
+      "PipelineCopy": []
+    },
+    {
+      "Function": "Pipeline.addProcess",
+      "Datetime": "29-Jul-2022 15:33:52",
+      "Parameters": [
+        {
+          "Name": "notch_filter",
+          "Date": "29-Jul-2022 13:24:01",
+          "Parameters": {
+            "frequence": [
+              60,
+              120,
+              180
+            ]
+          },
+          "Documentation": "No Documentation",
+          "History": [],
+          "IsGeneral": false
+        }
+      ],
+      "PipelineCopy": []
+    },
+    {
+      "Function": "Pipeline.addProcess",
+      "Datetime": "29-Jul-2022 15:33:52",
+      "Parameters": [
+        {
+          "Name": "band_pass_filter",
+          "Date": "29-Jul-2022 13:24:01",
+          "Parameters": {
+            "frequence": [
+              50,
+              80
+            ]
+          },
+          "Documentation": "No Documentation",
+          "History": [],
+          "IsGeneral": false
+        }
+      ],
+      "PipelineCopy": []
+    },
+    {
+      "Function": "Pipeline.addProcess",
+      "Datetime": "29-Jul-2022 15:33:52",
+      "Parameters": [
+        {
+          "Name": "power_spectrum_density",
+          "Date": "29-Jul-2022 13:24:01",
+          "Parameters": {
+            "window_length": 4
+          },
+          "Documentation": "No Documentation",
+          "History": [],
+          "IsGeneral": false
+        }
+      ],
+      "PipelineCopy": []
+    },
+    {
+      "Function": "Pipeline.addProcess",
+      "Datetime": "29-Jul-2022 15:33:52",
+      "Parameters": [
+        {
+          "Name": "ica",
+          "Date": "29-Jul-2022 13:24:01",
+          "Parameters": {
+            "number_of_components": 32
+          },
+          "Documentation": "No Documentation",
+          "History": [],
+          "IsGeneral": false
+        }
+      ],
+      "PipelineCopy": []
+    },
+    {
+      "Function": "Pipeline.addProcess",
+      "Datetime": "29-Jul-2022 15:33:52",
+      "Parameters": [
+        {
+          "Name": "average_reference",
+          "Date": "29-Jul-2022 13:24:01",
+          "Parameters": {
+            "to_run": true
+          },
+          "Documentation": "No Documentation",
+          "History": [],
+          "IsGeneral": false
+        }
+      ],
+      "PipelineCopy": []
+    },
+    {
+      "Function": "Pipeline.addProcess",
+      "Datetime": "29-Jul-2022 15:33:52",
+      "Parameters": [
+        {
+          "Name": "export_to_bids",
+          "Date": "29-Jul-2022 13:24:01",
+          "Parameters": {
+            "folder": "/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/testBids",
+            "data_file_format": "brainvision"
+          },
+          "Documentation": "No Documentation",
+          "History": [],
+          "IsGeneral": false
+        }
+      ],
+      "PipelineCopy": []
+    },
+    {
+      "Function": "Pipeline.save",
+      "Datetime": "29-Jul-2022 15:33:52",
+      "Parameters": [
+        "/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/scripts/AnalysisTool/tests/EegPipeline.json",
+        "/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/scripts/AnalysisTool/tests/EegPipeline.mat"
+      ],
+      "PipelineCopy": []
+    }
+  ]
+}
