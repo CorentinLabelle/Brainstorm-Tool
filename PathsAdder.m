@@ -12,6 +12,8 @@ classdef PathsAdder
                 end
             end
             
+            addpath(PathsGetter.getBstToolFolder());
+            
         end
         
         function [isAdded, bst3Folder] = addBrainstorm3Path()

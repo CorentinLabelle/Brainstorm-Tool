@@ -14,42 +14,68 @@ function InstallMCR()
 end
 
 function instructionsToRunInCommandLine = getInstructionToInstallMCR()
-
-    % Download Matlab Runtime Compiler
-    msg = msgbox('Downloading latest Matlab Runtime Compiler...', 'Downloading...');
-    compiler.runtime.download;
-    close(msg);
-
-    % Unzip Matlab Runtime Compiler folder
-    installerZipFolder = mcrinstaller;
-    [installerZipFolderDirectory, installerZipFolderName] = fileparts(installerZipFolder);
-
-    installerFolder = fullfile(installerZipFolderDirectory, installerZipFolderName);
-    if ~isfolder(installerFolder)
-        msg = msgbox('Unzipping Matlab Runtime Compiler folder', 'Unzipping...');
-        unzip(installerZipFolder, installerZipFolderName);
-        close(msg);
-    end
-
-    % Run Matlab Runtime Installer
-    %runtimeInstallationDir = '/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/MATLAB/MATLAB_Runtime/';
-    runtimeInstallationDir = uigetdir(matlabroot, 'Select folder to save Matlab Compiler Runtime');
-    if isequal(runtimeInstallationDir, 0)
+    
+    instructionsToRunInCommandLine = 'No instruction';
+            
+    downloadRuntime = askToDownloadRuntime();
+    
+    if ~downloadRuntime
         return
+    else
+        % Download Matlab Runtime Compiler
+        msg = msgbox('Downloading latest Matlab Runtime Compiler...', 'Downloading...');
+        compiler.runtime.download;
+        close(msg);
+
+        % Unzip Matlab Runtime Compiler folder
+        installerZipFolder = mcrinstaller;
+        [installerZipFolderDirectory, installerZipFolderName] = fileparts(installerZipFolder);
+
+        installerFolder = fullfile(installerZipFolderDirectory, installerZipFolderName);
+        if ~isfolder(installerFolder)
+            msg = msgbox('Unzipping Matlab Runtime Compiler folder', 'Unzipping...');
+            unzip(installerZipFolder, installerZipFolderName);
+            close(msg);
+        end
+
+        % Run Matlab Runtime Installer
+        runtimeInstallationDir = uigetdir(matlabroot, 'Select folder to save Matlab Compiler Runtime');
+        if isequal(runtimeInstallationDir, 0)
+            return
+        end
+
+        if isunix
+            command = './install';
+        elseif ismac
+            command = './install';
+        elseif ispc
+            command = 'setup';
+        end
+
+        instructionsToRunInCommandLine = [...
+            'cd ' installerFolder '; ' ...
+            command ' -mode silent -agreeToLicense yes -destinationFolder ' runtimeInstallationDir];
+
+        disp(instructionsToRunInCommandLine);
+
     end
     
-    if isunix
-        command = './install';
-    elseif ismac
-        command = './install';
-    elseif ispc
-        command = 'setup';
+end
+
+function yesOrNo = askToDownloadRuntime()
+
+    while true
+        answer = input('Do you want to download the latest MATLAB Runtime ? (y/n) ', 's');
+        answer = lower(answer);
+
+        if strcmp(answer, 'y')
+            yesOrNo = true;
+            break;
+        elseif strcmp(answer, 'n')
+            yesOrNo = false;
+            break;               
+        end
+        
     end
-
-    instructionsToRunInCommandLine = [...
-        'cd ' installerFolder '; ' ...
-        command ' -mode silent -agreeToLicense yes -destinationFolder ' runtimeInstallationDir];
-
-    disp(instructionsToRunInCommandLine);
-    
+        
 end

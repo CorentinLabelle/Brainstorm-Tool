@@ -4,5 +4,3 @@ function [baseDirectory, instruction] = RunDeployedAutomatedTool(jsonFile)
     instructions = ['cd ' baseDirectory '; ' instruction];
     
     system(instructions);
-    
-end

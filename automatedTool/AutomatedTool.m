@@ -54,7 +54,6 @@ classdef AutomatedTool < handle
             elseif ismac || isunix
                 batchFile = fullfile(binFolder, 'brainstorm3.command');
                 matlabRoot = PathsGetter.getMcrFolder();
-                %matlabRoot = '/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/MATLAB/MATLAB_Runtime/v98/';
             end
 
             baseDirectory = binFolder;
@@ -71,7 +70,7 @@ classdef AutomatedTool < handle
             if isfield(structure, 'Protocol')
                 protocolName = structure.Protocol;
             else
-                error('You need to enter a protocol');
+                error('You need to enter a protocol.');
             end
             
         end
@@ -91,7 +90,7 @@ classdef AutomatedTool < handle
             if isfield(structure, 'Pipeline')
                 pipeline = Pipeline(structure.Pipeline);
             else
-                error('You need to enter a protocol');
+                error('You need to enter a pipeline.');
             end
             
         end
