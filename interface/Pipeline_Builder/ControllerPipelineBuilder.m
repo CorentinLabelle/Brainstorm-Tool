@@ -75,6 +75,13 @@ classdef ControllerPipelineBuilder < Controller
             
         end
         
+        function setReviewRawFilesParameters(~, subjects, rawFiles)
+            
+            rawFilesManager = ReviewRawFilesParameterGetterAndSetter.instance();
+            rawFilesManager.setParameter(subjects, rawFiles);
+          
+        end
+        
         function [subjects, rawFilesPath] = getReviewRawFilesParameters(~)
             
             rawFilesManager = ReviewRawFilesParameterGetterAndSetter.instance();

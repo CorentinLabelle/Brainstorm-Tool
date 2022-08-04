@@ -16,9 +16,9 @@ classdef AutomatedToolTester < matlab.uitest.TestCase
     
     methods (Test)
         
-        function testWithValidAnalysisFile(tc)
+        function testWithValidAnalysisFile(~)
            
-            path = AutomatedToolTester.createValidAnalysisFile();
+            path = CreateAnalysisFile();
             automatedTool = AutomatedTool();
             sFilesOut = automatedTool.run(path);
             
@@ -26,7 +26,7 @@ classdef AutomatedToolTester < matlab.uitest.TestCase
         
         function testNewProtocolWithoutCreatingNewSubject(tc)
            
-            path = AutomatedToolTester.createValidAnalysisFileWithNewProtocolWithoutCreatingNewSubject();
+            path = tc.createAnalysisFileWithNewProtocolWithoutCreatingNewSubject();
             automatedTool = AutomatedTool();
             tc.verifyError(@() automatedTool.run(path), ?MException);
             
@@ -48,7 +48,7 @@ classdef AutomatedToolTester < matlab.uitest.TestCase
         
         function testWithNoProtocol(tc)
             
-            path = AutomatedToolTester.createAnalysisFileWithWithoutProtocol();
+            path = tc.createAnalysisFileWithWithoutProtocol();
             automatedTool = AutomatedTool();
             tc.verifyError(@() automatedTool.run(path), ?MException);
             
@@ -56,7 +56,7 @@ classdef AutomatedToolTester < matlab.uitest.TestCase
         
         function testWithNoPipeline(tc)
             
-            path = AutomatedToolTester.createAnalysisFileWithWithoutPipeline();
+            path = tc.createAnalysisFileWithWithoutPipeline();
             automatedTool = AutomatedTool();
             tc.verifyError(@() automatedTool.run(path), ?MException);
             
@@ -64,7 +64,7 @@ classdef AutomatedToolTester < matlab.uitest.TestCase
         
         function testWithNoSFileAndNoReviewRawFiles(tc)
             
-            path = AutomatedToolTester.createAnalysisFileWithoutSFileAndWithReviewRawFiles();
+            path = tc.createAnalysisFileWithoutSFileAndWithReviewRawFiles();
             automatedTool = AutomatedTool();
             tc.verifyError(@() automatedTool.run(path), ?MException);
             
@@ -72,9 +72,9 @@ classdef AutomatedToolTester < matlab.uitest.TestCase
         
     end
     
-    methods (Static, Access = private)
+    methods (Access = public)
         
-        function pipeline = createPipelineForTest()
+        function pipeline = createPipelineForTest(~)
            
             filePath = mfilename('fullpath');
             [fileFolder, fileName] = fileparts(filePath);
@@ -95,66 +95,55 @@ classdef AutomatedToolTester < matlab.uitest.TestCase
             
         end
         
-        function path = createValidAnalysisFile()
-            
-            jsonStructure = struct();
-            jsonStructure.Protocol = tc.ProtocolName;
-            jsonStructure.sFile = [];
-            jsonStructure.Pipeline = AutomatedToolTester.createPipelineForTest();
-
-            path = AutomatedToolTester.saveJsonStructure(jsonStructure);
-            
-        end
-        
-        function path = createAnalysisFileWithNewProtocolWithoutCreatingNewSubject()
+        function path = createAnalysisFileWithNewProtocolWithoutCreatingNewSubject(tc)
             
            jsonStructure = struct();
-           jsonStructure.Protocol = tc.ProtocolName;
+           jsonStructure.Protocol = 'This must be a new protocol';
            jsonStructure.sFile = [];
            
-           pipeline = AutomatedToolTester.createPipelineForTest();
+           pipeline = tc.createPipelineForTest();
            pipeline.deleteProcess(pipeline.getProcessIndexWithName('create subject'));
            jsonStructure.Pipeline = pipeline;
            
-           path = AutomatedToolTester.saveJsonStructure(jsonStructure);
+           path = tc.saveJsonStructure(jsonStructure);
             
         end
         
-        function path = createAnalysisFileWithWithoutProtocol()
+        function path = createAnalysisFileWithWithoutProtocol(tc)
             
            jsonStructure = struct();
            jsonStructure.sFile = [];
-            jsonStructure.Pipeline = AutomatedToolTester.createPipelineForTest();
+           jsonStructure.Pipeline = tc.createPipelineForTest();
            
-           path = AutomatedToolTester.saveJsonStructure(jsonStructure);
+           path = tc.saveJsonStructure(jsonStructure);
             
         end
         
-        function path = createAnalysisFileWithWithoutPipeline()
+        function path = createAnalysisFileWithWithoutPipeline(tc)
             
            jsonStructure = struct();
            jsonStructure.sFile = [];
            jsonStructure.Protocol = tc.ProtocolName;
            
-           path = AutomatedToolTester.saveJsonStructure(jsonStructure);
+           path = tc.saveJsonStructure(jsonStructure);
             
         end
         
-        function path = createAnalysisFileWithoutSFileAndWithReviewRawFiles()
+        function path = createAnalysisFileWithoutSFileAndWithReviewRawFiles(tc)
            
            jsonStructure = struct();
            jsonStructure.Protocol = tc.ProtocolName;
            jsonStructure.sFile = [];
            
-           pipeline = AutomatedToolTester.createPipelineForTest();
+           pipeline = tc.createPipelineForTest();
            pipeline.deleteProcess(pipeline.getProcessIndexWithName('review raw files'));
            jsonStructure.Pipeline = pipeline;
            
-           path = AutomatedToolTester.saveJsonStructure(jsonStructure);
+           path = tc.saveJsonStructure(jsonStructure);
             
         end
         
-        function path = saveJsonStructure(jsonStructure)
+        function path = saveJsonStructure(~, jsonStructure)
            
             path = [mfilename('fullpath') '.json'];
             FileSaver.save(path, jsonStructure);

@@ -4,7 +4,7 @@ classdef PipelineBuilderTester < matlab.uitest.TestCase & matlab.mock.TestCase
         
         App;
         PipelineName = 'PipelineTester.json';
-        PipelineFolder = pwd;
+        PipelineFolder = PathsGetter.getTestFolder();
         
     end
         
@@ -61,11 +61,9 @@ classdef PipelineBuilderTester < matlab.uitest.TestCase & matlab.mock.TestCase
         
         function savePipeline(tc)
             
-            tc.enterPipelineName();
-            tc.enterPipelineFolder();
-            tc.selectAllEegProcess();
-            
-            tc.press(tc.App.SavePipelineButton);
+            tc.verifyTrue(~isfile(fullfile(tc.PipelineFolder, tc.PipelineName)));
+
+            tc.createAndSavePipeline();
             
             tc.verifyTrue(isfile(fullfile(tc.PipelineFolder, tc.PipelineName)));
             
@@ -90,23 +88,16 @@ classdef PipelineBuilderTester < matlab.uitest.TestCase & matlab.mock.TestCase
         
         function importPipeline(tc)
             
-            tc.enterPipelineName();
-            tc.enterPipelineFolder();
-            tc.selectAllEegProcess();
-            tc.press(tc.App.SavePipelineButton);
-            pathToPipeline = fullfile(tc.PipelineFolder, tc.PipelineName);
+            pathToPipeline = tc.createAndSavePipeline();
             pip1 = Pipeline(pathToPipeline);
 
-            delete(tc.App);
+            tc.press(tc.App.ClearPipelineButton);
             
-            
-            
-            
-            tc.press(app.ImportPipelineButton);
-            tc.press(app.SavePipelineButton);
+            tc.press(tc.App.ImportPipelineButton);
+            tc.press(tc.App.SavePipelineButton);
             pip2 = Pipeline(pathToPipeline);
             
-            EegCheckBoxes = app.EEGProcessesPanel.Children;
+            EegCheckBoxes = tc.App.EEGProcessesPanel.Children;
             for i = 1:length(EegCheckBoxes)
                 tc.verifyTrue(EegCheckBoxes(i).Value);
             end
@@ -114,7 +105,6 @@ classdef PipelineBuilderTester < matlab.uitest.TestCase & matlab.mock.TestCase
             tc.compareTwoPipelines(pip1, pip2);
             
             delete(pathToPipeline);
-            delete(app);
             
         end
       
@@ -127,26 +117,28 @@ classdef PipelineBuilderTester < matlab.uitest.TestCase & matlab.mock.TestCase
             tc.verifyTrue(strcmpi(tc.App.controller.getType, 'EEG'));
             
         end
-       
-        function addsub(tc)
-            
-            tc.press(tc.App.EEGReviewRawFilesCheckBox);
-            tc.press(tc.App.AddSubjectButton);
-            
-            a=tc.App.controller.printReviewRawFilesParameters();
-            disp(a);
-        end
         
     end
     
     methods (Access = private)
         
-        function enterPipelineName(tc)
-           tc.type(tc.App.PipelineNameEditField, tc.PipelineName);
+        function pipelinePath = createAndSavePipeline(tc)
+            
+            tc.enterPipelineName(tc.PipelineName);
+            tc.enterPipelineFolder(tc.PipelineFolder);
+            tc.selectAllEegProcess();
+            tc.press(tc.App.SavePipelineButton);
+            
+            pipelinePath = fullfile(tc.PipelineFolder, tc.PipelineName);
+            
         end
         
-        function enterPipelineFolder(tc)
-           tc.type(tc.App.SaveinFolderEditField, tc.PipelineFolder);
+        function enterPipelineName(tc, pipelineName)
+           tc.type(tc.App.PipelineNameEditField, pipelineName);
+        end
+        
+        function enterPipelineFolder(tc, pipelineFolder)
+           tc.type(tc.App.SaveinFolderEditField, pipelineFolder);
         end
         
         function selectAllEegProcess(tc)
@@ -168,29 +160,26 @@ classdef PipelineBuilderTester < matlab.uitest.TestCase & matlab.mock.TestCase
             
             tc.press(tc.App.EEGReviewRawFilesCheckBox);
             
-            %subjectName = {'Harry', 'Ron'};
+            subjectName = {'Harry', 'Ron'};
             
-%             rawFilesPath = {{'/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/scripts/AnalysisTool/tests/DataQuickImportTester/S01/actives_electrodes_visual_stim_s1_07.eeg',...
-%                             '/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/scripts/AnalysisTool/tests/DataQuickImportTester/S01/actives_electrodes_visual_stim_s1_11.eeg'}, ...
-%                             {'/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/scripts/AnalysisTool/tests/DataQuickImportTester/S02/actives_electrodes_visual_stim_s2_02.eeg',...
-%                             '/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/scripts/AnalysisTool/tests/DataQuickImportTester/S02/actives_electrodes_visual_stim_s2_05.eeg'}};
-%                             
-            %tc.App.controller.reviewRawFilesParameters(subjectName, rawFilesPath, type='add');
+            rawFilesPath = {...
+                {   '/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/scripts/AnalysisTool/tests/DataQuickImportTester/S01/actives_electrodes_visual_stim_s1_07.eeg',...
+                    '/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/scripts/AnalysisTool/tests/DataQuickImportTester/S01/actives_electrodes_visual_stim_s1_11.eeg'}, ...
+                {   '/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/scripts/AnalysisTool/tests/DataQuickImportTester/S02/actives_electrodes_visual_stim_s2_02.eeg',...
+                    '/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/scripts/AnalysisTool/tests/DataQuickImportTester/S02/actives_electrodes_visual_stim_s2_05.eeg'}};
+                             
+            tc.App.controller.addSubject(subjectName, rawFilesPath);
             
         end
         
         function selectAddEegPositionWithDefaultPattern(tc)
-            
             tc.press(tc.App.AddEEGPositionCheckBox);
             tc.choose(tc.App.UseDefaultPatternButton);
             tc.choose(tc.App.Colin27BrainProductsEasyCap64Button);
-            
         end
         
         function selectRefineRegistration(tc)
-            
             tc.press(tc.App.RefineRegistrationCheckBox);
-            
         end
         
         function selectProjectElectrodeOnScalp(tc)
@@ -257,12 +246,6 @@ classdef PipelineBuilderTester < matlab.uitest.TestCase & matlab.mock.TestCase
             
         end
         
-        function loadedPip = loadPipeline(tc)
-
-            loadedPip = Pipeline(fullfile(tc.PipelineFolder, tc.PipelineName));
-            
-        end
-        
         function compareTwoPipelines(tc, pip1, pip2)
            
             tc.verifyTrue(pip1 == pip2);
@@ -270,4 +253,5 @@ classdef PipelineBuilderTester < matlab.uitest.TestCase & matlab.mock.TestCase
         end
         
     end
+    
 end

@@ -4,7 +4,7 @@ classdef PathsRemover
         
         function removePaths()
             
-            paths = PathsGetter.getPaths();
+            paths = PathsGetter.getPathsToAdd();
             
             if ~isdeployed()
                 for i = 1:length(paths)

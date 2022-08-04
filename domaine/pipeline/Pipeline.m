@@ -615,16 +615,7 @@ classdef Pipeline < handle & matlab.mixin.Copyable
                 filePath char {mustBeNonempty}
             end
             
-            [~, ~, extension] = fileparts(filePath);
-            
-            switch extension
-                case '.mat'
-                    structureReadFromFile = load(filePath);
-                case '.json'
-                    structureReadFromFile = FileReader.read(filePath);
-                otherwise
-                    error(['The file format ' extension ' is not supported!']);   
-            end
+            structureReadFromFile = FileReader.read(filePath);
             
             obj.convertStructureToPipeline(structureReadFromFile);
             obj.removeLastNHistoryEntry(1);
@@ -669,10 +660,11 @@ classdef Pipeline < handle & matlab.mixin.Copyable
                     continue 
                     
                 elseif  strcmp(field, 'Processes')
-                    obj.Processes = Process.create(value);
-                    if ~iscell(obj.Processes)
-                        obj.Processes = {obj.Processes};
+                    pr = Process.create(value);
+                    if ~iscell(pr)
+                        pr = {pr};
                     end
+                    obj.Processes = pr;
                     
                 else
                     obj.(field) = value;

@@ -23,6 +23,8 @@ classdef PipelineBuilderManager
                 ReviewRawFiles.Subjects = rawFilesPath;
                 ReviewRawFiles.Raw_Files = subjects;
                 
+                assert(~isempty(rawFilesPath), 'Raw Files is empty');
+                assert(~isempty(subjects), 'Subjects is empty');
                 obj.App.controller.addProcess('Review Raw Files', ReviewRawFiles);
             end
             
@@ -178,21 +180,21 @@ classdef PipelineBuilderManager
             
             for i = 1:length(pipeline.Processes)
                 
-                process = pipeline.Processes(i);
+                process = pipeline.Processes{i};
                 
                 switch process.Name 
                     
                     case 'review_raw_files'
                         obj.App.EEGReviewRawFilesCheckBox.Value = true;
 
-                        obj.App.controller.reviewRawFilesParameters(process.Parameters.Subjects, process.Parameters.RawFiles, type='set');
+                        obj.App.controller.setReviewRawFilesParameters(process.Parameters.subjects, process.Parameters.raw_files);
 
-                        obj.App.ReviewRawFilesTextArea.Value = obj.App.controller.printReviewRawFilesParameters();
+                        obj.App.ReviewRawFilesTextArea.Value = obj.App.controller.convertReviewRawFilesParametersToCharacters();
                 
                     case 'add_eeg_position'
                         obj.App.AddEEGPositionCheckBox.Value = true;
-                        fileType = process.Parameters.FileType;
-                        cap = process.Parameters.Cap;
+                        fileType = process.Parameters.file_type;
+                        cap = process.Parameters.cap;
                         
                         if isequal(fileType, 'Use Default Pattern')
                             cap = strrep(cap, ' ', '');
@@ -212,7 +214,7 @@ classdef PipelineBuilderManager
                     case 'notch_filter'
                         obj.App.NotchFilterEEGCheckBox.Value = true;
 
-                        frequences = process.Parameters.Frequence;
+                        frequences = process.Parameters.frequence;
 
                         if isequal(frequences, [50, 100, 150, 200])
                             obj.App.EuropeButton.Value = true;
@@ -232,13 +234,13 @@ classdef PipelineBuilderManager
                     
                     case 'band_pass_filter'
                         obj.App.BandPassFilterEEGCheckBox.Value = true;
-                        obj.App.LowCutOffHzEditField.Value = process.Parameters.Frequence(1);
-                        obj.App.HighCutOffHzEditField.Value = process.Parameters.Frequence(2);
+                        obj.App.LowCutOffHzEditField.Value = process.Parameters.frequence(1);
+                        obj.App.HighCutOffHzEditField.Value = process.Parameters.frequence(2);
                     
                     
                     case 'power_spectrum_density'
                         obj.App.PowerSpectrumDensityEEGCheckBox.Value = true;
-                        obj.App.WindowLengthEditField.Value = process.Parameters.WindowLength;
+                        obj.App.WindowLengthEditField.Value = process.Parameters.window_length;
                         
                     
                     case 'average_reference'
@@ -247,12 +249,12 @@ classdef PipelineBuilderManager
                     
                     case 'ica'
                         obj.App.ICAEEGCheckBox.Value = true;
-                        obj.App.NumberofComponentsICAEditField.Value = process.Parameters.NumberOfComponents;
+                        obj.App.NumberofComponentsICAEditField.Value = process.Parameters.number_of_components;
                 
                     
                     case 'export_to_bids'
                         obj.App.ConverttoBIDSEEGCheckBox.Value = true;
-                        folder = process.Parameters.Folder;
+                        folder = process.Parameters.folder;
                         [folderPath, folderName] = fileparts(folder);
                         obj.App.BIDSFolderPathEditField.Value = folderPath;
                         obj.App.BIDSFolderNameEditField.Value = folderName;

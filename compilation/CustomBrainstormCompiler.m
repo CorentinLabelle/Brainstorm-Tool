@@ -4,19 +4,18 @@ classdef CustomBrainstormCompiler < handle
         
         function compile(obj)
             
-            obj.setJavaHome();
+            obj.setJavaHomeToPointToJavaOpenJDK();
             
-            %toolFolderSources = PathsGetter.getPaths();
-            toolFolderSources = '/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/scripts/AnalysisTool/domaine';
-            Launcher.startBrainstorm();
-            %destinationFolder = obj.getDestinationFolder();
-            destinationFolder = '/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/scripts/AnalysisTool/Brainstorm_Corentin/brainstorm3/toolbox';
-            obj.copyToDestination(toolFolderSources, destinationFolder);
+            domainFolder = PathsGetter.getDomainFolder();
+            autoToolFolder = PathsGetter.getAutomatedToolFolder();
+            foldersToCopy = [domainFolder, autoToolFolder];
+            destinationFolder = fullfile(PathsGetter.getBrainstorm3Path(), "toolbox");
+            obj.copyToDestination(foldersToCopy, destinationFolder);
 
             obj.compileBrainstorm();
             
             binFiles = obj.getBinFiles();
-            binDestination = obj.getBinDestination();
+            binDestination = obj.getBstBinDestination();
             obj.copyToDestination(binFiles, binDestination);
             
         end
@@ -24,17 +23,17 @@ classdef CustomBrainstormCompiler < handle
     end
     
     methods (Static, Access = private)
-       
-        function binDestination = getBinDestination()
+        
+        function binDestination = getBstBinDestination()
             
-            brainstorm3Path = bst_get('BrainstormHomeDir');
+            brainstorm3Path = PathsGetter.getBrainstorm3Path();
             binDestination = fullfile(brainstorm3Path, "bin", bst_get('MatlabReleaseName'));
             
         end
         
         function binFiles = getBinFiles()
             
-            brainstorm3Path = bst_get('BrainstormHomeDir');
+            brainstorm3Path = PathsGetter.getBrainstorm3Path();
             
             binFolder = fullfile(brainstorm3Path, "bin", "R2020a");
             bstShellScriptPath = fullfile(binFolder, "brainstorm3.command");
@@ -42,26 +41,28 @@ classdef CustomBrainstormCompiler < handle
             binFiles = [bstBatchFilePath, bstShellScriptPath]; 
             
         end
-        
-        function destinationFolder = getDestinationFolder()
             
-            brainstorm3Path = bst_get('BrainstormHomeDir');
-            destinationFolder = fullfile(brainstorm3Path, "toolbox");
+        function setJavaHomeToPointToJavaOpenJDK()
             
-        end
-    
-        function setJavaHome()
-            
-            setenv('JAVA_HOME', '/usr/lib/jvm/java-8-openjdk-amd64');
+            if isunix
+                openJdkFolder = '/usr/lib/jvm/java-8-openjdk-amd64';
+            elseif ispc
+                error('add path to openjdk');
+            elseif ismac
+                error('add path to openjdk');
+            end
+              
+            assert(isfolder(openJdkFolder));
+            setenv('JAVA_HOME', openJdkFolder);
             
         end
         
         function copyToDestination(filesToCopy, destinationFolder)
             arguments
                 filesToCopy string
-                destinationFolder
+                destinationFolder string
             end
-            
+                        
             for i = 1:length(filesToCopy)
                 
                 folderName = char.empty();
@@ -81,7 +82,6 @@ classdef CustomBrainstormCompiler < handle
         
         function compileBrainstorm()
             
-            addpath(genpath('/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/scripts/AnalysisTool/Brainstorm_Corentin/brainstorm3'));
             bst_compile;
             
         end
@@ -89,4 +89,3 @@ classdef CustomBrainstormCompiler < handle
     end
     
 end
-

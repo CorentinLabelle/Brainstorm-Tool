@@ -4,7 +4,7 @@ classdef PathsAdder
         
         function addPaths()
             
-            paths = PathsGetter.getPaths();
+            paths = PathsGetter.getPathsToAdd();
             
             if ~isdeployed()
                 for i = 1:length(paths)
@@ -15,6 +15,9 @@ classdef PathsAdder
         end
         
         function [isAdded, bst3Folder] = addBrainstorm3Path()
+            
+            assert(~PathsGetter.isBrainstorm3FolderInMatlabPath(), ...
+                    ['brainstorm3 path already added:' newline PathsGetter.getBrainstorm3Path()]);
             
             bst3Folder = uigetdir(pwd, 'Select brainstorm3 folder');
             if isequal(bst3Folder, 0)

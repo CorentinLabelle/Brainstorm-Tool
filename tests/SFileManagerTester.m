@@ -3,7 +3,7 @@ classdef SFileManagerTester < matlab.unittest.TestCase
     methods (TestMethodSetup)
         
         function createTestProtocol(~)
-            createTestProtocol();
+            CreateTestProtocol();
         end
         
     end

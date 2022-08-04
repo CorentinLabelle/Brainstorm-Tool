@@ -6,8 +6,12 @@ classdef FileReader < handle
             
             [~, ~, extension] = fileparts(filePath);
             
-            if strcmp(extension, '.json')
+            if strcmpi(extension, '.json')
                 functionAsChar = '.readJson';
+            elseif strcmpi(extension, '.mat')
+                functionAsChar = '.readMat';
+            else
+                error(['The file format ' extension ' is not supported!']);
             end
             
             functionHandleToReadFile = str2func([mfilename('class'), functionAsChar]);
@@ -28,6 +32,12 @@ classdef FileReader < handle
             str = char(raw');
             structure = jsondecode(str);
                     
+        end
+        
+        function structure = readMat(path)
+           
+            structure = load(path);
+            
         end
         
     end

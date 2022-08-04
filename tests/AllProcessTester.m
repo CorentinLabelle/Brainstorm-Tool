@@ -64,7 +64,7 @@ function AllProcessTester(protocolName, deleteProtocol)
 
     for i = 1:length(sFiles)
         channelFile = load(GetChannelFilePath(sFiles(i)));
-        assert(all(cellfun(@(x) ~isequal(x, [0;0;0]), {channelFile.Channel.Loc})))
+        assert(any(cellfun(@(x) ~isequal(x, [0;0;0]), {channelFile.Channel.Loc})))
     end
 
     %% Refine Registration
