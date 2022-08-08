@@ -31,14 +31,20 @@ The last process in the pipeline must be _Import Time_. This process will import
 ## Process description
 | Keyname | Requirement Level | Data Type | Description |
 |:-|:-|:-|:-|
-| Name | Optionnal | String | Process' Name. |
+| Name | Required | String | Process' Name. |
 | DateOfCreation | Optionnal | Datetime | Indicates the date of creation of the process. See [datetime documentation] for the possible date format. |
 | Parameters | Required | Parameter Object | The parameters are specific to every process. See [Example of Analysis File](Example-of-Analysis-File). |
 | Documentation | Optionnal | String | Documentation about the process. |
 | History | Optionnal | String | Still unavailable... |
 
 ## Example of Analysis File
-See an example of an [Analysis File](automatedTool/AnalysisFile.json).
+See an example of an [Analysis File](AnalysisFileTemplate.json).
+
+## Is your Analysis File valid ?
+An Analysis File is valid if it respects the following rules:
+- If the _sFiles_ field is empty, the first process in the pipeline must be either _Create Subject_ or _Review Raw Files_.
+- If the _Protocol_ field contains a new protocol, the first process in the pipeline must me _Create Subject_.
+- If the pipeline contains the process _Create Subject_, the next process must be _Review Raw Files_.
 
 [datetime documentation]: https://www.mathworks.com/help/matlab/matlab_prog/set-display-format-of-date-and-time-arrays.html
 [Brainstorm]: https://neuroimage.usc.edu/brainstorm/Installation
