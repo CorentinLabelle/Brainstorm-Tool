@@ -68,19 +68,4 @@ classdef PipelineExporter < handle
         
     end
     
-    methods (Static, Access = private)
-        
-        function structure = readJson(path)
-            
-            fileID = fopen(path); 
-            raw = fread(fileID, inf);  
-            fclose(fileID); 
-            
-            str = char(raw');
-            structure = jsondecode(str);
-                    
-        end
-        
-    end
-    
 end

@@ -4,7 +4,7 @@ classdef PathsGetter
         
         function bstToolFolder = getBstToolFolder()
            
-            bstToolFolder = PathsGetter.getCurrentFileFolder();
+            bstToolFolder = GetBrainstormToolFolder();
             
         end
         
@@ -66,8 +66,7 @@ classdef PathsGetter
                         PathsGetter.getInterfaceFolder(), ...
                         PathsGetter.getAutomatedToolFolder(), ...
                         PathsGetter.getCompilationFolder(), ...
-                        PathsGetter.getTestFolder(), ...
-                        PathsGetter.getBstFolder()
+                        PathsGetter.getTestFolder()
                         ];
             
         end
@@ -92,16 +91,6 @@ classdef PathsGetter
             
         end
        
-    end
-    
-    methods (Static, Access = private)
-       
-        function folder = getCurrentFileFolder()
-           
-            folder = fileparts(mfilename('fullpath'));
-            
-        end
-        
     end
     
 end

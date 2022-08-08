@@ -113,16 +113,17 @@ classdef App_Manager
         
         function switchAnalysisType(obj, analysisType)
             
+            obj.resizeTabs(analysisType);
+            obj.App.controller.switchType(analysisType);
+            
             switch analysisType
                 case "EEG"
-                    obj.App.controller.switchType(analysisType);
                     obj.App.EEGMenu.Checked = true;
                     obj.App.MEGMenu.Checked = false;
                     obj.App.TabGroup1.SelectedTab = obj.App.EEGTabGr1;
                     obj.App.TabGroup2.SelectedTab = obj.App.EEGTabGr2;
 
                 case "MEG"
-                    obj.App.controller.switchType(analysisType);
                     obj.App.EEGMenu.Checked = false;
                     obj.App.MEGMenu.Checked = true;
                     obj.App.TabGroup1.SelectedTab = obj.App.MEGTabGr1;
@@ -278,6 +279,18 @@ classdef App_Manager
             obj.App.BrainCanadaLogo.ImageSource = fullfile(obj.LogoFolder, 'BrainCanada_Bright.png');
             obj.App.EeglabLogo.ImageSource = fullfile(obj.LogoFolder, 'EEGLab.png');
             obj.App.UlavalLogo.ImageSource = fullfile(obj.LogoFolder, 'Ulaval_Bright.png');
+            
+        end
+        
+        function resizeTabs(obj, analysisType)
+            
+            if strcmpi(analysisType, 'MEG')
+                obj.App.TabGroup1.Position(3) = 189;
+                obj.App.TabGroup2.Position(3) = 344;
+            else
+                obj.App.TabGroup1.Position(3) = 358;
+                obj.App.TabGroup2.Position(3) = 157;
+            end
             
         end
         

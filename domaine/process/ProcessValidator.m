@@ -14,25 +14,20 @@ classdef ProcessValidator < Validator
         
         function verifyName(obj, prName)
            
-           isValid = false;
-            
-           allProcesses = Process.getAllProcesses();
-           types = fieldnames(allProcesses);
-           
-           for i = 1:length(types)
-               prNames = string(fieldnames(allProcesses.(types{i})));
-               if any(strcmpi(prName, prNames))
-                   isValid = true;
-                   return
-               end
-           end
-           
-           if ~isValid
-                eID = 'InvalidProcessName';
-                eMsg = ['The following process name is invalid:' newline ...
-                        char(prName)];
-                throw(obj.createException(eID, eMsg));
-           end
+            allProcesses = Process.getAllProcesses();
+            types = fieldnames(allProcesses);
+
+            for i = 1:length(types)
+                prNames = string(fieldnames(allProcesses.(types{i})));
+                if any(strcmpi(prName, prNames))
+                    return
+                end
+            end
+
+            eID = 'InvalidProcessName';
+            eMsg = ['The following process name is invalid:' newline ...
+            char(prName)];
+            throw(obj.createException(eID, eMsg));
            
         end
         
@@ -59,4 +54,3 @@ classdef ProcessValidator < Validator
     end
     
 end
-

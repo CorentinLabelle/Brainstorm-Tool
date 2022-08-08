@@ -4,7 +4,7 @@ classdef DefaultFileChooser < FileChooser
        
         function [file, folder, status] = chooseFile(~, extension, title, path, allowMultiple)
             
-            if nargin == 3
+            if nargin == 4
                 allowMultiple = 'off';
             end
             

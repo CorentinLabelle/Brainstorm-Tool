@@ -1,5 +1,4 @@
-function [subjects, rawFiles] = quickImport(folderToImport, extension)
-
+function [subjects, rawFiles] = QuickImport(folderToImport, extension)
     arguments
         folderToImport char = [];
         extension char = '.eeg';

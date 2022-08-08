@@ -1,7 +1,8 @@
 function provenance = CreateProvenanceVar(sFile)
 
     % Load study.mat file
-    studyMat = load(fullfile(BstUtility.getDatabasePath(), bst_get('ProtocolInfo').Comment, 'data', sFile.FileName));
+    studyMat = load(SFileManager.getStudyPathFromSFile(sFile));
+    %studyMat = load(fullfile(BstUtility.getDatabasePath(), bst_get('ProtocolInfo').Comment, 'data', sFile.FileName));
 
     % Loop through every event
     for j = 1:height(studyMat.History)

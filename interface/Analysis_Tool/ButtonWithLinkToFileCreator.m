@@ -13,7 +13,8 @@ classdef ButtonWithLinkToFileCreator < handle
             for i = 1:length(sFiles)
                 
                 pathToFile = fullfile(pwd, strcat(sFiles(i).Condition, '_provenance.json'));
-                CreateProvenanceFile(sFiles(i), pathToFile);
+                fileCreator = BidsFileCreator();
+                fileCreator.createProvenanceFile(sFiles(i), pathToFile);
                 
                 studyName = sFiles(i).FileName;
                 obj.createButton(studyName, pathToFile, panel);
@@ -27,7 +28,8 @@ classdef ButtonWithLinkToFileCreator < handle
             for i = 1:length(sFiles)
                 
                 pathToFile = fullfile(pwd, strcat(sFiles(i).Condition, '_event_meta_data.json'));
-                CreateEventMetaDataFile(sFiles(i), pathToFile);
+                fileCreator = BidsFileCreator();
+                fileCreator.createEventMetaDataFile(sFiles(i), pathToFile);
                 
                 studyName = sFiles(i).FileName;
                 obj.createButton(studyName, pathToFile, panel);

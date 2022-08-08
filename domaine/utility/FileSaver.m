@@ -39,7 +39,7 @@ classdef FileSaver < handle
         function path = saveToJson(path, variableToSave)
            
             fileID = fopen(path, 'wt');
-            fprintf(fileID, jsonencode(variableToSave, 'PrettyPrint', true));
+            fprintf(fileID, JsonEncoder.encode(variableToSave));
             fclose(fileID);
             
         end

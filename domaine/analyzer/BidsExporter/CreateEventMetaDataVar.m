@@ -11,7 +11,7 @@ function s = CreateEventMetaDataVar(sFile)
     end
 
     % Load list of all events
-    allEvents = BstUtility.getEvents(sFile);
+    allEvents = GetAllEvents(sFile);
 
     % Loop through every event
     for i = 1:length(allEvents)

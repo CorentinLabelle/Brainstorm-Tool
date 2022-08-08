@@ -1,24 +1,5 @@
-%% Add Paths
-clear
-clc
-
-cd('/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/scripts/AnalysisTool');
-
-paths = ["domaine", ...
-        "interface", ...
-        "utility", ...
-        "/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/pipelines"
-        ];
-
-for i = 1:length(paths)
-    addpath(genpath(paths(i)));
-end
-
-%% Start App
-tool = analysisTool(1,0);
-
-
 %% AVAILABLE PROCESSES
+clear
 clc
 Process.printAvailableProcesses;
 
@@ -30,7 +11,7 @@ eegEmptyArray(1:5) = Process();
 eegEmptyMatrix(1:5, 1:8) = Process();
 
 
-%% CREATE EEG PROCESS
+%% CREATE PROCESSES
 clc
 
 allProcesses = Process.getAllProcesses();
@@ -39,10 +20,10 @@ specProcesses = string(fieldnames(allProcesses.SpecificProcess)');
 eegProcesses = string(fieldnames(allProcesses.EEG_Process)');
 megProcesses = string(fieldnames(allProcesses.MEG_Process)');
 
-genArray = Process.create(genProcesses);
-specArray = Process.create(specProcesses);
-eegArray = Process.create(eegProcesses);
-megArray = Process.create(megProcesses);
+genCell = Process.create(genProcesses);
+specCell = Process.create(specProcesses);
+eegCell = Process.create(eegProcesses);
+megCell = Process.create(megProcesses);
                 
 rrf = Process.create('Review Raw Files');
 nf = Process.create('Notch Filter');
@@ -96,29 +77,7 @@ nf.printDocumentation;
 
 %% VIEW WEB DOCUMENTATION
 clc
-
-%nf.openWebDocumentation();
-
-%% IS PROCESS IN
-clc
-
-inSpec = rrf.isIn(specArray);
-inGen = rrf.isIn(genArray);
-inEeg = rrf.isIn(eegArray);
-inMeg = rrf.isIn(megArray);
-disp(inSpec);
-disp(inGen);
-disp(inEeg);
-disp(inMeg);
-
-%% RUN PROCESS
-clc
-
-% Select data in interface
-data = tool.selected_Studies();
-%nf = EEG_Process(nf);
-sFileOut = nf.run(data);
-
+nf.openWebDocumentation();
 
 %% VIEW PROCESS CLASS DOCUMENTATION
 clc
@@ -135,7 +94,7 @@ pip.print;
 
 %% ADD PROCESS
 clc
-a=[aep, rrf, nf, bpf];
+a={aep, rrf, nf, bpf};
 pip.addProcess(a);
 pip.print;
 
@@ -154,7 +113,7 @@ index = pip.getProcessIndexWithName(["Review Raw Files", "ICA"]);
 %% EXTRACT PROCESS
 clc
 
-extracted_pr = pip.Processes(3);
+extracted_pr = pip.Processes{3};
 extracted_pr.print;
 
 %% MOVE PROCESS
@@ -199,24 +158,9 @@ pipLoadJson = Pipeline(fullfile(pip.Folder, strcat(pip.Name, '.json')));
 clc
 help Pipeline;
 
-%% RUN PIPELINE
-
-% waitfor(msgbox('Select Dataset in Main Window'));
-% 
-% % Select data in interface
-% data = tool.selected_Studies();
-% 
-% pip.run(data);
-
 %% VIEW HISTORY
 clc
 openvar('pip.History')
-
-%% Remove paths
-
-for i = 1:length(paths)
-    %rmpath(genpath(paths(i)));
-end
 
 %% Finished
 disp('Finished');

@@ -593,6 +593,13 @@ classdef Pipeline < handle & matlab.mixin.Copyable
             end
             
         end
+             
+        function preparePipelineToBeSavedToJson(obj)
+           
+            obj.deletePipelinesFromHistory;
+            %obj.deleteSProcessFromHistory;
+            
+        end
         
     end
 
@@ -782,37 +789,6 @@ classdef Pipeline < handle & matlab.mixin.Copyable
             
         end
         
-    end
-    
-    methods (Access = protected)
-        
-        function objCopy = copyElement(obj)
-        % Overrides the 'copyElement' to create a deep copy.
-        % For more information: https://www.mathworks.com/matlabcentral/answers/268195-ho-to-copy-an-object-deep-copy-which-has-inside-another-object
-        %
-        % OUTPUT
-        %       objCopy [Pipeline]
-        %
-        % USAGE
-        %       objCopy = obj.copyElement()
-            
-            % Shallow Copy of all elements
-            objCopy = copyElement@matlab.mixin.Copyable(obj);
-            
-            % Deep Copy of Processes (if not empty)
-            if ~isempty(obj.Processes)
-                %objCopy.Processes = copy(obj.Processes);
-                for i = 1:length(objCopy.Processes)
-                    objCopy.Processes{i} = copy(obj.Processes{i}); 
-                end
-            end
-            
-        end
-        
-    end
-    
-    methods (Access = ?PipelineExporter)
-       
         function deletePipelinesFromHistory(obj)
         % Deletes pipelines objects from history.
         % This method is used when saving to a .json file.
@@ -837,11 +813,31 @@ classdef Pipeline < handle & matlab.mixin.Copyable
             end
             
         end
-                        
-        function preparePipelineToBeSavedToJson(obj)
-           
-            obj.deletePipelinesFromHistory;
-            %obj.deleteSProcessFromHistory;
+        
+    end
+    
+    methods (Access = protected)
+        
+        function objCopy = copyElement(obj)
+        % Overrides the 'copyElement' to create a deep copy.
+        % For more information: https://www.mathworks.com/matlabcentral/answers/268195-ho-to-copy-an-object-deep-copy-which-has-inside-another-object
+        %
+        % OUTPUT
+        %       objCopy [Pipeline]
+        %
+        % USAGE
+        %       objCopy = obj.copyElement()
+            
+            % Shallow Copy of all elements
+            objCopy = copyElement@matlab.mixin.Copyable(obj);
+            
+            % Deep Copy of Processes (if not empty)
+            if ~isempty(obj.Processes)
+                %objCopy.Processes = copy(obj.Processes);
+                for i = 1:length(objCopy.Processes)
+                    objCopy.Processes{i} = copy(obj.Processes{i}); 
+                end
+            end
             
         end
         

@@ -30,8 +30,8 @@ classdef PipelineModifierForJson < handle
                 
         function deleteSProcessFromHistory(obj)
                        
-            for i = 1:length(obj.History)
-                parameter = obj.History(i).Parameters;
+            for i = 1:length(obj.PipelineToModify.History)
+                parameter = obj.PipelineToModify.History(i).Parameters;
                 if isa(parameter, 'Process')
                     parameter.deleteSProcess;
                 end
@@ -46,10 +46,6 @@ classdef PipelineModifierForJson < handle
             
         end
         
-        function processModified = modify(obj)
-            
-        end
-        
     end
+    
 end
-

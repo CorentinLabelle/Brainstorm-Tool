@@ -10,19 +10,18 @@ classdef ProcessFactory
             if isa(input, 'Process')
                 processes = input;
                 return
-            elseif ischar(input) || isstring(input)
-                input = string(input);
             end
             
+            input = ProcessFactory.convertInput(input);
             constructorHandle = ProcessFactory.getConstructor(input);
             
             validator = ProcessValidator();
             validator.verifyIfCtorIsValid(constructorHandle);
             
             if isscalar(input)
-                processes = ProcessFactory.createScalar(input, constructorHandle);
+                processes = ScalarCreator.createScalar(constructorHandle, input);
             else
-                processes = ProcessFactory.createCell(input, constructorHandle);
+                processes = CellCreator.createCell(constructorHandle, input);
             end
             
         end
@@ -30,26 +29,7 @@ classdef ProcessFactory
     end
     
     methods (Static, Access = private)
-        
-        function process = createScalar(input, ctorHandle)
-            
-            process = ctorHandle(input);
-            
-        end
-        
-        function processes = createCell(input, ctorHandle)
-            
-            m = size(input, 1);
-            n = size(input, 2);
-            processes = cell(m,n);
-            for i = 1:m
-                for j = 1:n
-                    processes{i,j} = ctorHandle(input(i,j));
-                end
-            end
-            
-        end
-        
+     
         function process = ctorWithName(prName)
             
            prName = Process.formatProcessName(prName);
@@ -102,6 +82,14 @@ classdef ProcessFactory
             
         end
         
+        function input = convertInput(input)
+            
+            if ischar(input)
+                input = string(input);
+            end
+            
+        end
+        
         function switchColumnParameterToVector(process)
             
            fields = fieldnames(process.Parameters);
@@ -130,25 +118,6 @@ classdef ProcessFactory
     
     methods (Static, Access = ?ProcessConverter)
         
-%         function matrix = convertCellToMat(cellProcess)
-%             
-%             classContent =  unique(...
-%                             string(...
-%                             cellfun(@class, cellProcess, 'UniformOutput', false)));
-%             
-%             orderedClasses = ProcessFactory.orderProcessClassWithPrecedence();
-%             
-%             for i = 1:length(orderedClasses)
-%                 if any(strcmpi(orderedClasses(i), classContent))
-%                     finalCls = orderedClasses(i);
-%                     break
-%                 end
-%             end
-%             
-%             matrix = cellfun(@(x) x.cast(finalCls), cellProcess);
-%             
-%         end
-       
         function process = fillEmptyProcessWithStructure(emptyPr, prStruct)         
             
             metaClassProcess = ?Process;
@@ -168,6 +137,26 @@ classdef ProcessFactory
             process = emptyPr;
             
         end
+
+%         function matrix = convertCellToMat(cellProcess)
+%             
+%             classContent =  unique(...
+%                             string(...
+%                             cellfun(@class, cellProcess, 'UniformOutput', false)));
+%             
+%             orderedClasses = ProcessFactory.orderProcessClassWithPrecedence();
+%             
+%             for i = 1:length(orderedClasses)
+%                 if any(strcmpi(orderedClasses(i), classContent))
+%                     finalCls = orderedClasses(i);
+%                     break
+%                 end
+%             end
+%             
+%             matrix = cellfun(@(x) x.cast(finalCls), cellProcess);
+%             
+%         end
+       
         
 %         function process = fillEmptyProcessWithProcess(emptyPr, refPr) 
 %         
