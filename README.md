@@ -154,10 +154,14 @@ BIDS
 │       ├── eeg
 │       │   ├── sub-<label>[_ses-<label>]_task-<label>[_acq-<label>][_run-<index>]_eeg.edf
 │       │   ├── sub-<label>[_ses-<label>]_task-<label>[_acq-<label>][_run-<index>]_eeg.json
-│       │   ├── <label>_events.tsv
-│       │   ├── <label>_events.json
-│       │   ├── <label>_provenance.json
-│       │   └── <label>_channelCoordinates.json
+│       │   ├── sub-<label>[_ses-<label>]_task-<label>[_acq-<label>][_run-<index>]_events.tsv
+│       │   ├── sub-<label>[_ses-<label>]_task-<label>[_acq-<label>][_run-<index>]_events.json
+│       │   ├── sub-<label>[_ses-<label>]_task-<label>[_acq-<label>][_run-<index>]_provenance.json
+|       |   ├── sub-<label>[_ses-<label>][_acq-<label>][_space-<label>]_electrodes.tsv
+|       |   ├── sub-<label>[_ses-<label>][_acq-<label>][_space-<label>]_electrodes.json
+│       │   ├── sub-<label>[_ses-<label>]_task-<label>[_acq-<label>][_run-<index>]_channels.json
+│       │   ├── sub-<label>[_ses-<label>]_task-<label>[_acq-<label>][_run-<index>]_channels.tsv
+|       |   └── sub-<label>[_ses-<label>][_acq-<label>][_space-<label>]_coordsystem.json
 │       └── sub-<label>_ses-YYYYMMDD_scans.tsv
 ├── dataset_description.json
 └── README
