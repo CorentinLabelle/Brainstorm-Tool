@@ -27,13 +27,15 @@ classdef ProtocolManager < handle
             protocolIndex = bst_get('Protocol', protocolName);
 
         end
-
+        
         function allProtocols = getAllProtocols()
            
-            contentOfDatabase = dir(bst_get('BrainstormDbDir'));
-            allProtocols = {contentOfDatabase.name};
-            allProtocols = allProtocols(~strcmpi(allProtocols, '.'));
-            allProtocols = allProtocols(~strcmpi(allProtocols, '..'));
+%             contentOfDatabase = dir(bst_get('BrainstormDbDir'));
+%             allProtocols = {contentOfDatabase.name};
+%             allProtocols = allProtocols(~strcmpi(allProtocols, '.'));
+%             allProtocols = allProtocols(~strcmpi(allProtocols, '..'));
+            global GlobalData
+            allProtocols = {GlobalData.DataBase.ProtocolInfo.Comment};
             
         end
                  
@@ -41,33 +43,8 @@ classdef ProtocolManager < handle
             
             gui_brainstorm('DeleteProtocol', ProtocolName);
             
-        end
-        
-%         function allProtocols = getAllProtocols()
-%             % Return cell of the protocol structure for every protocol
-%             
-%             % Save index of current Protocol
-%             originalProtocol = bst_get('iProtocol');
-%                         
-%             index = 1;
-%             while true
-%                 bst_set('iProtocol', index);
-%                 
-%                 protocol = bst_get('ProtocolInfo');
-%                 if isempty(protocol)
-%                     break
-%                 end
-%                 allProtocols{index} = protocol.Comment;
-%                 
-%                 index = index + 1;
-%             end
-%             
-%             bst_set('iProtocol', originalProtocol);
-%             
-%         end
-
-                
+        end               
         
     end
+    
 end
-

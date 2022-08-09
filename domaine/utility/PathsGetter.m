@@ -8,6 +8,12 @@ classdef PathsGetter
             
         end
         
+        function databaseFolder = getBstDatabaseFolder()
+           
+            databaseFolder = bst_get('BrainstormDbDir');
+            
+        end
+        
         function domainFolder = getDomainFolder()
             
             domainFolder = fullfile(PathsGetter.getBstToolFolder(), "domaine");

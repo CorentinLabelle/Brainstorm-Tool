@@ -2,7 +2,7 @@ classdef AutomatedTool < handle
     
     methods (Access = public)
                 
-        function sFilesOut = run(obj, jsonFile)
+        function outputPath = run(obj, jsonFile)
             
             assert(~isempty(jsonFile), 'No file to run!');
             obj.verifyFileExtension(jsonFile);
@@ -15,11 +15,7 @@ classdef AutomatedTool < handle
             if isempty(sFiles)
                 assert(pipeline.isProcessInPipelineWithName('review raw files'));
             end
-            
-            if ~pipeline.isProcessInPipelineWithName('import_time')
-               pipeline.addProcess(Process.create('import_time'));
-            end
-            
+            pipeline = obj.addImportTimeProcess(pipeline);
             obj.verifyPipeline(pipeline, protocolName);
             
             if ProtocolManager.isProtocolCreated(protocolName)
@@ -29,6 +25,8 @@ classdef AutomatedTool < handle
             end
             
             sFilesOut = pipeline.run(sFiles);
+            outputPath = obj.createOuputPath(jsonFile);
+            obj.createJsonOutput(outputPath, sFilesOut);
             
         end
         
@@ -108,6 +106,27 @@ classdef AutomatedTool < handle
                 assert(pipeline.isProcessInPipelineWithName('create_subject'), ...
                     'You have to create a subject');
             end
+            
+        end
+        
+        function pipeline = addImportTimeProcess(pipeline)
+           
+            if ~pipeline.isProcessInPipelineWithName('import_time')
+               pipeline.addProcess(Process.create('import_time'));
+            end
+            
+        end
+        
+        function outputPath = createJsonOutput(outputPath, sFilesOut)
+            
+            FileSaver.save(outputPath, sFilesOut);
+            
+        end
+        
+        function outputPath = createOuputPath(jsonFile)
+           
+            [folder, filename] = fileparts(jsonFile);
+            outputPath = strcat(fullfile(folder, filename), '_output.json');
             
         end
         

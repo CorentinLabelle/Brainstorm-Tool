@@ -1,4 +1,4 @@
-function RunAutomatedTool(json)
+function sFilesOut = RunAutomatedTool(json)
 
     at = AutomatedTool();
-    at.run(json);
+    sFilesOut = at.run(json);
