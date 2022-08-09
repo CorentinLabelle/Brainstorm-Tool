@@ -1,6 +1,6 @@
 function exportToBids = ExportToBids(folder, dataFileFormat)
     arguments
-        folder = '/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/testBids';
+        folder = 'folder/subFolder/bidsFolder';
         dataFileFormat = 'brainvision';
     end
     

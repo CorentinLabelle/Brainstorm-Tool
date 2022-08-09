@@ -7,8 +7,9 @@ function path = CreateAnalysisFileTemplate(filename)
     jsonStructure.Protocol = 'Protocol Name';
     jsonStructure.sFile = [];
     
-    eegPipeline = CreateEegPipeline();
-    jsonStructure.Pipeline = eegPipeline.preparePipelineToBeSavedToJson();
+    templatePipeline = CreateTemplatePipeline();
+    templatePipeline.preparePipelineToBeSavedToJson();
+    jsonStructure.Pipeline = templatePipeline;
 
     path = fullfile(PathsGetter.getAutomatedToolFolder(), filename);
     FileSaver.save(path, jsonStructure);

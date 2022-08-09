@@ -854,8 +854,8 @@ classdef Pipeline < handle & matlab.mixin.Copyable
             end
             
             % Check if valid folder
-            assert(isfolder(folder), ...
-            ['The following path to a folder does not exist: ' newline newline char(folder)]);
+            %assert(isfolder(folder), ...
+            %['The following path to a folder does not exist: ' newline newline char(folder)]);
             
             % Assign folder to property
             obj.Folder = folder;

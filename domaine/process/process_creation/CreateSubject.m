@@ -1,7 +1,7 @@
 function createSubject = CreateSubject(subjectName, anatomyPath)
 
     arguments
-        subjectName = 'Harry';
+        subjectName = 'subject01';
         anatomyPath = '';
     end
     
