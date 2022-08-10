@@ -33,7 +33,7 @@ The automated tool takes two inputs:
 
 ### Output
 The automated tool has one output:
-- The absolute path to a JSON file which contains information about the processed datasets (see template [here](AnalysisFileTemplate_output.json)).
+- [Output_File]: The absolute path to a JSON file which contains information about the processed datasets (see template [here](AnalysisFileTemplate_output.json)).
 ```json
 {
     "id" : "outfile",
