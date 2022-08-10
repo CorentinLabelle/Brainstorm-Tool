@@ -73,7 +73,7 @@ The automated tool has one output:
 ## Is your Analysis File valid ?
 An Analysis File is valid if it respects the following rules:
 - If the _Protocol_ field contains a new protocol, the first process in the pipeline must me _Create Subject_.
-- If the _sFiles_ field is empty, the first process in the pipeline must be either _Create Subject_ or _Review Raw Files_.
+- If the _Datasets_ field is empty, the first process in the pipeline must be either _Create Subject_ or _Review Raw Files_.
 - If the pipeline contains the process _Create Subject_, the next process must be _Review Raw Files_.
 
 [datetime documentation]: https://www.mathworks.com/help/matlab/matlab_prog/set-display-format-of-date-and-time-arrays.html
