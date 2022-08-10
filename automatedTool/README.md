@@ -1,9 +1,12 @@
 # Automated Brainstorm Tool
-The automated tool is a function that can be used within the Matlab environment or through the command window using the Matlab Runtime. The function can be used to apply a pipeline to a list of dataset. The pipeline is applied using the Brainstorm functions.
+The automated tool (based on Brainstorm) is a function that can be used within the Matlab environment or through the command window using the Matlab Runtime. The function can be used to apply a pipeline to a list of datasets.
 
 ## Requirements
 - [Brainstorm]
-- [Runtime R2020a (9.8)]
+- [Runtime] R2022a (9.12)
+
+## Note about the Brainstorm Database
+The Brainstorm database contains the protocols. A protocol contains a list of subjects and, for every subject, a list of studies (datasets). Adding a dataset to a subject is done using the process _Review Raw Files_. The dataset can then be analyzed using different processes (filters, ica, etc.). Although the user can visualize the processed datasets, the processeses are not actually applied until the dataset is imported in the database.
 
 ## Input and Output
 ### Input
@@ -44,7 +47,7 @@ The automated tool has one output:
 | Keyname | Requirement Level | Data Type | Description |
 |:-|:-|:-|:-|
 | Protocol | Required | String | The name of the protocol on which the pipeline will be applied. The protocol is created, if it does not already exist.|
-| sFiles | Optionnal | String | List of datasets. |
+| Datasets | Optionnal | String | List of datasets. |
 | Pipeline | Required | Pipeline | See [Pipeline description](Pipeline-description). |
 
 ### Pipeline description
@@ -73,9 +76,6 @@ An Analysis File is valid if it respects the following rules:
 - If the _sFiles_ field is empty, the first process in the pipeline must be either _Create Subject_ or _Review Raw Files_.
 - If the pipeline contains the process _Create Subject_, the next process must be _Review Raw Files_.
 
-## Note about the Brainstorm Database
-The Brainstorm database contains the protocols. A protocol contains a list of subjects and, for every subject, a list of datasets. Adding a dataset to a subject is done using the process _Review Raw Files_. The dataset can then be analyzed using different processes (filters, ica, etc.). Although the user can visualize the processed datasets, the processeses are not actually applied until the dataset is imported in the database.
-
 [datetime documentation]: https://www.mathworks.com/help/matlab/matlab_prog/set-display-format-of-date-and-time-arrays.html
 [Brainstorm]: https://neuroimage.usc.edu/brainstorm/Installation
-[Runtime R2020a (9.8)]: https://fr.mathworks.com/products/compiler/matlab-runtime.html
+[Runtime]: https://fr.mathworks.com/products/compiler/matlab-runtime.html
