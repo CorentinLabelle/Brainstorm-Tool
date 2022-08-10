@@ -1,6 +1,6 @@
 {
   "Protocol": "Protocol Name",
-  "sFile": [],
+  "Datasets": [],
   "Pipeline": {
     "Type": "eeg",
     "Name": "PipelineName",
