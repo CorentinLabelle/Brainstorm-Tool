@@ -1,5 +1,5 @@
 # Automated Brainstorm Tool
-The automated tool (based on Brainstorm) is a function that can be used within the Matlab environment or through the command window using the Matlab Runtime. The function can be used to apply a pipeline to a list of datasets.
+The automated tool (based on Brainstorm) is a function that can be used within the Matlab environment or using the Matlab Runtime. The function can be used to apply a pipeline to a list of datasets.
 
 ## Requirements
 - [Brainstorm]
