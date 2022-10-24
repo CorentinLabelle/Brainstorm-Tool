@@ -2,15 +2,13 @@ classdef AutomatedTool < handle
     
     methods (Access = public)
                 
-        function outputPath = run(obj, jsonFile)
-            
+        function outputPath = run(obj, jsonFile)            
             assert(~isempty(jsonFile), 'No file to run!');
-            obj.verifyFileExtension(jsonFile);
             
-            structure = FileReader.read(jsonFile);
-            protocolName = obj.getProtocolName(structure);
-            sFiles = obj.getsFiles(structure);
-            pipeline = obj.getPipeline(structure);
+            analysisFileReader = AnalysisFileReader(jsonFile);
+            protocolName = analysisFileReader.getProtocol();
+            sFiles = analysisFileReader.getSFile();
+            pipeline = analysisFileReader.getPipeline();
             
             if isempty(sFiles)
                 assert(pipeline.isProcessInPipelineWithName('review raw files'));
@@ -26,8 +24,7 @@ classdef AutomatedTool < handle
             
             sFilesOut = pipeline.run(sFiles);
             outputPath = obj.createOuputPath(jsonFile);
-            obj.createJsonOutput(outputPath, sFilesOut);
-            
+            obj.createJsonOutput(outputPath, sFilesOut);            
         end
         
     end
@@ -63,77 +60,30 @@ classdef AutomatedTool < handle
     
     methods (Static, Access = private)
         
-        function protocolName = getProtocolName(structure)
-            
-            if isfield(structure, 'Protocol')
-                protocolName = structure.Protocol;
-            else
-                error('You need to enter a protocol.');
-            end
-            
-        end
-        
-        function sFiles = getsFiles(structure)
-            
-            if isfield(structure, 'sFiles')
-                sFiles = structure.sFiles;
-            else
-                sFiles = [];
-            end
-            
-        end
-        
-        function pipeline = getPipeline(structure)
-           
-            if isfield(structure, 'Pipeline')
-                pipeline = Pipeline(structure.Pipeline);
-            else
-                error('You need to enter a pipeline.');
-            end
-            
-        end
-        
-        function verifyFileExtension(filePath)
-            
-            [~, ~, extension] = fileparts(filePath);
-            assert(strcmpi(extension, '.json'));
-            
-        end
-        
-        function verifyPipeline(pipeline, protocolName)
-           
+        function verifyPipeline(pipeline, protocolName)           
             if ~ProtocolManager.isProtocolCreated(protocolName)
-                assert(pipeline.isProcessInPipelineWithName('create_subject'), ...
-                    'You have to create a subject');
-            end
-            
+                %assert(pipeline.isProcessInPipelineWithName('create_subject'), ...
+                 %   'You have to create a subject');
+            end            
         end
         
-        function pipeline = addImportTimeProcess(pipeline)
-           
+        function pipeline = addImportTimeProcess(pipeline)           
             if ~pipeline.isProcessInPipelineWithName('import_time')
-               pipeline.addProcess(Process.create('import_time'));
-            end
-            
+                pipeline = pipeline.addProcess(Process.create('import_time'));
+            end            
         end
         
-        function outputPath = createJsonOutput(outputPath, sFilesOut)
-            
-            FileSaver.save(outputPath, sFilesOut);
-            
+        function outputPath = createJsonOutput(outputPath, sFilesOut)            
+            FileSaver.save(outputPath, sFilesOut);            
         end
         
-        function outputPath = createOuputPath(jsonFile)
-           
+        function outputPath = createOuputPath(jsonFile)           
             [folder, filename] = fileparts(jsonFile);
-            outputPath = strcat(fullfile(folder, filename), '_output.json');
-            
+            outputPath = strcat(fullfile(folder, filename), '_output.json');            
         end
         
-        function filePath = getPathToScriptToRunAutomatedTool()
-           
+        function filePath = getPathToScriptToRunAutomatedTool()           
             filePath = '/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/scripts/AnalysisTool/automatedTool/runAutomatedTool.m';
-            
         end
         
     end

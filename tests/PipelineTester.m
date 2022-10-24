@@ -1,5 +1,13 @@
 classdef PipelineTester < matlab.unittest.TestCase
 
+    properties (Access = private)
+    
+        PipelineName = "Pipeline Name";
+        PipelineFolder = "/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1";
+        PipelineExtension = ".json";
+        
+    end
+    
     methods(TestMethodSetup)
         
     end
@@ -11,270 +19,274 @@ classdef PipelineTester < matlab.unittest.TestCase
     methods (Test)
         
         function emptyConstructor(tc)
-
             pipTest = Pipeline();
-              
-            tc.verifyEqual(pipTest.Name, "", 'Name');
-            tc.verifyEqual(pipTest.Folder, "", 'Folder');
-            tc.verifyEqual(pipTest.Extension, string.empty, 'Extension');
-            tc.verifyEqual(pipTest.Processes, cell.empty(), 'Process');
-            tc.verifyEqual(pipTest.Documentation, char.empty, 'Doc');
-            
+            tc.verifyTrue(pipTest.isDefault());            
+        end
+
+        function constructorWithInvalidFilename(tc)
+            tc.verifyError(@() Pipeline('someFile'), ?MException); 
         end
         
-        function constructorWithValidStructure(tc)
-           
-            structTest = PipelineTester.generateTestStructure;
-            
-            pipTest = Pipeline(structTest);
-            
-            tc.verifyEqual(pipTest.Name, "Pipeline_Construct_With_Structure", 'Name');
-            tc.verifyEqual(pipTest.Folder, "/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/scripts/AnalysisTool", 'Folder');
-            tc.verifyEqual(pipTest.Extension, ".json", 'Extension');
-            tc.verifyEqual(pipTest.Processes, structTest.Processes, 'Process');
-            tc.verifyEqual(pipTest.Documentation, 'I''ve been construct with a structure', 'Doc');
-
-        end
-        
-        function constructorWithInvalideStructureAdditionnalField(tc)
-           
-            structTest = PipelineTester.generateTestStructure;
-            
-            structTest.UnknownField = 'Unknown Field Value';
-            structTest.AdditionnalField = 1;
-            
-            pipTest = Pipeline(structTest);
-                            
-            tc.verifyEqual(pipTest.Name, "Pipeline_Construct_With_Structure", 'Name');
-            tc.verifyEqual(pipTest.Folder, "/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/scripts/AnalysisTool", 'Folder');
-            tc.verifyEqual(pipTest.Extension, ".json", 'Extension');
-            tc.verifyEqual(pipTest.Processes, structTest.Processes, 'Process');
-            tc.verifyEqual(pipTest.Documentation, 'I''ve been construct with a structure', 'Doc');
-
-            
-        end
-        
-        function constructorWithValidName(tc)
-            
-            name = 'Constructor with name';
-            pipTest = Pipeline(name);
-                            
-            tc.verifyEqual(pipTest.Name, "Constructor with name", 'Name');
-            tc.verifyEqual(pipTest.Folder, "", 'Folder');
-            tc.verifyEqual(pipTest.Extension, string.empty, 'Extension');
-            tc.verifyEqual(pipTest.Processes, cell.empty(), 'Process');
-            tc.verifyEqual(pipTest.Documentation, char.empty(), 'Doc');
-
-
-        end
-
         function constructorWithValidFilename(tc)
-            
             filename = '/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/pipelines/someName.mat';
-
             pipTest= Pipeline(filename);
-            
             tc.verifyEqual(pipTest.Name, "someName", 'Name');
             tc.verifyEqual(pipTest.Folder, "/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/pipelines", 'Folder');
             tc.verifyEqual(pipTest.Extension, ".mat", 'Extension');
             tc.verifyEqual(pipTest.Processes, cell.empty(), 'Process');
-            tc.verifyEqual(pipTest.Documentation, char.empty(), 'Doc'); 
-            
-            
+            tc.verifyEqual(pipTest.Documentation, char.empty(), 'Doc');           
         end
         
-        function constructorWithInvalidFolderInFile(tc)
-            
-            path = 'someFolder/someName.mat';
-            
-            tc.verifyError(@() Pipeline(path), '')
-            
-            
+        function setNameWithString(tc)
+            pip = Pipeline();
+            pip = pip.setName(string(tc.PipelineName));
+            tc.verifyEqual(pip.getName(), tc.PipelineName);            
         end
         
-        function setValidFolderWithCharacters(tc)
-           
+        function setNameWithChar(tc)
+            pip = Pipeline();
+            pip = pip.setName(char(tc.PipelineName));
+            tc.verifyEqual(pip.getName(), tc.PipelineName);            
+        end
+        
+        function setInvalidName(tc)
+            pip = Pipeline();
+            tc.verifyError(@() pip.setName(5), ?MException);            
+        end
+        
+        function setFolderWithCharacters(tc)
             pipTest = Pipeline();
-            pipTest.setFolder('/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1');
-            
-            tc.verifyEqual(pipTest.Folder, "/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1");
-            
+            pipTest = pipTest.setFolder(char(tc.PipelineFolder));
+            tc.verifyEqual(pipTest.getFolder(), tc.PipelineFolder);            
         end
         
-        function setValidFolderWithString(tc)
-           
+        function setFolderWithString(tc)
             pipTest = Pipeline();
-            pipTest.setFolder("/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1");
-            
-            tc.verifyEqual(pipTest.Folder, "/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1");
-            
+            pipTest = pipTest.setFolder(string(tc.PipelineFolder));
+            tc.verifyEqual(pipTest.getFolder(), tc.PipelineFolder); 
         end
         
         function setInvalidFolder(tc)
-           
             pipTest = Pipeline();
-            
-            tc.verifyError(@() pipTest.setFolder('/mnt/SomeFolder'), '');
-            tc.verifyError(@() pipTest.setFolder("/mnt/SomeFolder"), '');
-            tc.verifyError(@() pipTest.setFolder(6), '');
+            tc.verifyError(@() pipTest.setFolder(6), ?MException);            
+        end
+        
+        function setExtensionWithCharacters(tc)
+            pipTest = Pipeline();
+            pipTest = pipTest.setExtension(char(tc.PipelineExtension));
+            tc.verifyEqual(pipTest.getExtension(), tc.PipelineExtension);
+        end
+        
+        function setExtensionWithString(tc)
+            pipTest = Pipeline();
+            pipTest = pipTest.setExtension(string(tc.PipelineExtension));
+            tc.verifyEqual(pipTest.getExtension(), tc.PipelineExtension);
+        end
+        
+        function setInvalidExtension(tc)
+            pipTest = Pipeline();
+            tc.verifyError(@() pipTest.setExtension(6), ?MException);
+        end
+        
+        function addProcessAtTheEnd(tc)
+            processesTest = PipelineTester.generateTestProcesses();
+        
+            pipTest = Pipeline();            
+            for i = 1:length(processesTest)                
+                pipTest = pipTest.addProcess(processesTest{i});
+                tc.verifyEqual(pipTest.Processes.getProcess{end}, processesTest{i});            
+            end
             
         end
         
-        function addProcessWithValidIndex(tc)
-        
-            pipTest = Pipeline();
-            
+        function addProcessAtRandomPosition(tc)
             processesTest = PipelineTester.generateTestProcesses();
-            
-            % Adding process at the end
-            for i = 1:length(processesTest)
-                
-                pipTest.addProcess(processesTest{i});
-                tc.verifyEqual(pipTest.Processes{end}, processesTest{i});
-            
-            end
-            
-            pipTest.clear;
               
-            % Adding processes at random position
+            pipTest = Pipeline();
             for i = 1:length(processesTest)
-                randomIndex = randi([1 length(pipTest.Processes)+1], 1);
-                
+                randomIndex = randi([1 length(pipTest.Processes)+1], 1);                
                 pipTest.addProcess(processesTest{i}, randomIndex);
-                tc.verifyEqual(pipTest.Processes{randomIndex}, processesTest{i});
-            
+                tc.verifyEqual(pipTest.Processes.getProcess(randomIndex), processesTest{i});            
             end
             
         end
         
-        function addMultipleProcessesWithValidIndexes(tc)
+        function addMultipleProcessesAtTheEnd(tc)
+            rrf = Process.create('review raw files');
+            aep = Process.create('add eeg position');
+            processToAdd = {rrf, aep};
         
             pipTest = Pipeline();
-            processesTest = PipelineTester.generateTestProcesses();
-            
-            pipTest.addProcess(processesTest);
-            tc.verifyEqual(pipTest.Processes, processesTest);
+            pipTest.addProcess(processToAdd);
+            tc.verifyEqual(pipTest.Processes.getProcess(), processToAdd, 'first');
             
         end
         
-        function addDuplicateProcess(tc)
+        function addMultipleProcessesAtRandomPosition(tc)
+            pr1 = Process.create('Review Raw Files');
+            pr2 = Process.create('Add EEG Position');
+            pr3 = Process.create('Notch Filter');
+            pr4 = Process.create('Band-Pass Filter');
+            pr5 = Process.create('Power Spectrum Density');
+            pr6 = Process.create('ICA');
+            pr7 = Process.create('Export To BIDS');
+            processToAdd = {pr4, pr5, pr6, pr7};
             
             pipTest = Pipeline();
-            
-            processesTest = PipelineTester.generateTestProcesses();
-            
-            randomIndex = randi([1 length(processesTest)], 1);
-            
-            pipTest.addProcess(processesTest{randomIndex});
-            
-            tc.verifyError(@() pipTest.addProcess(processesTest{randomIndex}), ...
-                'PipelineValidator:DuplicateProcess');
+            pipTest.addProcess(pr1);
+            pipTest.addProcess(pr2);
+            pipTest.addProcess(pr3);
+            pipTest.addProcess(processToAdd, 2);
+            tc.verifyEqual(pipTest.Processes.getProcess(1), pr1, '1');
+            tc.verifyEqual(pipTest.Processes.getProcess(2), pr4, '2');
+            tc.verifyEqual(pipTest.Processes.getProcess(3), pr5, '3');
+            tc.verifyEqual(pipTest.Processes.getProcess(4), pr6, '4');
+            tc.verifyEqual(pipTest.Processes.getProcess(5), pr7, '5');
+            tc.verifyEqual(pipTest.Processes.getProcess(6), pr2, '6');
+            tc.verifyEqual(pipTest.Processes.getProcess(7), pr3, '7');
             
         end
         
-        function addProcessWithInvalidIndexes(tc)
-            
+        function addProcessWithInvalidPosition(tc)
+            pr = Process.create('review raw files');
             pipTest = Pipeline();
-            processesTest = PipelineTester.generateTestProcesses();
-            
-            invalidIndex = 100;
-            tc.verifyError(@() pipTest.addProcess(processesTest(invalidIndex)), 'MATLAB:badsubscript');
-            
-            invalidIndex = 0;
-            tc.verifyError(@() pipTest.addProcess(processesTest(invalidIndex)), 'MATLAB:badsubscript');
-            
-            invalidIndex = 'a';
-            tc.verifyError(@() pipTest.addProcess(processesTest(invalidIndex)), 'MATLAB:badsubscript');
-            
-            
+            tc.verifyError(@() pipTest.addProcess(pr, 100), ?MException);
         end
         
-        function addInvalidProcessOfWrongType(tc)
-            
-            eegPr = Process.create('add eeg position');
+        function addProcessOfWrongType(tc)
+            eegPr1 = Process.create('add eeg position');
+            eegPr2 = Process.create('project electrode on scalp');
             megPr = Process.create('convert epochs to continue');
             
             pipTest = Pipeline();
-            pipTest.addProcess(eegPr);
-            
-            tc.verifyError(@() pipTest.addProcess(megPr), 'PipelineValidator:InvalidProcessType');
-            
+            pipTest.addProcess(eegPr1);
+            pipTest.addProcess(eegPr2);
+            tc.verifyError(@() pipTest.addProcess(megPr), ?MException);            
+        end        
+        
+        function addDuplicateProcess(tc)
+            pr = Process.create('add eeg position');
+            pipTest = Pipeline();      
+            pipTest.addProcess(pr);
+            tc.verifyError(@() pipTest.addProcess(pr), ?MException);            
         end
         
-        function swapProcessesWithValidIndexes(tc)
+        function addProcessWithInvalidIndexes(tc)
+            nf = Process.create('notch filter');
             
             pipTest = Pipeline();
-            processesTest = PipelineTester.generateTestProcesses();
-            pipTest.addProcess(processesTest);
             
-            randomIndexSource = randi([1 length(processesTest)], 1);
+            invalidIndex = 100;
+            tc.verifyError(@() pipTest.addProcess(nf, invalidIndex), 'MATLAB:badsubscript');
             
-            while true
-                randomIndexDestination = randi([1 length(processesTest)], 1);
-                if randomIndexSource ~= randomIndexDestination
-                    break
-                end
-            end
+            invalidIndex = 0;
+            tc.verifyError(@() pipTest.addProcess(nf, invalidIndex), 'MATLAB:badsubscript');
             
-            processSource = pipTest.Processes{randomIndexSource};
-            processDestination = pipTest.Processes{randomIndexDestination};
+            invalidIndex = 'a';
+            tc.verifyError(@() pipTest.addProcess(nf, invalidIndex), 'MATLAB:badsubscript');
             
-            pipTest.swapProcess(randomIndexSource, randomIndexDestination);
-            
-            tc.verifyEqual(pipTest.Processes{randomIndexSource}, processDestination);
-            tc.verifyEqual(pipTest.Processes{randomIndexDestination}, processSource);
-            
-        end
-        
-        function moveProcessWithValidIndexes(tc)
-            
-            pipTest = Pipeline();
-            processesTest = PipelineTester.generateTestProcesses();
-            pipTest.addProcess(processesTest);
-            
-            randomIndexSource = randi([1 length(processesTest)], 1);
-            
-            while true
-                randomIndexDestination = randi([1 length(processesTest)], 1);
-                if randomIndexSource ~= randomIndexDestination
-                    break
-                end
-            end
-            
-            processToMove = pipTest.Processes{randomIndexSource};
-            
-            pipTest.moveProcess(randomIndexSource, randomIndexDestination);
-            
-            tc.verifyEqual(processToMove, pipTest.Processes{randomIndexDestination});
-            
-        end
-        
-        function deleteProcessWithValidIndex(tc)
-           
-            pipTest = Pipeline();
-            processesTest = PipelineTester.generateTestProcesses();
-            pipTest.addProcess(processesTest);
-            
-            randomIndex = randi([1 length(processesTest)], 1);
-            
-            processToDelete = pipTest.Processes{randomIndex};
-            
-            pipTest.deleteProcess(randomIndex);
-            
-            tc.verifyTrue(~any(pipTest.isProcessesInPipeline(processToDelete)))
             
         end
         
         function clearPipelineTester(tc)
+            bpf = Process.create('band pass filter');
+            pipTest = Pipeline();
+            pipTest.addProcess(bpf);
+            pipTest.clear;
+            tc.verifyTrue(pipTest.Processes.isEmpty());
+        end
+        
+        function deleteProcessWithValidIndex(tc)
+            rrf = Process.create('review raw files');
+            ica = Process.create('ica');
+            etb = Process.create('export to bids');
+           
+            pipTest = Pipeline();
+            pipTest.addProcess(rrf);
+            pipTest.addProcess(ica);
+            pipTest.addProcess(etb);
+            
+            pipTest.deleteProcess(2);
+            
+            tc.verifyTrue(pipTest.Processes.getNumberOfProcess() == 2);
+            tc.verifyEqual(pipTest.Processes.getProcess(1), rrf);
+            tc.verifyEqual(pipTest.Processes.getProcess(2), etb);
+            
+        end
+        
+        function moveProcessWithValidIndexes(tc)
+            ica = Process.create('ica');
+            nf = Process.create('notch filter');
+            bpf = Process.create('band pass filter');
+            etb = Process.create('export to bids');
             
             pipTest = Pipeline();
-            processesTest = PipelineTester.generateTestProcesses();
-            pipTest.addProcess(processesTest);
             
-            pipTest.clear;
+            pipTest.addProcess(nf);
+            pipTest.addProcess(bpf);
+            pipTest.addProcess(ica);
+            pipTest.addProcess(etb);
             
-            tc.verifyTrue(isempty(pipTest.Processes));
+            pipTest.moveProcess(2, 4);
             
+            tc.verifyEqual(pipTest.Processes.getProcess(1), nf);
+            tc.verifyEqual(pipTest.Processes.getProcess(2), ica);
+            tc.verifyEqual(pipTest.Processes.getProcess(3), etb);
+            tc.verifyEqual(pipTest.Processes.getProcess(4), bpf);
+            
+        end
+        
+        function swapProcessesWithValidIndexes(tc)
+            ica = Process.create('ica');
+            nf = Process.create('notch filter');
+            bpf = Process.create('band pass filter');
+            etb = Process.create('export to bids');
+            
+            pipTest = Pipeline();
+            
+            pipTest.addProcess(nf);
+            pipTest.addProcess(bpf);
+            pipTest.addProcess(ica);
+            pipTest.addProcess(etb);
+            
+            pipTest.swapProcess(2, 4);
+            
+            tc.verifyEqual(pipTest.Processes.getProcess(1), nf);
+            tc.verifyEqual(pipTest.Processes.getProcess(2), etb);
+            tc.verifyEqual(pipTest.Processes.getProcess(3), ica);
+            tc.verifyEqual(pipTest.Processes.getProcess(4), bpf);
+            
+        end
+        
+        function copyOfPipeline(tc)
+            
+            pip1 = Pipeline();
+            pip2 = copy(pip1);
+            pip1.setName(tc.PipelineName);
+            
+            tc.verifyEqual(pip1.getName(), tc.PipelineName);
+            tc.verifyNotEqual(pip2.getName(), tc.PipelineName);
+            
+        end
+        
+        function isProcessIn(tc)
+            rrf = Process.create('review raw files');
+            nf = Process.create('notch filter');
+            bpf = Process.create('band pass filter');
+            ica = Process.create('ica');
+            aep = Process.create('add eeg position');
+            
+            pip = Pipeline();
+            pip.addProcess({rrf, nf, bpf, ica});            
+            tc.verifyTrue(pip.isProcessIn(rrf));            
+            tc.verifyEqual(pip.isProcessIn({bpf, ica, aep}), logical([1 1 0]));
+            
+        end
+        
+        function convertToCharacters(tc)
+            pip = Pipeline();
+            pipAsChars = pip.convertToCharacters();
+            tc.verifyClass(pipAsChars, 'char');
         end
         
         function savePipelineTester(tc)
@@ -427,7 +439,7 @@ classdef PipelineTester < matlab.unittest.TestCase
         function structTest = generateTestStructure()
             
             name = 'Pipeline_Construct_With_Structure';
-            folder = '/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/scripts/AnalysisTool';
+            folder = '/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/projects/Brainstorm_Tool/tests';
             extension = '.json';
             processes = {Process.create('Refine Registration'), ...
                                     Process.create('Notch Filter'), ...

@@ -55,7 +55,7 @@ function AllProcessTester(protocolName, deleteProtocol)
     sFiles = DatabaseSearcher.selectFiles({'*'}, {'*'});
 
     for i = 1:length(sFiles)
-        channelFile = load(GetChannelFilePath(sFiles(i)));
+        channelFile = load(ChannelManager.getChannelFilePath(sFiles(i)));
         assert(all(cellfun(@(x) isequal(x, [0;0;0]), {channelFile.Channel.Loc})))
     end
 
@@ -63,7 +63,7 @@ function AllProcessTester(protocolName, deleteProtocol)
     sFiles = addEegPosition.run(sFiles); 
 
     for i = 1:length(sFiles)
-        channelFile = load(GetChannelFilePath(sFiles(i)));
+        channelFile = load(ChannelManager.getChannelFilePath(sFiles(i)));
         assert(any(cellfun(@(x) ~isequal(x, [0;0;0]), {channelFile.Channel.Loc})))
     end
 

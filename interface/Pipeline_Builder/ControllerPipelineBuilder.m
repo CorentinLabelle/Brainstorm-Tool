@@ -64,7 +64,7 @@ classdef ControllerPipelineBuilder < Controller
         function addSubject(~, subjectName, rawDataPath)
             
             rawFilesManager = ReviewRawFilesParameterGetterAndSetter.instance();
-            rawFilesManager.addParameter(subjectName, rawDataPath);
+            rawFilesManager.addSubject(subjectName, rawDataPath);
             
         end
         

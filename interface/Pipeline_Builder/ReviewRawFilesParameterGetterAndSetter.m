@@ -33,7 +33,9 @@ classdef ReviewRawFilesParameterGetterAndSetter < handle
         function setParameter(obj, subject, rawFilesPath)
            
             obj.clearParameter();
-            obj.addParameter(subject, rawFilesPath)
+            for i = 1:length(subject)
+                obj.addSubject(subject(i), rawFilesPath(i));
+            end
             
         end
         
@@ -44,7 +46,7 @@ classdef ReviewRawFilesParameterGetterAndSetter < handle
             
         end
         
-        function addParameter(obj, subjectName, rawFilesPath)
+        function addSubject(obj, subjectName, rawFilesPath)
 
             if ischar(rawFilesPath)
                 rawFilesPath = {rawFilesPath};
@@ -59,7 +61,7 @@ classdef ReviewRawFilesParameterGetterAndSetter < handle
             end
             
             obj.Subjects(end+1:end+length(subjectName)) = subjectName;
-            obj.RawFilesPath(end+1:end+length(rawFilesPath)) = rawFilesPath;
+            obj.RawFilesPath(end+1) = {rawFilesPath};
                 
         end
         

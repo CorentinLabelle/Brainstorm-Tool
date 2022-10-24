@@ -23,21 +23,12 @@ classdef FileReader < handle
     
     methods (Static, Access = private)
 
-        function structure = readJson(path)
-            
-            fileID = fopen(path); 
-            raw = fread(fileID, inf);  
-            fclose(fileID); 
-            
-            str = char(raw');
-            structure = jsondecode(str);
-                    
+        function structure = readJson(path)            
+            structure = JsonDecoder.decode(path);                    
         end
         
         function structure = readMat(path)
-           
-            structure = load(path);
-            
+            structure = load(path);            
         end
         
     end

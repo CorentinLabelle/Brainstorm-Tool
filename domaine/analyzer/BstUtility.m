@@ -88,12 +88,9 @@ classdef BstUtility
          
         function date = getDateFromBrainstormStudyMAT(sFiles)
             
-            getBstStudyPathHandle = ...
-                str2func([mfilename('class') '.getBrainstormStudyPathFromSFile']);
-            
             date = NaT(1, length(sFiles));
             for i = 1:length(sFiles)
-                brainstormStudyFile = getBstStudyPathHandle(sFiles(i));
+                brainstormStudyFile = SFileManager.getBrainstormStudyPathFromSFile(sFiles(i));
                 bsStudy = load(brainstormStudyFile);
                 date(i) = datetime(bsStudy.DateOfStudy);
             end
