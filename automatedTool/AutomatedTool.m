@@ -82,8 +82,8 @@ classdef AutomatedTool < handle
             outputPath = strcat(fullfile(folder, filename), '_output.json');            
         end
         
-        function filePath = getPathToScriptToRunAutomatedTool()           
-            filePath = '/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/scripts/AnalysisTool/automatedTool/runAutomatedTool.m';
+        function filePath = getPathToScriptToRunAutomatedTool()
+            filePath = fullfile(GetBrainstormToolFolder(), 'automatedTool', 'runAutomatedTool.m');
         end
         
     end
