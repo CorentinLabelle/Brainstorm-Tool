@@ -3,7 +3,7 @@ classdef ProtocolManager < handle
     methods (Static, Access = public)
         
         function createProtocol(protocolName)            
-            gui_brainstorm('CreateProtocol', protocolName, 0, 0);            
+            gui_brainstorm('CreateProtocol', protocolName, 0, 0);
         end
         
         function isCreated = isProtocolCreated(protocolName)            
