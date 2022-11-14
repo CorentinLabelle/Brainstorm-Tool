@@ -1,8 +1,8 @@
 classdef Pipeline
     
     properties (SetAccess = private, GetAccess = public)
-        Details;
-        Processes;        
+        Details PipelineDetails;
+        Processes ListOfProcesses;        
     end
     
     methods (Access = public)
@@ -177,7 +177,9 @@ classdef Pipeline
             end            
             bst_report('Start');                        
             for i = 1:obj.Processes.getNumberOfProcess()
-                sFilesOut = obj.getProcess(i).run(sFilesIn);
+                pr = obj.getProcess(i);
+                sFilesOut = pr.run(sFilesIn);
+                disp(pr.getName());
                 sFilesIn = sFilesOut;
             end            
             reportFile = bst_report('Save', []);

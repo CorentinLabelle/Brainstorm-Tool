@@ -43,12 +43,10 @@ classdef SFileManager
                 sFiles = [];
                 return
             end
-            sFiles = cell(1, length(studyLink));
             for i = 1:length(studyLink)
                 link = SFileManager.parseLink(studyLink{i});
-                sFiles{i} = DatabaseSearcher.searchQuery("path", "equals", link);
-            end
-            sFiles = cell2mat(sFiles);
+                sFiles(i) = DatabaseSearcher.searchQuery("path", "equals", link);
+            end            
         end
         
         function isLink = isStudyLink(sFile)
@@ -62,8 +60,8 @@ classdef SFileManager
             end            
         end
         
-        function brainstormStudyPath = getBrainstormStudyPathFromSFile(sFile)            
-            brainstormStudyPath = fullfile(PathsGetter.getBstDatabaseFolder(), ...
+        function BrainstormStudyPath = getBrainstormStudyPathFromSFile(sFile)            
+            BrainstormStudyPath = fullfile(PathsGetter.getBstDatabaseFolder(), ...
                 bst_get('ProtocolInfo').Comment, 'data', ...
                 sFile.SubjectName, sFile.Condition, 'brainstormstudy.mat');            
         end

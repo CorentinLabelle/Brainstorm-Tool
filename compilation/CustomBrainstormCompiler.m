@@ -47,7 +47,7 @@ classdef CustomBrainstormCompiler < handle
             if isunix
                 openJdkFolder = '/usr/lib/jvm/java-8-openjdk-amd64';
             elseif ispc
-                error('add path to openjdk');
+                openJdkFolder = 'C:\Users\alab\Desktop\OpenJDK8U-jdk_x64_windows_hotspot_8u332b09\jdk8u332-b09';
             elseif ismac
                 error('add path to openjdk');
             end
