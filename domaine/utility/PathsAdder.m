@@ -30,10 +30,9 @@ classdef PathsAdder
                         '). Should be ' expectedFolder '.']);
             end
             if ~isdeployed()
-                addpath(genpath(bst3Folder));
+                addpath(bst3Folder);
             end
             isAdded = true;
-
         end
         
     end
