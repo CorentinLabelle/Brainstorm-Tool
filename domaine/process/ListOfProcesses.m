@@ -1,4 +1,8 @@
 classdef ListOfProcesses < ListOfObjects
+
+    properties (GetAccess = public, SetAccess = protected)
+        List cell;        
+    end
     
     methods (Access = ?Pipeline)
         
@@ -55,6 +59,10 @@ classdef ListOfProcesses < ListOfObjects
             processToMove = obj.List{oldPosition};           
             obj = obj.deleteProcess(oldPosition);
             obj = obj.addProcess(processToMove, newPosition);
+        end
+
+        function obj = remove(obj, index)
+            obj.List(index) = [];
         end
            
         function index = getProcessIndexWithName(obj, processNameToFind)
