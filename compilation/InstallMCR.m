@@ -1,5 +1,4 @@
 function InstallMCR()
-
     instructions = getInstructionToInstallMCR();
     
     disp('<strong>Instructions to install Matlab Compiler Runtime:</strong>');
@@ -10,13 +9,10 @@ function InstallMCR()
     fprintf('\n');
     disp(instructions);
     fprintf('\n');
-
 end
 
-function instructionsToRunInCommandLine = getInstructionToInstallMCR()
-    
-    instructionsToRunInCommandLine = 'No instruction';
-            
+function instructionsToRunInCommandLine = getInstructionToInstallMCR()    
+    instructionsToRunInCommandLine = 'No instruction';            
     downloadRuntime = askToDownloadRuntime();
     
     if ~downloadRuntime
@@ -55,27 +51,22 @@ function instructionsToRunInCommandLine = getInstructionToInstallMCR()
         instructionsToRunInCommandLine = [...
             'cd ' installerFolder '; ' ...
             command ' -mode silent -agreeToLicense yes -destinationFolder ' runtimeInstallationDir];
-
         disp(instructionsToRunInCommandLine);
-
     end
     
 end
 
 function yesOrNo = askToDownloadRuntime()
-
     while true
         answer = input('Do you want to download the latest MATLAB Runtime ? (y/n) ', 's');
         answer = lower(answer);
-
         if strcmp(answer, 'y')
             yesOrNo = true;
             break;
         elseif strcmp(answer, 'n')
             yesOrNo = false;
             break;               
-        end
-        
+        end        
     end
         
 end

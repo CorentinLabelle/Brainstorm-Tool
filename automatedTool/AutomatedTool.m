@@ -62,14 +62,14 @@ classdef AutomatedTool < handle
         
         function verifyPipeline(pipeline, protocolName)           
             if ~ProtocolManager.isProtocolCreated(protocolName)
-                %assert(pipeline.isProcessInPipelineWithName('create_subject'), ...
-                 %   'You have to create a subject');
+                assert(pipeline.isProcessInPipelineWithName('create_subject'), 'You have to create a subject');
             end            
         end
         
-        function pipeline = addImportTimeProcess(pipeline)           
-            if ~pipeline.isProcessInPipelineWithName('import_time')
-                pipeline = pipeline.addProcess(Process.create('import_time'));
+        function pipeline = addImportTimeProcess(pipeline)
+            processNames = 'import_time';
+            if ~pipeline.isProcessInPipelineWithName(processNames)
+                pipeline = pipeline.addProcess(Process.create(processNames));
             end            
         end
         
