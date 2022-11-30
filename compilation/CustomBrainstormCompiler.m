@@ -3,87 +3,59 @@ classdef CustomBrainstormCompiler < handle
     methods (Access = public)
         
         function compile(obj)
-            
-            obj.setJavaHomeToPointToJavaOpenJDK();
-            
-            domainFolder = PathsGetter.getDomainFolder();
-            autoToolFolder = PathsGetter.getAutomatedToolFolder();
-            foldersToCopy = [domainFolder, autoToolFolder];
+            if ~obj.isJavaHomeSet()
+                obj.setJavaHomeToPointToJavaOpenJDK();
+            end
+            foldersToCompile = obj.getFoldersToCompile();
             destinationFolder = fullfile(PathsGetter.getBrainstorm3Path(), "toolbox");
-            obj.copyToDestination(foldersToCopy, destinationFolder);
+            Copier.Copy(foldersToCompile, destinationFolder);
 
-            obj.compileBrainstorm();
+            obj.compileBrainstormNoPlugs();
             
             binFiles = obj.getBinFiles();
             binDestination = obj.getBstBinDestination();
-            obj.copyToDestination(binFiles, binDestination);
-            
+            Copier.Copy(binFiles, binDestination);
         end
         
     end
     
     methods (Static, Access = private)
-        
+
+        function setJavaHomeToPointToJavaOpenJDK()
+            java_home = uigetdir('', 'Select OpenJDK folder (jdk***)');
+            setenv('JAVA_HOME', java_home);            
+        end
+
+        function isSet = isJavaHomeSet()
+            java_home = getenv('JAVA_HOME');
+            isSet = ~isempty(java_home) && isfolder(java_home);
+        end
+
+        function folders = getFoldersToCompile()
+            domainFolder = PathsGetter.getDomainFolder();
+            automatedToolFolder = PathsGetter.getAutomatedToolFolder();
+            folders = [domainFolder, automatedToolFolder];
+        end
+
         function binDestination = getBstBinDestination()
-            
             brainstorm3Path = PathsGetter.getBrainstorm3Path();
-            binDestination = fullfile(brainstorm3Path, "bin", bst_get('MatlabReleaseName'));
-            
+            binDestination = fullfile(brainstorm3Path, "bin", matlabRelease.Release);            
         end
         
-        function binFiles = getBinFiles()
-            
+        function binFiles = getBinFiles()            
             brainstorm3Path = PathsGetter.getBrainstorm3Path();
-            
             binFolder = fullfile(brainstorm3Path, "bin", "R2020a");
             bstShellScriptPath = fullfile(binFolder, "brainstorm3.command");
             bstBatchFilePath = fullfile(binFolder, "brainstorm3.bat");
-            binFiles = [bstBatchFilePath, bstShellScriptPath]; 
-            
+            binFiles = [bstBatchFilePath, bstShellScriptPath];
         end
-            
-        function setJavaHomeToPointToJavaOpenJDK()
-            
-            if isunix
-                openJdkFolder = '/usr/lib/jvm/java-8-openjdk-amd64';
-            elseif ispc
-                openJdkFolder = 'C:\Users\alab\Desktop\OpenJDK8U-jdk_x64_windows_hotspot_8u332b09\jdk8u332-b09';
-            elseif ismac
-                error('add path to openjdk');
-            end
-              
-            assert(isfolder(openJdkFolder));
-            setenv('JAVA_HOME', openJdkFolder);
-            
-        end
-        
-        function copyToDestination(filesToCopy, destinationFolder)
-            arguments
-                filesToCopy string
-                destinationFolder string
-            end
-                        
-            for i = 1:length(filesToCopy)
-                
-                folderName = char.empty();
-                if isfolder(filesToCopy(i))
-                    [~, folderName] = fileparts(filesToCopy(i));
-                end
-    
-                [status, msg] = copyfile(filesToCopy(i), fullfile(destinationFolder, folderName));
 
-                if ~status
-                    error(['Error when copying file: ' msg]);
-                end
-
-            end
-            
+        function compileBrainstormNoPlugs()            
+            brainstorm compile noplugs;            
         end
-        
-        function compileBrainstorm()
-            
-            bst_compile;
-            
+
+        function compileBrainstorm()            
+            brainstorm compile;            
         end
         
     end

@@ -1,5 +1,9 @@
 classdef ListOfParameters < ListOfObjects
-    
+
+    properties (GetAccess = public, SetAccess = protected)
+        List cell;        
+    end
+
     properties (Access = private)
         ValidityFunction function_handle
     end
@@ -39,7 +43,7 @@ classdef ListOfParameters < ListOfObjects
         
         function obj = remove(obj, nameOrIndex)
             index = obj.getParameterIndex(nameOrIndex);
-            obj = remove@ListOfObjects(index);
+            obj.List(index) = [];
         end
                 
         function value = getConvertedValue(obj, nameOrIndex)
