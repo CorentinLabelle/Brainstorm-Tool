@@ -2,7 +2,7 @@ classdef Process
     
     properties (SetAccess = private, GetAccess = public)
         Details ProcessDetails;
-        Parameters ListOfObjects;
+        Parameters ListOfParameters
     end
     
     methods (Access = ?ProcessFactory)

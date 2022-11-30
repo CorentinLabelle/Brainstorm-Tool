@@ -1,11 +1,7 @@
-classdef ListOfParameters < ListOfObjects
+classdef ListOfParameters
 
     properties (GetAccess = public, SetAccess = protected)
         List cell;        
-    end
-
-    properties (Access = private)
-        ValidityFunction function_handle
     end
     
     methods (Access = public)
@@ -27,10 +23,6 @@ classdef ListOfParameters < ListOfObjects
             else
                 error('Invalid class');
             end
-        end
-        
-        function obj = setValidityFunction(obj, validityFunction)
-            obj.ValidityFunction = validityFunction;
         end
         
         function obj = add(obj, parameter)
@@ -59,10 +51,6 @@ classdef ListOfParameters < ListOfObjects
         function obj = setValue(obj, nameOrIndex, value)
             index = obj.getParameterIndex(nameOrIndex);
             obj.List{index} = obj.List{index}.setValue(value);
-            validityFunction = obj.ValidityFunction;
-            if ~isempty(validityFunction)
-                obj = validityFunction(obj);
-            end
         end
         
         function obj = setValueWithStructure(obj, structure)

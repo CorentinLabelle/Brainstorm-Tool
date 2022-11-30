@@ -1,4 +1,4 @@
-classdef ListOfProcesses < ListOfObjects
+classdef ListOfProcesses
 
     properties (GetAccess = public, SetAccess = protected)
         List cell;        
