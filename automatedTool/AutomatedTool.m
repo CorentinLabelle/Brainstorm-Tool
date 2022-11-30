@@ -47,7 +47,7 @@ classdef AutomatedTool < handle
                 batchFile = 'brainstorm3.bat';
                 matlabRoot = '';
             elseif ismac || isunix
-                batchFile = fullfile(binFolder, 'brainstorm3.command');
+                batchFile = 'brainstorm3.command';
                 matlabRoot = PathsGetter.getMcrFolder();
             end
 
