@@ -7,6 +7,8 @@ protocolName = 'DemoProtocol';
 
 if ~ProtocolManager.isProtocolCreated(protocolName)
     ProtocolManager.createProtocol(protocolName);
+else
+    ProtocolManager.setProtocolWithName(protocolName);
 end
 
 %% Review raw files (one subject)
