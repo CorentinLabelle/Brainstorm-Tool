@@ -11,7 +11,7 @@ classdef PathsGetter
         end
         
         function domainFolder = getDomainFolder()            
-            domainFolder = fullfile(PathsGetter.getBstToolFolder(), "domaine");            
+            domainFolder = fullfile(PathsGetter.getBstToolFolder(), "domain");            
         end
         
         function interfaceFolder = getInterfaceFolder()           
