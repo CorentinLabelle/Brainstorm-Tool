@@ -1,8 +1,8 @@
 classdef Pipeline
     
     properties (SetAccess = private, GetAccess = public)
-        Details PipelineDetails;
-        Processes ListOfProcesses;        
+        Details;
+        Processes;        
     end
     
     methods (Access = public)
@@ -15,7 +15,7 @@ classdef Pipeline
                 if isfile(filePath)
                     obj = PipelineImporter.importFile(filePath);
                 else
-                    error('Input is not an existing file');              
+                    error(['Input is not an existing file:' newline filePath]);              
                 end               
             end    
         end

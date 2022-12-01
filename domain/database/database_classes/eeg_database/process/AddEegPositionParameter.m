@@ -5,7 +5,7 @@ function parameters = AddEegPositionParameter()
     p3 = ParameterFactory.create('cap', 'char', char.empty(), getPossibleCaps());
     p3 = p3.setConverterFunction(@convertCapNameToCapNumber);
     parameters = ListOfParameters({p1, p2, p3});
-    parameters = parameters.setValidityFunction(@verifyAddEegParameters);
+    %parameters = parameters.setValidityFunction(@verifyAddEegParameters);
 end
 
 function possibleCap = getPossibleCaps()

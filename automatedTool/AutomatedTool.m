@@ -50,10 +50,9 @@ classdef AutomatedTool < handle
                 batchFile = 'brainstorm3.command';
                 matlabRoot = PathsGetter.getMcrFolder();
             end
-
-            baseDirectory = binFolder;
-            instruction = [batchFile ' ' matlabRoot ' ' runAutomatedToolScript ' ' jsonFile];
             
+            baseDirectory = binFolder;
+            instruction = [batchFile ' ' matlabRoot ' ' runAutomatedToolScript ' ' jsonFile];            
         end
         
     end
