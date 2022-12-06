@@ -37,13 +37,13 @@ classdef PipelineDetails < Details
             assert(ischar(file) || isstring(file));            
             [folder, name, extension] = fileparts(file);            
             if ~isequal(name, "")
-                obj.setName(name);
+                obj = obj.setName(name);
             end            
             if ~isequal(extension, "")
-                obj.setExtension(extension);
+                obj = obj.setExtension(extension);
             end            
             if ~isequal(folder, "")
-                obj.setFolder(folder);
+                obj = obj.setFolder(folder);
             end
         end
         
