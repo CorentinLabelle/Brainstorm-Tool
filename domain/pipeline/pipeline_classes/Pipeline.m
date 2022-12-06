@@ -170,7 +170,7 @@ classdef Pipeline
             disp(PipelinePrinter.convertProcessesDocToCharacters(obj));            
         end
         
-        function obj = run(obj, sFilesIn)
+        function [obj, sFilesOut] = run(obj, sFilesIn)
             arguments
                 obj Pipeline;
                 sFilesIn = [];

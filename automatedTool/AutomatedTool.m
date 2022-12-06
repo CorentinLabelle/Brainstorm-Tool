@@ -22,7 +22,7 @@ classdef AutomatedTool < handle
                 ProtocolManager.createProtocol(protocolName);
             end
             
-            sFilesOut = pipeline.run(sFiles);
+            [~, sFilesOut] = pipeline.run(sFiles);
             outputPath = obj.createOuputPath(jsonFile);
             obj.createJsonOutput(outputPath, sFilesOut);            
         end
