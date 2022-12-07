@@ -15,7 +15,7 @@ The output is a path to a json file. The file contains information about the pro
 ### Analysis File
 ```json
 {
-  "Pipeline": "/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/projects/Brainstorm_Tool/mardown_files/automatedTool/scripts/EEG_pipeline_template.json",
+  "Pipeline": "pipelines/EEG_pipeline_template.json",
   "Protocol": "AutomatedToolProtocol",
   "Dataset": []
 }
