@@ -98,7 +98,7 @@ classdef Pipeline
         end
         
         function numberOfProcess = getNumberOfProcess(obj)
-            numberOfProcess = length(obj.Processes);
+            numberOfProcess = obj.Processes.getNumberOfProcess();
         end
         
         function obj = addProcess(obj, processToAdd, position)
