@@ -10,9 +10,9 @@ The tool can be use through a graphical user interface (GUI) or with custom scri
 - [Brainstorm](https://neuroimage.usc.edu/brainstorm/Introduction)
 
 ### Without MATLAB
-An [automated version](https://github.com/CorentinLabelle/Brainstorm-Tool/blob/main/automatedTool/README.md) of the tool can be use without a Matlab license. It requires to have the Matlab Runtime installed (free installation [here](https://www.mathworks.com/products/compiler/matlab-runtime.html)).
+An [automated version](https://github.com/CorentinLabelle/Brainstorm-Tool/blob/main/automatedTool/README.md) of the tool can be use without a MATLAB license. It requires to have the MATLAB Runtime installed (free installation [here](https://www.mathworks.com/products/compiler/matlab-runtime.html)).
 #### Requirements
-- [Matlab Runtime](https://www.mathworks.com/products/compiler/matlab-runtime.html) (R2022a)
+- [MATLAB Runtime](https://www.mathworks.com/products/compiler/matlab-runtime.html) (R2022a)
 - [Brainstorm Tool bin](https://github.com/CorentinLabelle/Brainstorm-Tool/tree/main/bst_bin/R2022a)
 
 ### On CBRAIN
