@@ -1,6 +1,6 @@
 # Brainstorm Tool
 
-## Objectives
+## Objective
 The main objective of this tool is to provide the user an easy way to create, manipulate and run pipelines to analyze EEG and MEG data. Only the pre-processing steps have been implemented (see processes [here](https://github.com/CorentinLabelle/Brainstorm-Tool/tree/main/domain/process/README.md)).
 
 ## Usage
