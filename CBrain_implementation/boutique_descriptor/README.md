@@ -1,1 +1,2 @@
 # Boutique Descriptor
+The [boutique descriptor](https://github.com/CorentinLabelle/Brainstorm-Tool/tree/main/CBrain_implementation/boutique_descriptor/bst-tool.json) is still incomplete. The fields 'command-line' and 'container-image' will be updated once the docker image is generated.
