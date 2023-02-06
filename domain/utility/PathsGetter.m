@@ -43,7 +43,8 @@ classdef PathsGetter
                 mcrFolder = '/Applications/MATLAB/MATLAB_Runtime';
             end            
             if ~isfolder(mcrFolder)
-                mcrFolder = uigetdir('*', 'Select Runtime folder');
+                %mcrFolder = uigetdir('*', 'Select Runtime folder');
+                mcrFolder = '/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/MATLAB/MATLAB_Runtime/v910/';
             end            
         end
         
