@@ -14,7 +14,7 @@ classdef Copier
                 end
                 [status, msg] = copyfile(fToCopy(i), fullfile(destinationFolder, folderName)); 
                 if ~status
-                    error(['Error when copying ' fToCopy(i) ': ' msg]);
+                    error(['Error when copying ' char(fToCopy(i)) ': ' msg]);
                 end
             end
         end
