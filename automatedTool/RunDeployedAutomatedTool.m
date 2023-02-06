@@ -1,4 +1,4 @@
 function RunDeployedAutomatedTool(jsonFile)
-    [baseDirectory, instruction] = AutomatedTool.getCommandLineInstructionToRunAsDeployed(jsonFile);
-    instructions = ['cd ' baseDirectory ' && ' instruction];    
-    system(instructions);
+    instruction = AutomatedTool.getCommandLineInstructionToRunAsDeployed(jsonFile);
+    disp([newline instruction newline]);
+    system(instruction);

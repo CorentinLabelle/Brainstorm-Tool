@@ -31,7 +31,7 @@ classdef AutomatedTool < handle
     
     methods (Static, Access = public)
   
-        function [baseDirectory, instruction] = getCommandLineInstructionToRunAsDeployed(jsonFile)
+        function instruction = getCommandLineInstructionToRunAsDeployed(jsonFile)
             arguments
                 jsonFile = char.empty();
             end
@@ -44,14 +44,13 @@ classdef AutomatedTool < handle
             end
 
             if ispc
-                batchFile = 'brainstorm3.bat';
+                batchFile = fullfile('/', binFolder, 'brainstorm3.bat');
                 matlabRoot = '';
             elseif ismac || isunix
-                batchFile = 'brainstorm3.command';
+                batchFile = fullfile('/', binFolder, 'brainstorm3.command');
                 matlabRoot = PathsGetter.getMcrFolder();
             end
             
-            baseDirectory = binFolder;
             instruction = [batchFile ' ' matlabRoot ' ' runAutomatedToolScript ' ' jsonFile];            
         end
         
