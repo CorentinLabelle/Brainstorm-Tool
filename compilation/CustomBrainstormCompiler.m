@@ -28,6 +28,9 @@ classdef CustomBrainstormCompiler < handle
             binFiles = obj.getBinFiles();
             binDestination = obj.getBstBinDestination();
             Copier.Copy(binFiles, binDestination);
+            
+            obj.deleteCopiedFiles();
+            
         end
         
     end
@@ -62,6 +65,10 @@ classdef CustomBrainstormCompiler < handle
             bstShellScriptPath = fullfile(binFolder, "brainstorm3.command");
             bstBatchFilePath = fullfile(binFolder, "brainstorm3.bat");
             binFiles = [bstBatchFilePath, bstShellScriptPath];
+        end
+        
+        function deleteCopiedFiles()
+            uigetfile(fullfile(PathsGetter.getBrainstorm3Path(), 'toolbox'));
         end
 
         function compileBrainstormNoPlugs()            
