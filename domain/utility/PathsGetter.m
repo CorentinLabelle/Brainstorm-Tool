@@ -19,7 +19,7 @@ classdef PathsGetter
         end
         
         function autoToolFolder = getAutomatedToolFolder()           
-            autoToolFolder = fullfile(PathsGetter.getBstToolFolder(), "automatedTool");            
+            autoToolFolder = fullfile(PathsGetter.getBstToolFolder(), "automated_tool");            
         end
         
         function compilationFolder = getCompilationFolder()           
