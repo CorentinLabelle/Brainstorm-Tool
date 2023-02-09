@@ -1,6 +1,9 @@
 classdef AnalysisFileReader
     
     properties
+        AnalysisFileFolder
+        AnalysisFileName
+        AnalysisFileExtension
         JsonStructure
     end
     
@@ -8,6 +11,7 @@ classdef AnalysisFileReader
         
         function obj = AnalysisFileReader(jsonFile)
             AnalysisFileReader.verifyFileExtension(jsonFile);
+            [obj.AnalysisFileFolder, obj.AnalysisFileName, obj.AnalysisFileExtension] = fileparts(jsonFile);
             obj.JsonStructure = FileReader.read(jsonFile);
         end
         
@@ -20,7 +24,9 @@ classdef AnalysisFileReader
         end
         
         function pipeline = getPipeline(obj)
-            pipeline = Pipeline(obj.JsonStructure.Pipeline);
+            pipelinePath = obj.JsonStructure.Pipeline;
+            pipelineAbsolutePath = PathTransformer.toAbsolute(obj.AnalysisFileFolder, pipelinePath);
+            pipeline = Pipeline(pipelineAbsolutePath);
         end
         
     end
@@ -30,7 +36,7 @@ classdef AnalysisFileReader
         function verifyFileExtension(filePath)
             [~, ~, extension] = fileparts(filePath);
             assert(strcmpi(extension, '.json'));
-        end
+        end       
         
     end
 end
