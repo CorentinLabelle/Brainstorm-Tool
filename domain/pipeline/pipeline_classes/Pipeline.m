@@ -14,6 +14,7 @@ classdef Pipeline
             elseif nargin == 1
                 if isfile(filePath)
                     obj = PipelineImporter.importFile(filePath);
+                    obj = obj.setFile(filePath);
                 else
                     error(['Input is not an existing file:' newline filePath]);              
                 end               
@@ -178,8 +179,8 @@ classdef Pipeline
             bst_report('Start');                        
             for i = 1:obj.Processes.getNumberOfProcess()
                 pr = obj.getProcess(i);
+                disp(['PROCESS> ' char(pr.getName())]);
                 sFilesOut = pr.run(sFilesIn);
-                disp(pr.getName());
                 sFilesIn = sFilesOut;
             end            
             reportFile = bst_report('Save', []);
