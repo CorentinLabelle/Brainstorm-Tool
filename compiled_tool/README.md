@@ -1,90 +1,45 @@
-# Automated Tool
-The automated tool is a version of the tool that can be use without a MATLAB license (using Matlab Runtime). When performing an analysis, the automated tool has one input and one output.
+# Compiled Tool
+A compiled version of the tool can be use without a MATLAB license. The compiled tool is available on Linux (will soon be available for Windows). To use the compiled version, you’ll need to:
+1. Install the [Matlab Runtime R2021a](https://www.mathworks.com/products/compiler/matlab-runtime.html)
+2. Download the [compiled_tool folder](./bin).
 
-## Requirements
-- [MATLAB Runtime](https://www.mathworks.com/products/compiler/matlab-runtime.html) (R2022a)
-- [Brainstorm Tool bin](https://github.com/CorentinLabelle/Brainstorm-Tool/tree/main/bst_bin/R2022a)
+## Usage
+Here is the syntax to run the tool from the terminal for Linux/MacOS (more info [here](https://neuroimage.usc.edu/brainstorm/Tutorials/Scripting#Without_Matlab)):
 
-## Input
-The input is a path to an analysis file. An analysis file contains (1) the name of the procotol (or the project), (2) the list of datasets to be processed and (3) the path to a pipeline.
+```brainstorm3.command <MATLABROOT> <AutomatedToolScript.m> <PathToAnalysisFile>```
 
+**\<MATLABROOT>**: Path to the Matlab Runtime installation folder, e.g. ```/usr/local/MATLAB_Runtime/v98/```.
+
+**<AutomatedToolScript.m>**: Path to the script ```run_automated_tool.m```.
+
+**\<PathToAnalysisFile>**: Path to an [analysis file](../automated_tool/AnalyisFile.md).
+
+When running the tool for the first time, user will be prompt to select a directory for the Data, the Pipelines and the Analysis Files. These directories will be saved in the user configuration. This will allow the user to use absolute paths or relative paths. For example, if a path to a data is relative, the tool will assume the path is relativeto the Data directory.
+  
 ## Output
-The output is a path to a json file. The file contains information about the processed datasets. The exact information included in the output file is still a work in progress.
+When the analysis is completed, a new JSON file with the tag ```<analysis_file>_output.json``` will be created in the same folder as the analysis file. This output file will contain the information about the modified datasets.
 
-## Example
-### Analysis File
-```json
-{
-  "Pipeline": "pipelines/EEG_pipeline_template.json",
-  "Protocol": "AutomatedToolProtocol",
-  "Dataset": []
-}
-```
+## Ressource Consumption
+#### Tool compilation without plug-ins
+Compilation lasts 3 minutes and requires about 2G of memory.
+#### Tool compilation with plug-ins
+Compilation lasts 15 minutes and requires about 3.5G of memory.
+#### Executing the tool
+The ressource consumption when executing the tool depends on the analysis. Typically, it should require about 2G of memory.
 
-### Pipeline
-```json
-{
-  "Folder": "pipelines/",
-  "Name": "EEG_pipeline_template",
-  "Extension": ".json",
-  "Date": "06-Dec-2022 14:27:38",
-  "Processes": [
-    {
-      "Name": "create_subject",
-      "Parameters": {
-        "subject_name": [
-          "subject01",
-          "subject02"
-        ]
-      }
-    },
-    {
-      "Name": "add_eeg_position",
-      "Parameters": {
-        "electrode_file": "",
-        "file_format": "",
-        "cap": "Colin27: BrainProducts EasyCap 128"
-      }
-    },
-    {
-      "Name": "notch_filter",
-      "Parameters": {
-        "frequence": [
-          60,
-          120,
-          180
-        ]
-      }
-    },
-    {
-      "Name": "band_pass_filter",
-      "Parameters": {
-        "frequence": [
-          4,
-          30
-        ]
-      }
-    },
-    {
-      "Name": "ica",
-      "Parameters": {
-        "number_of_components": 32
-      }
-    },
-    {
-      "Name": "export_to_bids",
-      "Parameters": {
-        "folder": "BIDS/bids",
-        "project_name": "",
-        "project_id": "",
-        "project_description": "",
-        "participant_description": "",
-        "task_description": "",
-        "dataset_desc_json": [],
-        "dataset_sidecar_json": []
-      }
-    }
-  ]
-}
-```
+## Docker Container
+A Docker Container used to run the compiled tool should contain the following:
+- Linux Base Image (any Linux distribution)
+- [MATLAB Runtime](https://www.mathworks.com/products/compiler/matlab-runtime.html) R2021a
+- The [compiled_tool bin](./bin) folder.
 
+## Boutique Descriptor
+See the [Boutique Descriptor](./BoutiqueDescriptor.md).
+
+## Test Files
+
+#### Brainstorm_Tool_Hello_World.m
+This script instantiates a process and a pipeline. It should print out ```Hello World```.
+
+#### Open_Brainstorm.m
+This script opens the Brainstorm interface.
