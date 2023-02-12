@@ -11,6 +11,7 @@ classdef BstParameter
     properties (Access = protected)
         ConverterFunction function_handle
         ValidityFunction function_handle
+        PreAssigningConverterFunction function_handle
     end
     
     methods (Access = {?ParameterFactory, ?ConstrainedParameter})
@@ -39,6 +40,7 @@ classdef BstParameter
                 obj.setToDefault();
             else
                 %value = obj.castValue(value);
+                value = obj.preAssigningConversion(value);
                 obj.verifyClassOfValueIsValid(value);
                 obj.verifyValueIsValid(value)
                 obj.Value = value;
@@ -63,6 +65,10 @@ classdef BstParameter
         
         function obj = setValidityFunction(obj, fctHandle)
             obj.ValidityFunction = fctHandle;
+        end
+        
+        function obj = setPreAssigningConvertFunction(obj, fctHandle)
+           obj.PreAssigningConverterFunction = fctHandle;
         end
         
         function isEqual = eq(obj, parameter)
@@ -118,6 +124,13 @@ classdef BstParameter
             validator = obj.ValidityFunction;
             if ~isempty(validator)
                 validator(value);
+            end
+        end
+        
+        function value = preAssigningConversion(obj, value)
+            converter = obj.PreAssigningConverterFunction;
+            if ~isempty(converter)
+                value = converter(value);
             end
         end
         
