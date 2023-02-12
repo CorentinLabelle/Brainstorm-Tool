@@ -4,6 +4,8 @@ classdef FileReader < handle
         
         function structure = read(filePath)
             
+            assert(isfile(filePath), ['The following path does not exist:' newline filePath]);
+            
             [~, ~, extension] = fileparts(filePath);
             
             if strcmpi(extension, '.json')
