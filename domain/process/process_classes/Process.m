@@ -165,6 +165,14 @@ classdef Process
             prName = strrep(prName, ' ', '_');
             prName = strrep(prName, '-', '_');
         end
+        
+        function prName = unformatProcessName(prName)
+            prName = strrep(prName, '_', ' ');
+            indexes = strfind(prName, ' ');
+            prName = char(prName);
+            prName(indexes+1) = upper(prName(indexes+1));
+            prName(1) = upper(prName(1));
+        end
                 
         function printAllProcesses()
             ProcessPrinter.printAvailableProcesses();
