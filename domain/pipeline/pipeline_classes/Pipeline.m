@@ -12,6 +12,7 @@ classdef Pipeline
                 obj.Details = PipelineDetails();
                 obj.Processes = ListOfProcesses();
             elseif nargin == 1
+                filePath = Pipeline.relativeToAbsolute(filePath);
                 if isfile(filePath)
                     obj = PipelineImporter.importFile(filePath);
                     obj = obj.setFile(filePath);
@@ -179,7 +180,7 @@ classdef Pipeline
             bst_report('Start');                        
             for i = 1:obj.Processes.getNumberOfProcess()
                 pr = obj.getProcess(i);
-                disp(['PROCESS> ' char(pr.getName())]);
+                disp(['PROCESS> ' Process.unformatProcessName(pr.getName())]);
                 sFilesOut = pr.run(sFilesIn);
                 sFilesIn = sFilesOut;
             end            
@@ -277,6 +278,14 @@ classdef Pipeline
     end
     
     methods (Static, Access = public)
+        
+        function filepath = relativeToAbsolute(filepath)
+            configuration = Configuration();
+            configuration = configuration.loadConfiguration();
+            if startsWith(filepath, '.')
+                filepath = fullfile(configuration.getPipelinePath(), filepath);
+            end 
+        end
         
         function supportedExtension = getSupportedExtension()
             supportedExtension = Pipeline.SupportedExtension;            
