@@ -5,10 +5,10 @@ classdef AutomatedTool < handle
         function outputPath = run(obj, jsonFile)            
             assert(~isempty(jsonFile), 'No file to run!');
             
-            analysisFileReader = AnalysisFileReader(jsonFile);
-            protocolName = analysisFileReader.getProtocol();
-            sFiles = analysisFileReader.getSFile();
-            pipeline = analysisFileReader.getPipeline();
+            analysisFile = AnalysisFile(jsonFile);
+            protocolName = analysisFile.getProtocol();
+            sFiles = analysisFile.getSFile();
+            pipeline = analysisFile.getPipeline();
             
             if isempty(sFiles)
                 assert(pipeline.isProcessInPipelineWithName('review raw files'));
@@ -23,8 +23,7 @@ classdef AutomatedTool < handle
             end
             
             [~, sFilesOut] = pipeline.run(sFiles);
-            outputPath = obj.createOuputPath(jsonFile);
-            obj.createJsonOutput(outputPath, sFilesOut);            
+            outputPath = analysisFile.createOutput(sFilesOut);           
         end
         
     end
@@ -42,15 +41,6 @@ classdef AutomatedTool < handle
             if ~pipeline.isProcessInPipelineWithName(processNames)
                 pipeline = pipeline.addProcess(Process.create(processNames));
             end            
-        end
-        
-        function outputPath = createJsonOutput(outputPath, sFilesOut)            
-            FileSaver.save(outputPath, sFilesOut);            
-        end
-        
-        function outputPath = createOuputPath(jsonFile)           
-            [folder, filename] = fileparts(jsonFile);
-            outputPath = strcat(fullfile(folder, filename), '_output.json');            
         end
         
     end
