@@ -173,6 +173,11 @@ classdef Process
             prName(indexes+1) = upper(prName(indexes+1));
             prName(1) = upper(prName(1));
         end
+        
+        function clsName = unformatClassName(clsName)
+            index = strfind(clsName, 'Process');
+            clsName = [clsName(1:index-1), ' ', clsName(index:end)];
+        end
                 
         function printAllProcesses()
             ProcessPrinter.printAvailableProcesses();
