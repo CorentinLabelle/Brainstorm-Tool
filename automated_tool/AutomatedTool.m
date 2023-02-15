@@ -11,7 +11,11 @@ classdef AutomatedTool < handle
             pipeline = analysisFile.getPipeline();
             
             if isempty(sFiles)
-                assert(pipeline.isProcessInPipelineWithName('review raw files'));
+                rrf = pipeline.isProcessInPipelineWithName('review raw files');
+                ibd = pipeline.isProcessInPipelineWithName('import bids dataset');
+                if ~rrf && ~ibd
+                    error('No input data and no process in your pipeline import data...');
+                end
             end
             pipeline = obj.addImportTimeProcess(pipeline);
             obj.verifyPipeline(pipeline, protocolName);
@@ -32,7 +36,7 @@ classdef AutomatedTool < handle
         
         function verifyPipeline(pipeline, protocolName)           
             if ~ProtocolManager.isProtocolCreated(protocolName)
-                assert(pipeline.isProcessInPipelineWithName('create_subject'), 'You have to create a subject');
+                %assert(pipeline.isProcessInPipelineWithName('create_subject'), 'You have to create a subject');
             end            
         end
         
