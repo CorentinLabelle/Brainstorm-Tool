@@ -78,8 +78,20 @@ classdef BidsPathCreator < handle
             end            
         end
         
-        function isValid = checkIfFolderIsValid(obj)           
-            isValid = ~isfolder(fullfile(obj.FolderPath, obj.FolderName));            
+        function isValid = checkIfFolderIsValid(obj)
+            folder = fullfile(obj.FolderPath, obj.FolderName);
+            if ~isfolder(folder)
+                isValid = true;
+                return
+            else
+                d = dir(folder);
+                d = d(~ismember({d.name}, {'.', '..'}));
+                if isempty(d)
+                    isValid = true;
+                    return
+                end
+            end
+            isValid = false;
         end
        
         function setFolderNumber(obj, number)           
@@ -155,7 +167,8 @@ classdef BidsPathCreator < handle
             studyName = strcat( subFolder, '_', ...
                                 sesFolder, '_task-', ...
                                 replace(sFile.Condition(5:end), '_', ''), '_', ...
-                                'run-', sprintf('%02d', runNumber));                        
+                                'run-', sprintf('%02d', runNumber));
+            studyName = strrep(studyName, '@', '');
         end
         
     end

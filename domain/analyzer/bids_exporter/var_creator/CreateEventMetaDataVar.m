@@ -15,33 +15,22 @@ function s = CreateEventMetaDataVar(sFile, eventDescriptorPath)
 
     % Loop through every event
     for i = 1:length(allEvents)
+        
+        event = formatEventName(allEvents{i});
 
-    % Replace '-' with '_'
-    event = strrep(allEvents{i}, '-', '_');
+        % If eventDescription has a field 'event'
+        if isfield(eventDescription, event)
 
-    % Replace ' ' with '_'
-    event = strrep(event, ' ', '_');
+            % Get event description
+            desc = eventDescription.(event);
 
-    % Check if character is a digit
-    isDigit = isstrprop(event, 'digit');
+        else
+            % Default event description
+            desc = 'No description Available';
+        end
 
-    % If first character is a digit
-    if (isDigit(1))
-        event = "f" + event;
-    end
-
-    % If eventDescription has a field 'event'
-    if isfield(eventDescription, event)
-
-        % Get event description
-        desc = eventDescription.(event);
-
-    else
-        % Default event description
-        desc = 'No description Available';
-    end
-
-    s__.(event) = desc;
+        s__.(event) = desc;
+        
     end
 
     s_.LongName = 'Event category';

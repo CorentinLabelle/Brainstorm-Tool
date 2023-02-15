@@ -21,7 +21,9 @@ function evetnTsvFileAsString = CreateEventVar(sFile)
         for j = 1:length(eventStruct(i).times)
 
             % Save information in tsvFile variable
-            evetnTsvFileAsString(count,:) = [eventStruct(i).times(j) 0 string((eventStruct(i).label))];
+            eventName = (eventStruct(i).label);
+            eventName = formatEventName(eventName);
+            evetnTsvFileAsString(count,:) = [eventStruct(i).times(j) 0 string(eventName)];
             count = count + 1;
         end
     end

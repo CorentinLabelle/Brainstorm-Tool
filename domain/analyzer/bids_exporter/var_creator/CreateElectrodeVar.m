@@ -6,7 +6,7 @@ function tsvElectrodeFile = CreateElectrodeVar(sFile)
     % Initialiaze tsvElectrodeFile variable with titles
     tsvElectrodeFile = strings([1,4]);
     count = 1;
-    tsvElectrodeFile(count,:) = ["Name" "X coordinate" "Y coordinate" "Z coordinate"];
+    tsvElectrodeFile(count,:) = ["name" "x" "y" "z"];
     count = count + 1;
 
     % Loop through every channel
