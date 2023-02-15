@@ -38,6 +38,11 @@ classdef BstFunctions < handle
             eventName = listOfParameters.getConvertedValue(1);
             sFiles = Bst_SplitRawFiles(eventName, sFiles);
         end
+        
+        function sFiles = importBidsDataset(~, listOfParameters, sFiles)
+            folder = listOfParameters.getConvertedValue(1);
+            sFiles = Bst_ImportBidsDataset(folder, sFiles);
+        end
          
         function sFiles = notchFilter(obj, listOfParameters, sFiles)
             frequence = listOfParameters.getConvertedValue(1);            
