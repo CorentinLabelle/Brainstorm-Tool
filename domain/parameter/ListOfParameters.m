@@ -100,9 +100,17 @@ classdef ListOfParameters
         
         function index = getParameterIndex(obj, input)
             if isnumeric(input)
-               index = input;
+               index = obj.checkIndex(input);
             elseif ischar(input) || isstring(input)
                index = obj.getParameterIndexWithName(input);
+            end
+        end
+        
+        function index = checkIndex(obj, index)
+            if index <= 0 || index > obj.getLength()
+                error([ 'The parameter index is invalid (' num2str(index) '). ' newline ...
+                    'Index should be > 0 and <= ' num2str(obj.getLength()) ': ' newline ...
+                    obj.getParameterNames()]);
             end
         end
         
@@ -113,20 +121,23 @@ classdef ListOfParameters
                     return
                 end
             end
-            error([ 'The parameter is invalid (' name ').' newline ...
-                    'The parameters are: ' newline ...
-                    char(strjoin(obj.getParameterNames(), ', '))]);
+            error([ 'The parameter name is invalid (' name '). The parameters are: ' newline ...
+                    obj.getParameterNames()]);
         end
         
         function paramAsString = convertToStrings(obj)
             paramAsString = strings(1, obj.getLength());
             for i = 1:length(paramAsString)
-                paramAsString(i) = strcat(num2str(i), '. ', obj.List{i}.convertToCharacters());    
+                paramAsString(i) = [num2str(i) '. ' obj.List{i}.convertToCharacters()];    
             end
         end
         
         function parameterNames = getParameterNames(obj)
-            parameterNames = string(cellfun(@(x) x.getName(), obj.List));
+            parametersNames = strings(1, obj.getLength());
+            for i = 1:length(parametersNames)
+                parametersNames(i) = [num2str(i) '. ' char(obj.List{i}.getName())];
+            end
+            parameterNames = char(strjoin(parametersNames, '\n'));
         end
         
     end
