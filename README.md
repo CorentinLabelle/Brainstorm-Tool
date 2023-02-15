@@ -2,7 +2,7 @@
 This tool is heavily based on the software [Brainstorm](https://neuroimage.usc.edu/brainstorm/Introduction).
 
 ## Objective
-The main objective of this tool is to provide the user an easy way to create, manipulate and run pipelines to perform EEG/MEG data analysis. Only the pre-processing steps have been implemented (see [Process](./domain/process/Process.md)).
+The main objective of this tool is to provide the user an easy way to create, manipulate and run pipelines to perform EEG/MEG data analysis. Only the pre-processing steps have been implemented (see [Process](./domain/process/README.md)).
 
 ## Usage
 ### With MATLAB

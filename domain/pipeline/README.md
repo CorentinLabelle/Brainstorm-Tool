@@ -7,6 +7,6 @@
 | Folder | Required | String | Pipeline’s Folder. |
 | Extension | Required | String | Pipeline's Extension |
 | DateOfCreation | Optionnal | Datetime | Pipeline's date of creation. See [datetime documentation] for the possible date format. |
-| Process | Required | Process Object | List of processes. See [Process description](Process-description). |
+| Process | Required | Process Object | List of processes. |
 | Documentation | Optionnal | String | Pipeline's documentation |
 | History | Optionnal | String | Information about every function applied to the pipeline. |
