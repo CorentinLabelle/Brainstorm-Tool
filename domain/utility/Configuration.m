@@ -39,6 +39,13 @@ classdef Configuration
             bool = isempty(obj.Structure.DataPath);
         end
         
+        function obj = delete_configuration(obj)
+            fullpath = obj.getFullPath();
+            if isfile(fullpath)
+                delete(fullpath);
+            end
+        end
+        
         function bool = isPipelinePathEmpty(obj)
             bool = isempty(obj.Structure.PipelinePath);
         end
