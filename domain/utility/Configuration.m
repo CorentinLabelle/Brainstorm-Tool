@@ -24,10 +24,13 @@ classdef Configuration
        
         function obj = loadConfiguration(obj)
             fullpath = obj.getFullPath();
-            if ~isfile(fullpath)
-                obj = obj.createConfiguration();
-            else
+            if isfile(fullpath)
                 obj.Structure = FileReader.read(fullpath);
+            else
+                object_name = inputname(1);
+                warning([...
+                    'No configuration file. Create one with method:' newline ...
+                    object_name '.createConfiguration()']);
             end
         end
         
@@ -39,7 +42,7 @@ classdef Configuration
             bool = isempty(obj.Structure.DataPath);
         end
         
-        function obj = delete_configuration(obj)
+        function obj = deleteConfiguration(obj)
             fullpath = obj.getFullPath();
             if isfile(fullpath)
                 delete(fullpath);
@@ -81,12 +84,24 @@ classdef Configuration
             bool = isfile(obj.getFullPath());
         end
         
-        function obj = createConfiguration(obj)
-            waitfor(msgbox(Configuration.getMessage(), Configuration.getTitle()));
-            obj = obj.askToSelectDataPath();
-            obj = obj.askToSelectPipelinePath();
-            obj = obj.askToSelectAnalysisFilePath();
+        function obj = createConfiguration(obj, varargin)
+            if nargin == 4
+                obj.Structure.DataPath = char(varargin{1});
+                obj.Structure.PipelinePath = char(varargin{2});
+                obj.Structure.AnalysisFilePath = char(varargin{3});
+            else
+                waitfor(msgbox(Configuration.getMessage(), Configuration.getTitle()));
+                obj = obj.askToSelectDataPath();
+                obj = obj.askToSelectPipelinePath();
+                obj = obj.askToSelectAnalysisFilePath();
+            end
             obj.save();
+        end
+        
+        function bool = isConfigurationValid(obj)
+            condition1 = ~any(structfun(@isempty, obj.Structure));
+            condition2 = all(structfun(@ischar, obj.Structure));
+            bool = condition1 && condition2;
         end
         
     end
@@ -95,12 +110,6 @@ classdef Configuration
         
         function createFolder(obj)
             mkdir(obj.ConfigurationFolder);
-        end
-        
-        function bool = isConfigurationValid(obj)
-            condition1 = ~any(structfun(@isempty, obj.Structure));
-            condition2 = all(structfun(@ischar, obj.Structure));
-            bool = condition1 && condition2;
         end
     
     end

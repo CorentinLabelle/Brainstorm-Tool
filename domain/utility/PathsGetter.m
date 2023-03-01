@@ -22,6 +22,10 @@ classdef PathsGetter
             autoToolFolder = fullfile(PathsGetter.getBstToolFolder(), "automated_tool");            
         end
         
+        function compiledToolFolder = getCompiledToolFolder()
+            compiledToolFolder = fullfile(PathsGetter.getBstToolFolder(), "compiled_tool");            
+        end
+        
         function compilationFolder = getCompilationFolder()           
             compilationFolder = fullfile(PathsGetter.getBstToolFolder(), "compilation");            
         end 
@@ -32,6 +36,10 @@ classdef PathsGetter
         
         function bstFolder = getBstFolder()           
             bstFolder = fullfile(PathsGetter.getBstToolFolder(), "Brainstorm_EEGNET");            
+        end
+        
+        function processFolder = getProcessFolder()
+            processFolder = fullfile(PathsGetter.getBrainstorm3Path, 'toolbox', 'process', 'functions');
         end
             
         function mcrFolder = getMcrFolder()            
@@ -53,7 +61,8 @@ classdef PathsGetter
                         PathsGetter.getInterfaceFolder(), ...
                         PathsGetter.getAutomatedToolFolder(), ...
                         PathsGetter.getCompilationFolder(), ...
-                        PathsGetter.getTestFolder() ...
+                        PathsGetter.getTestFolder(), ...
+                        PathsGetter.getCompiledToolFolder(), ...
                         ];            
         end
         

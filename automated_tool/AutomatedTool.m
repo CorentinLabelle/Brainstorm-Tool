@@ -2,7 +2,13 @@ classdef AutomatedTool < handle
     
     methods (Access = public)
                 
-        function outputPath = run(obj, jsonFile)            
+        function outputPath = run(obj, jsonFile)
+            config = Configuration();
+            config = config.loadConfiguration();
+            if ~config.isConfigurationValid()
+                error(['Configuration is invalid, use function ' newline ...
+                    'run_automated_tool_with_configuration()'])
+            end
             assert(~isempty(jsonFile), 'No file to run!');
             
             analysisFile = AnalysisFile(jsonFile);
