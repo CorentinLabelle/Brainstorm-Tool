@@ -1,4 +1,4 @@
-function AddPaths()    
+function set_up_paths()    
     filePath = searchFolderForFile(pwd, 'PathsAdder.m');
     addpath(filePath);
     PathsAdder.addPaths();    
