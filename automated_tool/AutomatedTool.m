@@ -7,7 +7,7 @@ classdef AutomatedTool < handle
             config = config.loadConfiguration();
             if ~config.isConfigurationValid()
                 error(['Configuration is invalid, use function ' newline ...
-                    'run_automated_tool_with_configuration()'])
+                    'run_automated_tool_with_config()'])
             end
             assert(~isempty(jsonFile), 'No file to run!');
             
