@@ -1,12 +1,13 @@
 {
     "name": "Brainstorm Tool",
+    "author": "Corentin Labelle",
     "description": "Enables to perform the pre-processing steps on EEG and MEG data.",
-    "tool-version": "v0.1.0",
+    "tool-version": "v1.0",
     "schema-version": "0.5",
-    "command-line": "brainstorm3.bat [INPUT_FILE]",
+    "command-line": "brainstorm3.command [MATLABROOT] run_automated_tool.m [INPUT_FILE].json",
     "container-image": {
-        "image": "...",
-        "index": "...",
+        "image": "TYLER WILL FILL THIS",
+        "index": "TYLER WILL FILL THIS",
         "type": "singularity"
     },
     "inputs": [
@@ -29,5 +30,6 @@
                 ".json"
             ]
         }
-    ]
+    ],
+    "doi": "10.5281/zenodo.7709528"
 }
