@@ -16,7 +16,7 @@ classdef CustomBrainstormCompiler < handle
             Copier.Copy(foldersToCompile, destinationFolder);
 
             if ~obj.isMatlabMccOnSystemPath()
-                error(obj.getInstructionsToAddMatlabMccToSystemPath());
+                error('Matlab MCC must be added to the system paths');
             end
             
             if withPlugIns
@@ -25,11 +25,10 @@ classdef CustomBrainstormCompiler < handle
                 obj.compileBrainstormNoPlugs();
             end
             
-            binFiles = obj.getBinFiles();
-            binDestination = obj.getBstBinDestination();
-            Copier.Copy(binFiles, binDestination);
-            
-            obj.deleteCopiedFiles();
+            %binFiles = obj.getBinFiles();
+            %binDestination = obj.getBstBinDestination();
+            %Copier.Copy(binFiles, binDestination);
+            %obj.deleteCopiedFiles();
             
         end
         
@@ -38,8 +37,8 @@ classdef CustomBrainstormCompiler < handle
     methods (Static, Access = private)
 
         function setJavaHomeToPointToJavaOpenJDK()
-            %java_home = uigetdir('', 'Select OpenJDK folder (jdk***)');
-            java_home = '/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/openJDK/jdk8u322-b06/';
+            java_home = uigetdir('', 'Select OpenJDK folder (jdk***)');
+            %java_home = '/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/openJDK/jdk8u322-b06/';
             setenv('JAVA_HOME', java_home);            
         end
 
