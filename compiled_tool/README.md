@@ -14,7 +14,7 @@ Here is the syntax to run the tool from the terminal for Linux/MacOS (more info 
 
 **\<PathToAnalysisFile>**: Path to an [analysis file](../automated_tool/AnalyisFile.md).
 
-When running the tool for the first time, user will be prompt to select a directory for the Data, the Pipelines and the Analysis Files. These directories will be saved in the user configuration. This will allow the user to use absolute paths or relative paths. For example, if a path to a data is relative, the tool will assume the path is relativeto the Data directory.
+When running the tool for the first time, user will be prompted to select a directory for the Data, the Pipelines and the Analysis Files. These directories will be saved in the user configuration. This will allow the user to use absolute paths or relative paths. For example, if a path to a data is relative, the tool will assume the path is relativeto the Data directory.
   
 ## Output
 When the analysis is completed, a new JSON file with the tag ```<analysis_file>_output.json``` will be created in the same folder as the analysis file. This output file will contain the information about the modified datasets.
