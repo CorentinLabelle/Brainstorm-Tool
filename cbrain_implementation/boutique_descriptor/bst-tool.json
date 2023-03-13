@@ -4,7 +4,7 @@
     "description": "Enables to perform the pre-processing steps on EEG and MEG data.",
     "tool-version": "v1.0",
     "schema-version": "0.5",
-    "command-line": "brainstorm3.command [MATLABROOT] run_automated_tool.m [INPUT_FILE].json",
+    "command-line": "brainstorm3.command [MATLABROOT] run_tool.m [INPUT_FILE].json [DATA_PATH] [PIPELINE_PATH] [ANALYSIS_PATH]",
     "container-image": {
         "image": "TYLER WILL FILL THIS",
         "index": "TYLER WILL FILL THIS",
@@ -16,8 +16,32 @@
             "name": "Analysis File",
             "optional": false,
             "type": "File",
-            "description": "Path to a an analysis file",
+            "description": "Path to a an analysis file.",
             "value-key": "[INPUT_FILE]"
+        },
+        {
+            "id": "datapath",
+            "name": "Data Path",
+            "optional": true,
+            "type": "String
+            "description": "Path to the data folder. This path will be saved in a configuration file.",
+            "value-key": "[DATA_PATH]"
+        },
+        {
+            "id": "pipelinepath",
+            "name": "Pipeline Path",
+            "optional": true,
+            "type": "String",
+            "description": "Path to the pipeline folder. This path will be saved in a configuration file.",
+            "value-key": "[PIPELINE_PATH]"
+        },
+        {
+            "id": "analysispath",
+            "name": "Analysis Path",
+            "optional": true,
+            "type": "String",
+            "description": "Path to the analysis folder. This path will be saved in a configuration file.",
+            "value-key": "[ANALYSIS_PATH]"
         }
     ],
     "output-files": [
@@ -30,6 +54,5 @@
                 ".json"
             ]
         }
-    ],
-    "doi": "10.5072/zenodo.1171461"
+    ]
 }
