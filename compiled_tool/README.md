@@ -6,7 +6,7 @@ A compiled version of the tool can be use without a MATLAB license. The compiled
 ## Usage
 Here is the syntax to run the tool from the terminal for Linux/MacOS (more info [here](https://neuroimage.usc.edu/brainstorm/Tutorials/Scripting#Without_Matlab)):
 
-```brainstorm3.command <MATLABROOT> <AutomatedToolScript.m> <PathToAnalysisFile>```
+```brainstorm3.command <MATLABROOT> <run_automated_tool.m> <PathToAnalysisFile>```
 
 **\<MATLABROOT>**: Path to the Matlab Runtime installation folder, e.g. ```/usr/local/MATLAB_Runtime/v98/```.
 
