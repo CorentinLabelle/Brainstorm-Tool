@@ -1,4 +1,4 @@
-function sFilesOut = run_tool(analysis_json, data_path, pipeline_path, analysis_path)
+function sFilesOut = run_automated_tool(analysis_json, data_path, pipeline_path, analysis_path)
 % RUN_TOOL Run an analysis using the automated tool.
 %
 %   [USAGE]

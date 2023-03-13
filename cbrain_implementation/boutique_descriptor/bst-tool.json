@@ -23,7 +23,7 @@
             "id": "datapath",
             "name": "Data Path",
             "optional": true,
-            "type": "String
+            "type": "String",
             "description": "Path to the data folder. This path will be saved in a configuration file.",
             "value-key": "[DATA_PATH]"
         },
@@ -54,5 +54,6 @@
                 ".json"
             ]
         }
-    ]
+    ],
+    "doi": "10.5072/zenodo.1172516"
 }
