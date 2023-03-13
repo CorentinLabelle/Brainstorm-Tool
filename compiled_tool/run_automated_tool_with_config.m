@@ -17,6 +17,6 @@ function sFilesOut = run_automated_tool_with_config(data_path, pipeline_path, an
 
     config = Configuration();
     config.createConfiguration(data_path, pipeline_path, analysis_path);
-    sFilesOut = run_automated_tool(analysis_json);
+    sFilesOut = run_automated_tool_no_config(analysis_json);
 end
 

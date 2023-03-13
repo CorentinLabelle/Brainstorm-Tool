@@ -22,8 +22,7 @@ arguments
 end
 
 if isempty(data_path) && isempty(pipeline_path) && isempty(analysis_path)
-    at = AutomatedTool();
-    sFilesOut = at.run(json, data_path, pipeline_path, analysis_path);
+    sFilesOut = run_automated_tool_no_config(analysis_json);
 else
     sFilesOut = run_automated_tool_with_config(data_path, pipeline_path, analysis_path, analysis_json);
 end
