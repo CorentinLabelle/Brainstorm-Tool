@@ -26,7 +26,7 @@ function compile_custom_brainstorm(with_plug_ins)
     % Get new JAR file
     new_jar_file = get_new_jar_file();
     % Move JAR file
-    copyfile(new_jar_file, get_bst_bin_folder());
+    %copyfile(new_jar_file, get_bst_bin_folder());
 end
 
 function set_java_home_to_point_to_open_JDK()

@@ -6,7 +6,7 @@ The main objective of this tool is to provide the user an easy way to create, ma
 
 ## Usage
 ### With MATLAB
-The tool can be use through a graphical user interface (GUI) or with custom scripts in MATLAB. It requires to have Brainstorm installed ([here](https://neuroimage.usc.edu/bst/download.php)).
+The tool can be use with custom scripts in MATLAB. It requires to have Brainstorm installed ([here](https://neuroimage.usc.edu/bst/download.php)).
 
 ### Without MATLAB
 See [compiled version](./compiled_tool/README.md).
