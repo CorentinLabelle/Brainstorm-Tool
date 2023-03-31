@@ -51,6 +51,7 @@ function output_folder = bst_tool_script(bids_folder, pipeline_file)
         custom_export_bids(sFilesOut, bids_ouput_folder);
 
         % Copy brainstorm protocol folder
+        disp('Copying Brainstorm database.');
         current_protocol_folder = protocol_get_path(protocol_name);
         bst_output_folder = fullfile(output_folder, 'bst_db');
         copyfile(current_protocol_folder, bst_output_folder);

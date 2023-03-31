@@ -4,7 +4,7 @@ function Output = custom_export_bids(sInputs, output_folder)
     nInputs = length(sInputs);
     Output = cell(1, nInputs);
     for iInput = 1:nInputs
-        disp(['Exporting File ' num2str(iInput) ' of ' num2str(nInputs)]);
+        disp(['Exporting file ' num2str(iInput) ' of ' num2str(nInputs)]);
         sInput = sInputs(iInput);
         if strcmpi(sInput.FileType, 'timefreq')
             sInput = GetInputStruct(sInput.DataFile);
