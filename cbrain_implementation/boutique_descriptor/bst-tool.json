@@ -4,7 +4,7 @@
     "description": "Enables to perform the pre-processing steps on EEG and MEG data.",
     "tool-version": "v1.0",
     "schema-version": "0.5",
-    "command-line": "brainstorm3.command [MATLABROOT] run_automated_tool.m [INPUT_FILE].json [DATA_PATH] [PIPELINE_PATH] [ANALYSIS_PATH]",
+    "command-line": "bash run_bst_tool.sh [MATLABROOT] [BIDS_DIRECTORY] [PIPELINE_PATH].json",
     "container-image": {
         "image": "TYLER WILL FILL THIS",
         "index": "TYLER WILL FILL THIS",
@@ -12,48 +12,30 @@
     },
     "inputs": [
         {
-            "id": "infile",
-            "name": "Analysis File",
+            "id": "bids_directory",
+            "name": "BIDS directory",
             "optional": false,
-            "type": "File",
-            "description": "Path to a an analysis file.",
-            "value-key": "[INPUT_FILE]"
-        },
-        {
-            "id": "datapath",
-            "name": "Data Path",
-            "optional": true,
             "type": "String",
-            "description": "Path to the data folder. This path will be saved in a configuration file.",
-            "value-key": "[DATA_PATH]"
+            "description": "Path to a BIDS directory.",
+            "value-key": "[BIDS_DIRECTORY]"
         },
         {
-            "id": "pipelinepath",
+            "id": "pipeline_path",
             "name": "Pipeline Path",
-            "optional": true,
+            "optional": false,
             "type": "String",
-            "description": "Path to the pipeline folder. This path will be saved in a configuration file.",
+            "description": "Path to a pipeline.",
             "value-key": "[PIPELINE_PATH]"
-        },
-        {
-            "id": "analysispath",
-            "name": "Analysis Path",
-            "optional": true,
-            "type": "String",
-            "description": "Path to the analysis folder. This path will be saved in a configuration file.",
-            "value-key": "[ANALYSIS_PATH]"
         }
     ],
     "output-files": [
         {
-            "id": "outfile",
-            "name": "Output File",
+            "id": "output_directory",
+            "name": "Output Directory",
             "optional": false,
-            "path-template": "[INPUT_FILE]_output.json",
-            "path-template-stripped-extensions": [
-                ".json"
-            ]
+            "description": "Path to the output directory.",
+            "path-template": "[BIDS_DIRECTORY]_output"
         }
     ],
-    "doi": "10.5072/zenodo.1172516"
+    "doi": "10.5072/zenodo.1179941"
 }
