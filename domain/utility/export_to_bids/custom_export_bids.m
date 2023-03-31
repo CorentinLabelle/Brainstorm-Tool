@@ -4,6 +4,7 @@ function Output = custom_export_bids(sInputs, output_folder)
     nInputs = length(sInputs);
     Output = cell(1, nInputs);
     for iInput = 1:nInputs
+        disp(['Exporting File ' num2str(iInput) ' of ' num2str(nInputs)]);
         sInput = sInputs(iInput);
         if strcmpi(sInput.FileType, 'timefreq')
             sInput = GetInputStruct(sInput.DataFile);
@@ -17,13 +18,13 @@ function Output = custom_export_bids(sInputs, output_folder)
         ses = extract_string_from_filename(rawName, 'ses-');
         
         %% Build path
-        eegFolder = fullfile(output_folder, sub, ses);
-        if ~isfolder(eegFolder)
-            mkdir(eegFolder);
+        derivatives = fullfile(output_folder, 'derivatives', sub, ses);
+        if ~isfolder(derivatives)
+            mkdir(derivatives);
         end
         
         %% Export files
-        Output{iInput} = export_files(sFile, sInput, eegFolder);
+        Output{iInput} = export_files(sFile, sInput, derivatives);
         
         % Create JSON sidecar
         %jsonFile = bst_fullfile(megFolder, [newName '.json']);
@@ -35,36 +36,32 @@ function Output = custom_export_bids(sInputs, output_folder)
 
         %% Create sidecars
         % Create events.json (CERVO)
-        event_json_path = bst_fullfile(eegFolder, [rawName '_events.json']);
+        event_json_path = bst_fullfile(derivatives, [rawName '_events.json']);
         event_structure = create_event_structure(sFile);
         create_json_file(event_json_path, event_structure);    
 
         % Create coordsystem.json (CERVO)
         %coord_json_path = bst_fullfile(eegFolder, [rawName '_coordsystem.json']);
         %coord_structure = create_coordinate_structure(sInput, sFile);
-        %create_json_file(coord_json_path, coord_structure);         
+        %create_json_file(coord_json_path, coord_structure);
 
         % Create provenance.json (CERVO)
-        derivatives = bst_fullfile(output_folder, 'derivatives');
-        if exist(derivatives, 'dir') ~= 7
-            mkdir(derivatives);
-        end
         provenance_json_path = bst_fullfile(derivatives, [rawName '_provenance.json']);
         provenance_structure = create_provenance_structure(sInput);
         create_json_file(provenance_json_path, provenance_structure);
 
         % Create event.tsv (CERVO)
-        event_tsv_path = bst_fullfile(eegFolder, [rawName '_events.tsv']);
+        event_tsv_path = bst_fullfile(derivatives, [rawName '_events.tsv']);
         event_tsv_string = create_events_string(sFile);
         create_tsv_file(event_tsv_path, event_tsv_string);
 
         % Create electrodes.tsv (CERVO)
-        electrodes_tsv_path = bst_fullfile(eegFolder, [rawName '_electrodes.tsv']);
+        electrodes_tsv_path = bst_fullfile(derivatives, [rawName '_electrodes.tsv']);
         str = create_electrodes_string(sInput);
         create_tsv_file(electrodes_tsv_path, str);
 
         % Create channels.tsv (CERVO)   
-        channel_tsv_path = bst_fullfile(eegFolder, [rawName '_channels.tsv']);
+        channel_tsv_path = bst_fullfile(derivatives, [rawName '_channels.tsv']);
         channel_tsv_string = create_channels_string(sInput, sFile);
         create_tsv_file(channel_tsv_path, channel_tsv_string);
         
