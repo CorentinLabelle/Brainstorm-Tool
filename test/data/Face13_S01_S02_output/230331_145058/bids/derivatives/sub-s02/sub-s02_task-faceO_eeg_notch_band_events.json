@@ -1,0 +1,19 @@
+{
+    "trial_type": {
+        "LongName": "",
+        "Description": "",
+        "Levels": {
+            "boundary": "",
+            "checker_left": "",
+            "checker_right": "",
+            "face_inverted": "",
+            "face_upright": "",
+            "house_inverted": "",
+            "house_upright": "",
+            "press_left": "",
+            "press_right": "",
+            "transient_notch": "",
+            "transient_bandpass": ""
+        }
+    }
+}
