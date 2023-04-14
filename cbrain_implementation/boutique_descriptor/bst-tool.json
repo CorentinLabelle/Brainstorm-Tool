@@ -1,7 +1,7 @@
 {
     "name": "Brainstorm Tool",
     "author": "Corentin Labelle",
-    "description": "Enables to perform the pre-processing steps on EEG and MEG data.",
+    "description": "Enables to perform the pre-processing steps on EEG data.",
     "tool-version": "v1.0",
     "schema-version": "0.5",
     "command-line": "bash run_bst_tool.sh [MATLABROOT] [BIDS_DATASET] [PIPELINE].json",
@@ -16,7 +16,7 @@
             "name": "BIDS dataset",
             "optional": false,
             "type": "File",
-            "description": "BIDS dataset",
+            "description": "EEG BIDS dataset",
             "value-key": "[BIDS_DATASET]"
         },
         {
@@ -37,5 +37,5 @@
             "path-template": "[BIDS_DATASET]_output"
         }
     ],
-    "doi": "10.5072/zenodo.1179941"
+    "doi": "10.5072/zenodo.1182898"
 }
