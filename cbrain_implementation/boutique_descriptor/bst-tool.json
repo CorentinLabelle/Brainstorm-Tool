@@ -23,7 +23,7 @@
             "id": "pipeline_path",
             "name": "Pipeline Path",
             "optional": false,
-            "type": "String",
+            "type": "File",
             "description": "Path to a pipeline.",
             "value-key": "[PIPELINE_PATH]"
         }
@@ -37,5 +37,5 @@
             "path-template": "[BIDS_DIRECTORY]_output"
         }
     ],
-    "doi": "10.5072/zenodo.1179941"
+    "doi": "10.5072/zenodo.1182898"
 }
