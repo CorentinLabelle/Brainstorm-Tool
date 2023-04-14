@@ -4,7 +4,7 @@
     "description": "Enables to perform the pre-processing steps on EEG data.",
     "tool-version": "v1.0",
     "schema-version": "0.5",
-    "command-line": "bash run_bst_tool.sh [MATLABROOT] [BIDS_DATASET] [PIPELINE].json",
+    "command-line": "bash run_bst_tool.sh [MATLABROOT] [BIDS_DATASET] [PIPELINE]",
     "container-image": {
         "image": "TYLER WILL FILL THIS",
         "index": "TYLER WILL FILL THIS",
