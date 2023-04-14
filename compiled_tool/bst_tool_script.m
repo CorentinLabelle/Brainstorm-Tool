@@ -5,11 +5,11 @@ function output_folder = bst_tool_script(bids_folder, pipeline_file)
 %       sFilesOut = bst_tool_script(bids_folder, pipeline_file)
 %   
 %   [IN]
-%       [string/char] bids_folder: Path to a BIDS dataset.
-%       [string/char] pipeline_file: Path to a pipeline.
+%       [string/char] bids_folder: BIDS dataset.
+%       [string/char] pipeline_file: Pipeline.
 %
 %   [OUT]
-%       [structure] output_folder: Path to the output folder.
+%       [structure] output_folder: Output folder.
         
     % Check BIDS folder
     if ~endsWith(bids_folder, filesep)
