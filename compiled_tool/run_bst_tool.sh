@@ -1,6 +1,6 @@
 # Check number of arguments
 if [ "$#" -ne 3 ]; then
-    echo -e "Invalid number of argument. Expected 3 arguments:"
+    echo -e "Invalid number of arguments. Expected 3 arguments:"
     echo -e "run_bst_tool.sh\e[3m matlab_root bids_directory pipeline \e[0m"
     exit 0
 fi
