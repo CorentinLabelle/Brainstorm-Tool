@@ -8,7 +8,7 @@ Here is the syntax to run the tool from the terminal (more info [here](https://n
 
 ```bash run_bst_tool.sh <MATLABROOT> <BIDS_DIRECTORY> <PIPELINE>```
 
-**\<MATLABROOT>**: Path to the Matlab Runtime installation directory, e.g. ```/usr/local/MATLAB_Runtime/v98/```.
+**\<MATLABROOT>**: Path to the Matlab Runtime installation directory, e.g. ```/usr/local/MATLAB_Runtime/v910/```.
 
 **\<BIDS_DIRECTORY>**: Path to a BIDS directory.
 
