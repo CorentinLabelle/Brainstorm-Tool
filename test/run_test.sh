@@ -20,7 +20,7 @@ cd "${PWD}/../compiled_tool"
 instruction="bash ./run_bst_tool.sh ${matlab_root} ${data} ${pipeline}"
 
 # Display instruction
-echo -e '\n'$instruction'\n'
+# echo -e '\n'$instruction'\n'
 
 # Execute
 $instruction

@@ -48,6 +48,7 @@ function output_folder = bst_tool_script(bids_folder, pipeline_file)
 
         % Export to BIDS
         bids_ouput_folder = fullfile(output_folder, 'bids');
+        copyfile(bids_folder, bids_ouput_folder);
         custom_export_bids(sFilesOut, bids_ouput_folder);
 
         % Copy brainstorm protocol folder
@@ -63,7 +64,7 @@ function output_folder = bst_tool_script(bids_folder, pipeline_file)
     catch ME
         % Delete protocol
         protocol_delete(protocol_name);
-        rethrow(ME);        
+        rethrow(ME);      
     end
     
     % Delete protocol

@@ -1,3 +1,10 @@
+# Check number of arguments
+if [ "$#" -ne 3 ]; then
+    echo -e "Invalid number of argument. Expected 3 arguments:"
+    echo -e "run_bst_tool.sh\e[3m matlab_root bids_directory pipeline \e[0m"
+    exit 0
+fi
+
 # Get current file directory
 current_file_dir=$(dirname "$0")
 
@@ -18,7 +25,7 @@ pipeline_path=$3
 instruction="${command_file} ${matlab_root} ${automated_tool_script} ${bids_dir} ${pipeline_path}"
 
 # Display instruction
-echo -e '\n'$instruction'\n'
+# echo -e '\n'$instruction'\n'
 
 # Execute
 $instruction
