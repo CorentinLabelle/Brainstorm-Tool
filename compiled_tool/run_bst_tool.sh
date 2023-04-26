@@ -22,7 +22,7 @@ bids_dir=$2
 pipeline_path=$3
 
 # Build instruction
-instruction="${command_file} ${matlab_root} ${automated_tool_script} ${bids_dir} ${pipeline_path}"
+instruction="${command_file} ${matlab_root} ${automated_tool_script} ${bids_dir} ${pipeline_path} local"
 
 # Display instruction
 # echo -e '\n'$instruction'\n'
