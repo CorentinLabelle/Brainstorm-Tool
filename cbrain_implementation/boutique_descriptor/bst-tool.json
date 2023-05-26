@@ -6,9 +6,9 @@
     "schema-version": "0.5",
     "command-line": "bash run_bst_tool.sh [MATLABROOT] [BIDS_DATASET] [PIPELINE]",
     "container-image": {
-        "image": "TYLER WILL FILL THIS",
-        "index": "TYLER WILL FILL THIS",
-        "type": "singularity"
+        "image": "corentinlabelle/brainstorm-tool-test",
+        "index": "docker://",
+        "type": "docker"
     },
     "inputs": [
         {
