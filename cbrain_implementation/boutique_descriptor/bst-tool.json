@@ -8,7 +8,7 @@
     "container-image": {
         "image": "corentinlabelle/brainstorm-tool-test",
         "index": "docker://",
-        "type": "docker"
+        "type": "singularity"
     },
     "inputs": [
         {
