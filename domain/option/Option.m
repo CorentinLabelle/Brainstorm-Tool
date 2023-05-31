@@ -41,6 +41,13 @@ classdef Option
                 sprintf('\t') 'Type: ' value_to_command(obj.Type)];
         end
         
+        function character = to_md_character(obj)
+            character = [ ...
+                obj.get_name() ': ' Option.comment_to_character(obj.Comment) newline ...
+                sprintf('\t') '* Value: ' value_to_command(obj.get_value()) newline ...
+                sprintf('\t') '* Type: ' value_to_command(obj.Type)];
+        end
+        
     end
     
     methods (Static, Access = protected)
