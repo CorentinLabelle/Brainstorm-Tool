@@ -17,6 +17,10 @@ function output_folder = bst_tool_script(bids_folder, pipeline_file)
     end
     assert(isfolder(bids_folder), ['BIDS folder does not exists: ' newline bids_folder]);
     
+    % Get BIDS folder name
+    split_path = strsplit(bids_folder, filesep);
+    bids_folder_name = split_path{end-1};
+    
     % Create output folder
     date_as_str = datestr(datetime, 'yymmdd_hhMMss');
     if isfolder('/input') && isfolder('/output')
@@ -24,9 +28,9 @@ function output_folder = bst_tool_script(bids_folder, pipeline_file)
         parent_folder = '/output';
     else
         % Save on local computer
-        parent_folder = strcat(fileparts(bids_folder), '_output');
+        parent_folder = strjoin(split_path(1:end-2), filesep);
     end
-    output_folder = fullfile(parent_folder, date_as_str);
+    output_folder = fullfile(parent_folder, [bids_folder_name '_output'], date_as_str);
     if ~isfolder(output_folder)
         mkdir(output_folder);
     end
