@@ -58,8 +58,15 @@ classdef Process < handle
             for i = 1:length(obj.Options)
                 str{i} = [num2str(i) '. ' obj.Options{i}.to_character()];
             end
-            chars = [obj.get_name() newline ...
-                    char(strjoin(str, '\n'))];
+            chars = [obj.get_name() newline char(strjoin(str, '\n'))];
+        end
+        
+        function chars = to_md_character(obj)
+            str = strings(1, length(obj.Options));
+            for i = 1:length(obj.Options)
+                str{i} = [num2str(i) '. ' obj.Options{i}.to_md_character()];
+            end
+            chars = [obj.get_name() newline sprintf('\t') char(strjoin(str, [newline sprintf('\t')]))];
         end
 
         %% Run
