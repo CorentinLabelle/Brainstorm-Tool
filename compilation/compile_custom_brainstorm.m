@@ -25,6 +25,7 @@ function compile_custom_brainstorm(with_plug_ins)
     rmdir(destination_folder, 's');    
     % Get new JAR file
     new_jar_file = get_new_jar_file();
+    disp(['New JAR file:' newline new_jar_file]);
     % Move JAR file
     %copyfile(new_jar_file, get_bst_bin_folder());
 end
