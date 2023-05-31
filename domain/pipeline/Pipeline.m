@@ -6,7 +6,7 @@ classdef Pipeline < handle
         Graph;
     end
 
-    methods (Access = public)        
+    methods (Access = public)
         %% Constructor
         function obj = Pipeline()
             obj.Details = PipelineDetails();
@@ -89,7 +89,9 @@ classdef Pipeline < handle
         end
         
         function process = get_process(obj, index)
-            process = obj.Ordered_Nodes{index}.get_process;
+            %process = obj.Ordered_Nodes{index}.get_process;
+            node = obj.Graph.get_node(index);
+            process = node.get_process();
         end
         
         function previous_pipeline = get_previous_pipeline(obj)
@@ -168,7 +170,7 @@ classdef Pipeline < handle
         
 %% Display
         function disp(obj)
-            disp('cannot display pip as of right now');
+            disp(obj.convert_to_characters());
         end
         
         function pip_as_characters = convert_to_characters(obj)
