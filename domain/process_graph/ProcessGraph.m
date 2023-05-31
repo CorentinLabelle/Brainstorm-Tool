@@ -123,23 +123,25 @@ classdef ProcessGraph
         %% Json Encoding
         function json = jsonencode(obj, varargin)
             s = struct();
-            s.Nodes = struct('ID', 'Process');
+            %s.Nodes = struct('ID', 'Process');
+            s.Nodes = {};
             for i = 1:obj.get_number_of_process()
-                s.Nodes(i).ID = i;
-                s.Nodes(i).Process = obj.get_node(i).get_process();
+                %s.Nodes(i).ID = i;
+                %s.Nodes(i).Process = obj.get_node(i).get_process();
+                s.Nodes{i} = obj.get_node(i).get_process();
             end
             s.Edges = obj.Digraph.Edges;
             json = jsonencode(s, varargin{:});
-        end
+        end        
+        
+        function node = get_node(obj, node_ids)
+            node = obj.Digraph.Nodes{node_ids, 'Nodes'}';
+        end        
         
     end
     
     methods (Access = private)
         %% Getter
-        function node = get_node(obj, node_ids)
-            node = obj.Digraph.Nodes{node_ids, 'Nodes'}';
-        end
-        
         function nodes = get_all_nodes(obj)
             nodes = obj.Digraph.Nodes{:, 'Nodes'}';
         end
