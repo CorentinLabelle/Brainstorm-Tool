@@ -3,8 +3,10 @@ function Output = custom_export_bids(sInputs, output_folder)
     %sInputs = GetInputStruct(sInputs);
     nInputs = length(sInputs);
     Output = cell(1, nInputs);
+    disp('Exporting files can take awhile');
     for iInput = 1:nInputs
         disp(['Exporting file ' num2str(iInput) ' of ' num2str(nInputs)]);
+        tic
         sInput = sInputs(iInput);
         if strcmpi(sInput.FileType, 'timefreq')
             sInput = GetInputStruct(sInput.DataFile);
@@ -64,7 +66,7 @@ function Output = custom_export_bids(sInputs, output_folder)
         channel_tsv_path = bst_fullfile(derivatives, [rawName '_channels.tsv']);
         channel_tsv_string = create_channels_string(sInput, sFile);
         create_tsv_file(channel_tsv_path, channel_tsv_string);
-        
+        toc        
     end
     
 end
