@@ -10,7 +10,7 @@ function option = option_create(name, option_structure)
     end
     default_arguments = {name, value, comment, option_type};
     switch lower(option_type)
-        case {  'radio_linelabel', 'button', 'text', ...
+        case {  'radio_linelabel', 'text', ...
                 'checkbox', 'subjectname', ...
                 'radio_label', 'radio', 'channelname', ...
                 'textarea', 'atlas'}
@@ -30,7 +30,9 @@ function option = option_create(name, option_structure)
         case {'label'}
             option = LabelOption(default_arguments{:}); 
         case {'separator'}                    
-            option = SeparatorOption(default_arguments{:});       
+            option = SeparatorOption(default_arguments{:});
+        case {'button'}
+            option = ButtonOption(default_arguments{:});
 
         % TO manage
         case {  'scout_confirm', 'scout', 'freqrange_static', ...
