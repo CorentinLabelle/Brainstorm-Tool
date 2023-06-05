@@ -33,6 +33,11 @@ classdef Edge
             end
         end
         
+        %% Json Encoding
+        function json = jsonencode(obj, varargin)
+            json = string.empty();
+        end
+        
     end
     
 end

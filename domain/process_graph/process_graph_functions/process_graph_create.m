@@ -18,7 +18,7 @@ function graph = from_struct(s)
     graph = ProcessGraph();
     processes = cell(1, length(s.Nodes));
     for iNode = 1:length(s.Nodes)
-        processes{iNode} = process_create(s.Nodes(iNode)); 
+        processes{iNode} = process_create(s.Nodes(iNode).Process); 
         graph = graph.add_node(processes{iNode});
     end
     %if isfield(s.Edges, 'EndNodes')
@@ -26,6 +26,7 @@ function graph = from_struct(s)
     %end
     if isfield(s, 'Edges')
         edges = [s.Edges.EndNodes];
+        edges = reshape(edges, 1, []);
     else
         edges = repelem(1:length(s.Nodes), 2);
         edges = edges(2:end-1);

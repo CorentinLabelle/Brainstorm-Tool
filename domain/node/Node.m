@@ -83,6 +83,12 @@ classdef Node
             end
         end
         
+%% Json Encoding
+        function json = jsonencode(obj, varargin)
+            s.Process = obj.get_process();
+            json = jsonencode(s, varargin{:});
+        end
+        
     end
     
 end
