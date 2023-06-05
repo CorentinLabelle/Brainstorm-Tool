@@ -64,8 +64,12 @@ classdef Process < handle
         function chars = to_md_character(obj)
             str = strings(1, length(obj.Options));
             for i = 1:length(obj.Options)
-                str{i} = [num2str(i) '. ' obj.Options{i}.to_md_character()];
+                option_as_md_char = obj.Options{i}.to_md_character();
+                if ~isempty(option_as_md_char)
+                    str{i} = ['- ' obj.Options{i}.to_md_character()];
+                end
             end
+            str = str(str ~= "");
             chars = [obj.get_name() newline sprintf('\t') char(strjoin(str, [newline sprintf('\t')]))];
         end
 

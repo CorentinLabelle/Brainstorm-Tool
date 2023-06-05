@@ -11,5 +11,9 @@ classdef LabelOption < Option
                 obj.get_name() ': ' obj.Type ' - Not an option.'];
         end
         
+        function character = to_md_character(~)
+            character = char.empty();
+        end
+        
     end    
 end
