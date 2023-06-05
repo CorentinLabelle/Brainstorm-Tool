@@ -13,3 +13,6 @@ See [compiled version](./compiled_tool/README.md).
 
 ### On CBRAIN
 The [compiled version](./compiled_tool/README.md) of the tool will be available on [CBRAIN](https://mcin.ca/technology/cbrain/).
+
+## Test
+To test the tool, use the dataset and the pipeline from [this](https://github.com/CorentinLabelle/Brainstorm-Tool-Additional-Files) repository.
