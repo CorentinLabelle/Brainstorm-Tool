@@ -14,7 +14,7 @@ classdef Process < handle
         
         %% Getter   
         function name = get_name(obj)
-            name = obj.get_fname();
+            name = strrep(obj.get_fname(), '_', ' ');
         end
         
         function fname = get_fname(obj)
@@ -33,6 +33,14 @@ classdef Process < handle
             subgroup = obj.sProcess.SubGroup;
         end
         
+        function sProcess = get_sProcess(obj)
+            sProcess = cell(1, length(obj));
+            for i = 1:length(obj)   
+                sProcess{i} = obj(i).sProcess;
+            end
+            sProcess = cell2mat(sProcess);
+        end
+        
         function link = get_link(obj)
             link = obj.sProcess.Description;
             index = strfind(link, 'highlight');
@@ -40,6 +48,12 @@ classdef Process < handle
                 link = link(1:index-1);
             end
             link = strrep(link, ' ', '_');
+        end
+        
+        function signature = get_signature(obj)
+            input_type = obj.sProcess.InputTypes;
+            output_type = obj.sProcess.OutputTypes;
+            signature = Signature(input_type, output_type);
         end
         
         %% Setter
@@ -112,7 +126,7 @@ classdef Process < handle
         %% Json encoding
         function json = jsonencode(obj, varargin)
             s = struct();
-            s.Name = obj.get_name();
+            s.Name = obj.get_fname();
             for i = 1:length(obj.Options)
                 s.Parameters.(obj.Options{i}.Name) = obj.Options{i}.get_value();
             end
@@ -123,6 +137,7 @@ classdef Process < handle
         function objAsCell = cell(obj)
             objAsCell = {obj};
         end
+        
     end
     
     methods (Access = private)
