@@ -20,7 +20,7 @@ function add_brainstorm3_path()
         error(['Wrong folder (' folderName '). Should be ' expected_folder_name '.']);
     end
     if ~isdeployed()
-        addpath(bst3_folder);
+        addpath(genpath(bst3_folder));
         disp('Brainstorm3 folder added.');
         brainstorm setpath
     end
