@@ -7,14 +7,63 @@ classdef Pipeline < handle
     end
 
     methods (Access = public)
-        %% Constructor
+%% Constructor
         function obj = Pipeline()
             obj.Details = PipelineDetails();
             obj.History = PipelineHistory();
             obj.Graph = process_graph_create();
         end
         
-        %% Getters and Setters
+%% Getters        
+        function folder = get_folder(obj)
+            folder = obj.Details.get_folder;
+        end
+        
+        function name = get_name(obj)
+            name = obj.Details.get_name();
+        end
+                  
+        function extension = get_extension(obj)
+            extension = obj.Details.get_extension;
+        end
+               
+        function date = get_date(obj)
+            date = obj.Details.get_date(); 
+        end
+        
+        function path = get_path(obj, extension)
+            arguments
+                obj
+                extension = obj.get_extension();
+            end
+            path = fullfile(obj.get_folder(), strcat(obj.get_name(), extension)); 
+        end
+            
+        function documentation = get_documentation(obj)
+            documentation = obj.Details.get_documentation;
+        end
+        
+        function process = get_process(obj, index)
+            node = obj.Graph.get_node(index);
+            process = node.get_process();
+        end
+        
+        function previous_pipeline = get_previous_pipeline(obj)
+            previous_pipeline = obj.Details.History.getPreviousPipeline();
+        end        
+          
+        function indexes = get_process_index(obj, process_name)
+            fname = process_format_name(process_name);
+            indexes = [];
+            for i = 1:obj.get_number_of_process()
+                process = obj.get_process(i);
+                if strcmp(fname, process.get_fname())
+                    indexes(end+1) = i;
+                end
+            end
+        end
+        
+%% Setters        
         function select_folder(obj)
             folder = uigetdir(pwd, 'Select the folder where to save your pipeline!');
             if folder ~= 0
@@ -26,29 +75,17 @@ classdef Pipeline < handle
             obj.Details = obj.Details.set_folder(folder);
             obj.History = obj.History.add_entry(folder);
         end
-        
-        function folder = get_folder(obj)
-            folder = obj.Details.get_folder;
-        end
-        
+
         function set_extension(obj, extension)
             obj.Details = obj.Details.set_extension(extension);
             obj.History = obj.History.add_entry(extension);            
         end
-        
-        function extension = get_extension(obj)
-            extension = obj.Details.get_extension;
-        end
-        
+
         function set_name(obj, name)
             obj.Details = obj.Details.set_name(name);
             obj.History = obj.History.add_entry(name);
         end
         
-        function name = get_name(obj)
-            name = obj.Details.get_name();
-        end
-                           
         function set_file(obj, file)
             [folder, name, extension] = fileparts(file);            
             if ~isequal(name, "")
@@ -66,53 +103,31 @@ classdef Pipeline < handle
             obj.Details = obj.Details.set_date(dateOfCreation);
             obj.History = obj.History.add_entry(dateOfCreation); 
         end
-        
-        function date = get_date(obj)
-            date = obj.Details.get_date(); 
-        end
-        
-        function path = get_path(obj, extension)
-            arguments
-                obj
-                extension = obj.get_extension();
-            end
-            path = fullfile(obj.get_folder(), strcat(obj.get_name(), extension)); 
-        end
-        
+
         function set_documentation(obj, documentation)
             obj.Details = obj.Details.set_documentation(documentation);
             obj.History = obj.History.add_entry(documentation);           
         end
         
-        function documentation = get_documentation(obj)
-            documentation = obj.Details.get_documentation;
+        function set_graph(obj, graph)
+            obj.Graph = graph;
         end
-        
-        function process = get_process(obj, index)
-            %process = obj.Ordered_Nodes{index}.get_process;
-            node = obj.Graph.get_node(index);
-            process = node.get_process();
-        end
-        
-        function previous_pipeline = get_previous_pipeline(obj)
-            previous_pipeline = obj.Details.History.getPreviousPipeline();
-        end        
         
 %% Graph
         function add_comment(obj, id_or_process, comment)
             obj.Graph = obj.Graph.add_comment(id_or_process, comment);
         end
-    
-        function set_graph(obj, graph)
-            obj.Graph = graph;
-        end
-        
+
         function node_id = add_node(obj, process)
             [obj.Graph, node_id] = obj.Graph.add_node(process);
         end
         
         function remove_node(obj, id_or_process)
             obj.Graph = obj.Graph.remove_node(id_or_process);
+        end
+        
+        function add_edge(obj, id_or_process, inputs)
+            obj.Graph = obj.Graph.add_edge(id_or_process, inputs);
         end
         
         function delete_input(obj, id_or_process, inputs)
@@ -127,10 +142,6 @@ classdef Pipeline < handle
                 obj; id_or_process; outputs = [];
             end
             obj.Graph = obj.Graph.delete_output(id_or_process, outputs);
-        end
-        
-        function add_edge(obj, id_or_process, inputs)
-            obj.Graph = obj.Graph.add_edge(id_or_process, inputs);
         end
         
         function force_input(obj, id_or_process, forced_input)
@@ -178,16 +189,27 @@ classdef Pipeline < handle
         end
         
 %% Run
-        function sFilesOut = run(obj, sFilesIn)
+        function sFilesOut = run(obj, sFilesIn, with_report)
             arguments
                 obj Pipeline;
                 sFilesIn = [];
+                with_report = true;
             end
+            if with_report
+                Report.start(sFilesIn);
+            end
+
             [obj.Graph, sFilesOut] = obj.Graph.run(sFilesIn);
+            
+            if with_report
+                report = Report.save(sFilesOut);
+                report.open();
+                report_folder = fullfile(obj.get_folder, 'report/');
+                report.export(report_folder);
+            end
         end
         
 %% Check in Pipeline
-
         function bool = is_process_in(obj, process_name)
             indexes = obj.get_process_index(process_name);
             if isempty(indexes)
@@ -196,16 +218,14 @@ classdef Pipeline < handle
                 bool = true;
             end
         end
-        
-        function indexes = get_process_index(obj, process_name)
-            fname = process_format_name(process_name);
-            indexes = [];
-            for i = 1:obj.get_number_of_process()
-                process = obj.get_process(i);
-                if strcmp(fname, process.get_fname())
-                    indexes(end+1) = i;
-                end
-            end
+
+%% Signature
+        function signature = get_signature(obj, input_type)
+            obj.Graph = obj.Graph.validate(input_type);
+            output_type = obj.Graph.get_output_types();
+            input_type = char(strjoin(string(input_type), ', '));
+            output_type = char(strjoin(string(output_type), ', '));
+            signature = PipelineSignature(input_type, output_type);
         end
         
 %         function isEqual = eq(obj, pipeline)
@@ -240,8 +260,9 @@ classdef Pipeline < handle
 
     end
 
+%% Private Methods
     methods (Access = private)
-%% History
+        
         function History.add_entry(obj, varargin)
             obj.History = obj.History.add_entry(obj, varargin);
         end
@@ -264,29 +285,6 @@ classdef Pipeline < handle
             pipAsString(5) = ['LIST OF PROCESS', newline, obj.processes_to_characters()];       
         end
         
-%         function reportDestinationPath = moveReport(obj, reportOriginalFilePath)
-%            
-%             if (obj.Folder == findprop(obj, 'Folder').DefaultValue)
-%                 folder = pwd;
-%                 warning(['The report will be saved in the following folder:' ...
-%                         newline folder]);
-%             else
-%                 folder = obj.Folder;
-%             end
-%             
-%             reportDestinationFolder = fullfile(folder, strcat(obj.Name, '_reports'));
-%             
-%             if ~isfolder(reportDestinationFolder)
-%                 mkdir(reportDestinationFolder);
-%             end
-%             
-%             [~, reportFileName, reportFileExtension] = fileparts(reportOriginalFilePath);
-%             
-%             reportDestinationPath = fullfile(reportDestinationFolder, strcat(reportFileName, reportFileExtension));          
-%             movefile(reportOriginalFilePath, reportDestinationPath);
-%             
-%         end
-
     end
     
 end
