@@ -1,8 +1,16 @@
+% TAKEN FROM BRAINSTORM
+% File: /brainstorm3/toolbox/process/panel_process_select.m
+% Line: 2607
+
 function bstFunc = process_get_all(NameValueArgs)
     arguments
         NameValueArgs.PlugIn = 0;
     end
-    % See script: brainstorm3/toolbox/process/panel_process_select.m    
+    
+    if ~brainstorm('status')
+        brainstorm nogui;
+    end
+    
     % ===== LIST PROCESS FILES =====
     % Get the contents of sub-folder "functions"
     bstList = dir(bst_fullfile(bst_get('BrainstormHomeDir'), 'toolbox', 'process', 'functions', 'process_*.m'));
