@@ -8,6 +8,8 @@ classdef Node
         Is_Output_Forced
         Output
         Comment
+        InputType
+        OutputType
     end
     
     methods (Access = public)
@@ -36,7 +38,7 @@ classdef Node
         
         function name = get_name(obj)
             if isempty(obj.Comment)
-                name = obj.Process.get_fname();
+                name = obj.Process.get_name();
             else
                 name = obj.Comment;
             end
@@ -83,10 +85,20 @@ classdef Node
             end
         end
         
+        function output_type = get_output_type(obj, input_type)
+            process_name = obj.get_process().get_fname();
+            output_type = process_output_type_from_input_type(process_name, input_type);
+        end
+        
 %% Json Encoding
         function json = jsonencode(obj, varargin)
             s.Process = obj.get_process();
             json = jsonencode(s, varargin{:});
+        end
+        
+%% Signature
+        function signature = get_signature(obj)
+            signature = obj.get_process().get_signature();
         end
         
     end
