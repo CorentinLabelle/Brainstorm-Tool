@@ -56,7 +56,7 @@ function output_folder = bst_tool_script(bids_folder, pipeline_file)
         sFiles =  import_bids.run();
 
         % Run pipeline
-        sFilesOut = pipeline.run(sFiles);
+        sFilesOut = pipeline.run(sFiles, false);
 
         % Export to BIDS
         bids_ouput_folder = fullfile(output_folder, 'bids');
@@ -70,7 +70,7 @@ function output_folder = bst_tool_script(bids_folder, pipeline_file)
         copyfile(current_protocol_folder, bst_output_folder);
 
         % Save and export report
-        ReportFile = bst_report('Save', []);
+        ReportFile = bst_report('Save', sFilesOut);
         bst_report('Export', ReportFile, output_folder);
         
     catch ME
@@ -81,4 +81,3 @@ function output_folder = bst_tool_script(bids_folder, pipeline_file)
     
     % Delete protocol
     protocol_delete(protocol_name);
-end
