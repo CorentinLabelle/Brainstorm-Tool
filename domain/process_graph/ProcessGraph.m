@@ -2,7 +2,6 @@ classdef ProcessGraph
     
     properties (GetAccess = public, SetAccess = public)
         Digraph;
-        Search = @bfsearch;
     end
     
     methods (Access = public)
@@ -23,7 +22,7 @@ classdef ProcessGraph
         end
         
         function [obj, node_index] = add_node(obj, process)
-            node = Node(process);
+            node = node_create(process);
             node_table = table(node, 'VariableNames', {'Nodes'});
             obj.Digraph = obj.Digraph.addnode(node_table);            
             node_index = obj.Digraph.numnodes;
@@ -78,7 +77,7 @@ classdef ProcessGraph
         
         function obj = deactivate_node(obj, index_or_process)
             node_index = obj.to_node_id(index_or_process);
-            all_children_ids = obj.search(node_index);
+            all_children_ids = obj.get_all_child_of_node_index(node_index);
             edge_ids = obj.get_edge_id(all_children_ids, all_children_ids);
             obj = obj.deactivate_nodes(all_children_ids);
             obj = obj.deactivate_edges(edge_ids);
@@ -86,7 +85,7 @@ classdef ProcessGraph
         
         function obj = activate_node(obj, index_or_process)
             node_index = obj.to_node_id(index_or_process);
-            all_children_ids = obj.Search(obj.Digraph, node_index);
+            all_children_ids = obj.get_all_child_of_node_index(node_index);
             edge_ids = obj.get_edge_id(all_children_ids, all_children_ids);
             obj = obj.activate_nodes(all_children_ids);
             obj = obj.activate_edges(edge_ids);
@@ -103,7 +102,7 @@ classdef ProcessGraph
         end
         
         function [obj, output] = run(obj, sFilesIn_original)
-            obj.sort_nodes();
+            obj = obj.sort_nodes();
             for iNode = 1:obj.get_number_of_process()
                 node = obj.get_node(iNode);
                 if ~node.is_active()
@@ -120,35 +119,27 @@ classdef ProcessGraph
             output = obj.get_output();
         end
         
+        function nodes = get_all_nodes(obj)
+            nodes = obj.Digraph.Nodes{:, 'Nodes'}';
+        end
+        
         %% Json Encoding
         function json = jsonencode(obj, varargin)
             s = struct();
-            %s.Nodes = struct('ID', 'Process');
-            %s.Nodes = {};
-            %s.Nodes = obj.Digraph.Nodes;
             s.Nodes = table2cell(obj.Digraph.Nodes);
-            %for i = 1:obj.get_number_of_process()
-                %s.Nodes(i).ID = i;
-                %s.Nodes(i).Process = obj.get_node(i).get_process();
-                %s.Nodes{i} = obj.get_node(i).get_process();
-            %end
             edges = table2cell(obj.Digraph.Edges);
             for i = 1:height(obj.Digraph.Edges)
                 s.Edges(i).EndNodes = edges{i, 1};
             end
             json = jsonencode(s, varargin{:});
-        end        
+        end
         
+%     end
+%     
+%     methods (Access = private)
+        %% Getter        
         function node = get_node(obj, node_ids)
             node = obj.Digraph.Nodes{node_ids, 'Nodes'}';
-        end        
-        
-    end
-    
-    methods (Access = private)
-        %% Getter
-        function nodes = get_all_nodes(obj)
-            nodes = obj.Digraph.Nodes{:, 'Nodes'}';
         end
         
         function edge = get_edge(obj, edge_ids)
@@ -215,13 +206,13 @@ classdef ProcessGraph
         end
         
         %% Search graph
-        function nodes = search(obj, node_index)
-            nodes = obj.Search(obj.Digraph, node_index)';
-        end
-
         function obj = sort_nodes(obj)
-            sorted_indexes = obj.Search(obj.Digraph, 1, 'Restart', true);
-            obj.Digraph = obj.Digraph.reordernodes(sorted_indexes);          
+            sorted_indexes = process_graph_sort_nodes(obj);
+            obj.Digraph = obj.Digraph.reordernodes(sorted_indexes);
+        end
+        
+        function children_node_ids = get_all_child_of_node_index(obj, node_index)
+            children_node_ids = process_graph_search(obj.Digraph, node_index);
         end
 
         %% To node id
@@ -258,14 +249,53 @@ classdef ProcessGraph
         
         %% Get output of graph
         function output = get_output(obj)
-            obj.sort_nodes();
+            leafs = obj.get_leafs();
             output = [];
-            for i = 1:obj.Digraph.numnodes
-                if isempty(obj.Digraph.successors(i))
-                    node = obj.get_node(i);
-                    output = [output node.get_output()];
+            for iLeaf = 1:length(leafs)
+                node = leafs(iLeaf);
+                output = [output node.get_output()];
+            end
+        end
+        
+        function output_types = get_output_types(obj)
+            leafs = obj.get_leafs();
+            output_types = cell(1, length(leafs));
+            for iLeaf = 1:length(leafs)
+                node = leafs(leafs);
+                output_types{iLeaf} = node.get_output_type();
+            end
+        end
+        
+        function leafs = get_leafs(obj)
+            leaf_ids = obj.get_leaf_ids;
+            leafs = obj.get_node(leaf_ids);
+        end
+        
+        function leafs = get_leaf_ids(obj)
+            leafs = [];
+            for iNode = 1:obj.Digraph.numnodes
+                if isempty(obj.Digraph.successors(iNode))
+                    leafs(end+1) = iNode;
                 end
             end
+        end
+        
+        function roots = get_roots(obj)
+            root_ids = obj.get_root_ids;
+            roots = obj.get_node(root_ids);
+        end
+        
+        function roots = get_root_ids(obj)
+            roots = [];
+            for iNode = 1:obj.Digraph.numnodes
+                if isempty(obj.Digraph.predecessors(iNode))
+                    roots(end+1) = iNode;
+                end
+            end
+        end
+        
+        function obj = validate(obj, input_type)
+            obj = process_graph_validate(obj, input_type);
         end
         
         %% Separate node from graph
