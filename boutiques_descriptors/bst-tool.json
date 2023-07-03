@@ -33,9 +33,13 @@
             "id": "output_directory",
             "name": "Output Directory",
             "optional": false,
-            "description": "Output directory.",
+            "description": "Output directory",
             "path-template": "[BIDS_DATASET]_output"
         }
     ],
+    "suggested-resources": {
+            "walltime-estimate": 10800,
+            "ram": 8
+    },
     "doi": "10.5072/zenodo.1182898"
 }
