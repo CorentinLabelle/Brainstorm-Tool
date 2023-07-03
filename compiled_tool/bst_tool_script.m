@@ -11,6 +11,12 @@ function output_folder = bst_tool_script(bids_folder, pipeline_file)
 %   [OUT]
 %       [structure] output_folder: Output folder.
         
+    analysis_start = tic;
+    
+    % Convert paths to absolute paths
+    bids_folder = get_full_path(bids_folder);
+    pipeline_file = get_full_path(pipeline_file);
+
     % Check BIDS folder
     if ~endsWith(bids_folder, filesep)
         bids_folder = [bids_folder filesep];
@@ -83,4 +89,5 @@ function output_folder = bst_tool_script(bids_folder, pipeline_file)
     % Delete protocol
     protocol_delete(protocol_name);
     
+    disp(['The whole analysis took ' num2str(toc(analysis_start)) ' seconds.']);    
 end
