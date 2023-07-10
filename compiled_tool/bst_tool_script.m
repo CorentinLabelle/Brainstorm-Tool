@@ -12,6 +12,7 @@ function output_folder = bst_tool_script(bids_folder, pipeline_file)
 %       [structure] output_folder: Output folder.
         
     analysis_start = tic;
+    gui_brainstorm('EmptyTempFolder');
     
     % Convert paths to absolute paths
     bids_folder = get_full_path(bids_folder);
