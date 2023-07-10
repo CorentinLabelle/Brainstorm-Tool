@@ -1,5 +1,5 @@
 {
-    "name": "Brainstorm Tool",
+    "name": "Brainstorm",
     "author": "Corentin Labelle",
     "description": "Enables to perform the pre-processing steps on EEG data.",
     "tool-version": "v1.0",
