@@ -1,7 +1,7 @@
 # Compiled Tool
 A compiled version of the tool (for Linux) can be use without a MATLAB license. To use the compiled version, you’ll need to:
 1. Install the [Matlab Runtime R2021a](https://www.mathworks.com/products/compiler/matlab-runtime.html)
-2. Download the [compiled_tool folder](./).
+2. Download the [compiled_tool folder](https://drive.google.com/drive/folders/1Oz53Aangv2wxjVAZOqjLc8uLDZCGTFVu?usp=drive_link).
 
 ## Usage
 Here is the syntax to run the tool from the terminal (more info [here](https://neuroimage.usc.edu/brainstorm/Tutorials/Scripting#Without_Matlab)):
