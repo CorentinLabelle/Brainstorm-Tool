@@ -24,6 +24,3 @@ Compilation lasts 3 minutes and requires about 2G of memory.
 Compilation lasts 15 minutes and requires about 3.5G of memory.
 #### Executing the tool
 The ressource consumption when executing the tool depends on the analysis. Typically, it should require about 2G of memory.
-
-## Test Files
-A BIDS dataset and a pipeline are available in the [test folder](../test/).
