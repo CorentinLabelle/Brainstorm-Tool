@@ -12,7 +12,7 @@ The tool can be use with custom scripts in MATLAB. It requires to have Brainstor
 See [compiled version](./compiled_tool/README.md).
 
 ### On CBRAIN
-The [compiled version](./compiled_tool/README.md) of the tool will be available on [CBRAIN](https://mcin.ca/technology/cbrain/).
+The [compiled version](./compiled_tool/README.md) of the tool will be available on [CBRAIN](https://mcin.ca/technology/cbrain/). The Boutique Descriptor for this tool can be found [here](https://github.com/CorentinLabelle/cbrain-plugins-brainstorm).
 
 ## Test
 To test the tool, use the dataset and the pipeline from [this](https://github.com/CorentinLabelle/Brainstorm-Tool-Additional-Files) repository.
