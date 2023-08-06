@@ -11,7 +11,9 @@ function save_file(filePath, variableToSave)
 end
 
 function path = save_to_tsv(path, variable_to_save)
-    variable_to_save = cellstr(variable_to_save);
+    if ~iscell(variable_to_save)
+        variable_to_save = cellstr(variable_to_save);
+    end
     writecell(variable_to_save, path, 'filetype', 'text', 'delimiter', '\t');
 end
 
