@@ -1,4 +1,5 @@
 function protocol_delete(protocol_name)
+    protocol_name = file_standardize(protocol_name);
     if ~protocol_is_created(protocol_name)
         warning(['Cannot delete protocol ''' protocol_name '''. Protocol does not exist.']);
     else

@@ -4,6 +4,7 @@ function protocol_create(protocol_name, name_value_args)
         name_value_args.DefaultAnatomy logical = 0;
         name_value_args.DefaultChannel logical = 0;
     end
+    protocol_name = file_standardize(protocol_name);
     
     if protocol_is_created(protocol_name)
         protocol_set(protocol_name);
