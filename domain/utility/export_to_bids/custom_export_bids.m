@@ -25,47 +25,13 @@ function Output = custom_export_bids(sInputs, output_folder)
             mkdir(derivatives);
         end
         
-        %% Export files
+        % Export files
         Output{iInput} = export_files(sFile, sInput, derivatives);
-        
-        % Create JSON sidecar
-        %jsonFile = bst_fullfile(megFolder, [newName '.json']);
-        %CreateMegJson(jsonFile, metadata);
 
-        % Create session TSV file
-        %tsvFile = bst_fullfile(sessionFolder, [prefix '_scans.tsv']);
-        %CreateSessionTsv(tsvFile, newPath, dateOfStudy)
-
-        %% Create sidecars
-        % Create events.json (CERVO)
-        event_json_path = bst_fullfile(derivatives, [rawName '_events.json']);
-        event_structure = create_event_structure(sFile);
-        create_json_file(event_json_path, event_structure);    
-
-        % Create coordsystem.json (CERVO)
-        %coord_json_path = bst_fullfile(eegFolder, [rawName '_coordsystem.json']);
-        %coord_structure = create_coordinate_structure(sInput, sFile);
-        %create_json_file(coord_json_path, coord_structure);
-
-        % Create provenance.json (CERVO)
+        % Create provenance.json
         provenance_json_path = bst_fullfile(derivatives, [rawName '_provenance.json']);
-        provenance_structure = create_provenance_structure(sInput);
-        create_json_file(provenance_json_path, provenance_structure);
-
-        % Create event.tsv (CERVO)
-        event_tsv_path = bst_fullfile(derivatives, [rawName '_events.tsv']);
-        event_tsv_string = create_events_string(sFile);
-        create_tsv_file(event_tsv_path, event_tsv_string);
-
-        % Create electrodes.tsv (CERVO)
-        electrodes_tsv_path = bst_fullfile(derivatives, [rawName '_electrodes.tsv']);
-        str = create_electrodes_string(sInput);
-        create_tsv_file(electrodes_tsv_path, str);
-
-        % Create channels.tsv (CERVO)   
-        channel_tsv_path = bst_fullfile(derivatives, [rawName '_channels.tsv']);
-        channel_tsv_string = create_channels_string(sInput, sFile);
-        create_tsv_file(channel_tsv_path, channel_tsv_string);
+        create_provenance_file(sInput, provenance_json_path);
+        
         toc        
     end
     
@@ -204,37 +170,6 @@ function sInputs = GetInputStruct(FileNames)
     end
 end
 
-function create_tsv_file(file_path, string)
-    writecell(cellstr(string), file_path, 'filetype', 'text', 'delimiter', '\t');
-end
-
-function create_json_file(json_path, structure)
-    fid = fopen(json_path, 'wt');
-    jsonText = bst_jsonencode(structure);
-    fprintf(fid, strrep(jsonText, '%', '%%'));
-    fclose(fid);
-end
-
-function event_structure = create_event_structure(sFile)
-    EventNames = {};
-    for iEvent = 1:length(sFile.events)
-        event = sFile.events(iEvent).label;
-        if ~any(strcmpi(event, EventNames))
-            EventNames{end + 1} = event;
-        end
-    end        
-
-    event_structure = struct();
-    event_structure.trial_type.LongName = '';
-    event_structure.trial_type.Description = '';
-    for iEvent = 1:length(EventNames)
-        event_name = EventNames{iEvent};
-        event_name = strrep(event_name, ' ', '_');
-        event_name = strrep(event_name, '-', '_');
-        event_structure.trial_type.Levels.(event_name) = '';        
-    end
-end
-
 function prov_structure = create_provenance_structure(sInput)
     DataMat = in_bst_data(sInput.FileName);
     history = DataMat.History;    
@@ -246,56 +181,16 @@ function prov_structure = create_provenance_structure(sInput)
     end
 end
 
-function electrodes_string = create_electrodes_string(sInput)
-    electrodes_string(1,:) = ["name" "x" "y" "z"];
-    ChannelMat = in_bst_channel(sInput.ChannelFile);
-    Channels = ChannelMat.Channel;
-    for iChannel = 1:length(Channels)
-        chan = Channels(iChannel).Name;
-        location = Channels(iChannel).Loc;
-        electrodes_string(iChannel+1,:) = ...
-            [chan, string(location(1)), string(location(2)), string(location(3))];
-    end
-end
+function provenance = create_provenance_var(sFile)
+    study_mat = load(sFile_get_study_path(sFile));
 
-function events_string = create_events_string(sFile)
-    count = 1;
-    events_string(count,:) = ["onset" "duration" "trial_type"];
-    count = count + 1;
-    events = sFile.events;
-    for iEvent = 1:length(events)
-        for iTime = 1:length(events(iEvent).times)
-            event_name = (events(iEvent).label);
-            events_string(count,:) = [events(iEvent).times(iTime) 0 string(event_name)];
-            count = count + 1;
-        end
-    end
-end
+    for iHistory = 1:height(study_mat.History)
+        activity = struct();
+        activity.id = study_mat.History{iHistory,2};
+        activity.label = study_mat.History{iHistory,3};
+        activity.command = 'button pushed';
+        activity.startedAtTime = study_mat.History{iHistory,1}; 
 
-function channels_string = create_channels_string(sInput, sFile)
-    channels_string(1,:) = ["name", "type", "units", "group", "status"];
-    ChannelMat = in_bst_channel(sInput.ChannelFile);
-    Channels = ChannelMat.Channel;
-    for iChannel = 1:length(Channels)        
-        group = Channels(iChannel).Group;
-        if isempty(group)
-            group = "n/a";
-        end
-        status = "bad";
-        if sFile.channelflag(iChannel)
-            status = "good";
-        end
-        channels_string(iChannel+1,:) = ...
-            [Channels(iChannel).Name, Channels(iChannel).Type, "uV", group, status];
-    end
-end
-
-function coords_structure = create_coordinate_structure(sInput, sFile)
-    coords_structure = struct();
-    coords_structure.EEGCoordinateSystem = 'CTF';
-    coords_structure.EEGCoordinateUnits = 'm';
-%     coords_structure.FiducialsCoordinates.LPA = '';
-%     coords_structure.FiducialsCoordinates.RPA = '';
-%     coords_structure.FiducialsCoordinates.NAS = '';
-%     coords_structure.FiducialsCoordinateUnit = 'mm';
+        provenance.(strcat('ActivityNo', num2str(iHistory))) = activity; 
+    end       
 end
