@@ -13,6 +13,8 @@ function command = value_to_command(input)
             command = from_struct(input);
         case 'logical'
             command = from_logical(input);
+        case 'function_handle'
+            command = from_function_handle(input);
         otherwise
             error(class(input));
     end
@@ -56,4 +58,8 @@ function command = from_logical(bool)
     else
         command = '0';
     end
+end
+
+function command = from_function_handle(function_handle)
+    command = ['@' func2str(function_handle)];
 end
