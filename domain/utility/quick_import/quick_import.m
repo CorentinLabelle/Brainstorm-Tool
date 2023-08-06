@@ -4,7 +4,7 @@ function [subjects, rawFiles] = quick_import(folderToImport, extension)
         extension char = '.eeg';
     end
     
-    assert(isfolder(folderToImport), 'The folder does not exist!')
+    assert(isfolder(folderToImport), ['The folder does not exist!' newline folderToImport])
    
     contentOfFolder = dir(folderToImport);
     foldersToSkip = [".", ".."];
