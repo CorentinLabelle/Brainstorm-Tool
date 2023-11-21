@@ -1,6 +1,5 @@
-function Output = custom_export_bids(sInputs, output_folder)
+function Output = bst_tool_export_to_bids(sInputs, output_folder)
 
-    %sInputs = GetInputStruct(sInputs);
     nInputs = length(sInputs);
     Output = cell(1, nInputs);
     disp('Exporting files can take awhile');
@@ -20,7 +19,7 @@ function Output = custom_export_bids(sInputs, output_folder)
         ses = extract_string_from_filename(rawName, 'ses-');
         
         %% Build path
-        derivatives = fullfile(output_folder, 'derivatives', sub, ses);
+        derivatives = fullfile(output_folder, 'derivatives', 'bst_pipeline_output', sub, ses);
         if ~isfolder(derivatives)
             mkdir(derivatives);
         end
