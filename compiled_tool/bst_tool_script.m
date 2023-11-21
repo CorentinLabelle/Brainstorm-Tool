@@ -11,6 +11,8 @@ function output_folder = bst_tool_script(bids_folder, pipeline_file)
 %   [OUT]
 %       [structure] output_folder: Output folder.
         
+    disp("Brainstorm Wrapper Version: 11/21/2023");
+    
     analysis_start = tic;
     gui_brainstorm('EmptyTempFolder');
     
@@ -65,10 +67,12 @@ function output_folder = bst_tool_script(bids_folder, pipeline_file)
         switch extension
             
             case '.json'
+                disp("Reading JSON pipeline...");
                 pipeline = pipeline_create(pipeline_file);
                 sFilesOut = pipeline.run(sFiles, false);
                 
             case '.mat'
+                disp("Reading MAT pipeline...");
                 sProcesses = load(pipeline_file);
                 if isfield(sProcesses, 'Processes')
                     sProcesses = sProcesses.Processes;
