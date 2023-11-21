@@ -26,6 +26,7 @@ function command = from_double(int)
 end
 
 function command = from_string(str)
+    str = strrep(str, "'", "''");
     character = char(str);
     command = ['''' character ''''];
 end
