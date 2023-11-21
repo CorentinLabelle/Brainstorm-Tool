@@ -42,9 +42,9 @@ function output_folder = bst_tool_script(bids_folder, pipeline_file)
     if ~isfolder(output_folder)
         mkdir(output_folder);
     end
-
-    % Create pipeline
-    pipeline = pipeline_create(pipeline_file);
+    
+    % Start report
+    bst_report('Start');
     
     % Create protocol
     protocol_name = 'EEGNet_protocol';
@@ -54,22 +54,43 @@ function output_folder = bst_tool_script(bids_folder, pipeline_file)
     end
     protocol_create(protocol_name);
 
-    try
-        % Start report
-        bst_report('Start');        
+    try        
 
         % Import BIDS dataset
         import_bids = process_create('import_bids');
         import_bids.set_option('bidsdir', bids_folder);
         sFiles =  import_bids.run();
 
-        % Run pipeline
-        sFilesOut = pipeline.run(sFiles, false);
+        [~, ~, extension] = fileparts(pipeline_file);    
+        switch extension
+            
+            case '.json'
+                pipeline = pipeline_create(pipeline_file);
+                sFilesOut = pipeline.run(sFiles, false);
+                
+            case '.mat'
+                sProcesses = load(pipeline_file);
+                if isfield(sProcesses, 'Processes')
+                    sProcesses = sProcesses.Processes;
+                end
+                if isempty(sProcesses)
+                    warning(['Pipeline is empty: ' char(pipeline_file)]);
+                    return
+                end
+                sFilesOut = bst_process('Run', sProcesses, sFiles, [], 0);
+                
+            otherwise
+                error(['Invalid extension in pipeline path: ' char(extension)]);
+        end
 
         % Export to BIDS
         bids_ouput_folder = fullfile(output_folder, 'bids');
         copyfile(bids_folder, bids_ouput_folder);
-        custom_export_bids(sFilesOut, bids_ouput_folder);
+        bst_tool_export_to_bids(sFilesOut, bids_ouput_folder);
+        
+        % Save and export report
+        ReportFile = bst_report('Save', sFilesOut);
+        bst_report('Export', ReportFile, output_folder);
 
         % Copy brainstorm protocol folder
         disp('Copying Brainstorm database.');
@@ -77,14 +98,11 @@ function output_folder = bst_tool_script(bids_folder, pipeline_file)
         bst_output_folder = fullfile(output_folder, 'bst_db');
         copyfile(current_protocol_folder, bst_output_folder);
 
-        % Save and export report
-        ReportFile = bst_report('Save', sFilesOut);
-        bst_report('Export', ReportFile, output_folder);
         
     catch ME
         % Delete protocol
         protocol_delete(protocol_name);
-        rethrow(ME);      
+        rethrow(ME);
     end
     
     % Delete protocol
