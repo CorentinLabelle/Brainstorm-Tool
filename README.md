@@ -1,18 +1,14 @@
 # Brainstorm Tool
-This tool is heavily based on the software [Brainstorm](https://neuroimage.usc.edu/brainstorm/Introduction).
+This tool is a wrapper around [Brainstorm](https://neuroimage.usc.edu/brainstorm/Introduction) hosted on [CBRAIN](https://mcin.ca/technology/cbrain/) that allows the user to execute pipelines on EEG-BIDS dataset. The tutorial on how to use the tool on CBRAIN can be found [here](https://aces.github.io/cbrain-book/2-interfaces/user_User-Guides.html#getting-started).
 
-## Objective
-The main objective of this tool is to provide the user an easy way to create, manipulate and run pipelines to perform EEG/MEG data analysis. Only the pre-processing steps have been implemented (see [Process](./domain/process/README.md)).
+## Pipelines
+Pipelines can be saved in two different formats, either `MAT` or `JSON`. Executing a MATLAB `M` file will not be an option.
 
-## Usage
-### With MATLAB
-The tool can be use with custom scripts in MATLAB. It requires to have Brainstorm installed ([here](https://neuroimage.usc.edu/bst/download.php)).
+### `MAT`
+This is the easiest solution. The compiled version of Brainstorm will soon be available on the [EEGNet platform](https://eegnet-dev.loris.ca/). Using the [interface](https://neuroimage.usc.edu/brainstorm/Tutorials/PipelineEditor?highlight=%28pipeline%29#Saving_a_pipeline), pipelines can be created and exported to `MAT` files.
 
-### Without MATLAB
-See [compiled version](./compiled_tool/README.md).
+### `JSON`
+To create a valid pipeline in a `JSON` format, refer to this [repository](https://github.com/CorentinLabelle/Brainstorm-Tool-Additional-Files/tree/main/pipeline).
 
-### On CBRAIN
-The [compiled version](./compiled_tool/README.md) of the tool will be available on [CBRAIN](https://mcin.ca/technology/cbrain/). The Boutique Descriptor for this tool can be found [here](https://github.com/CorentinLabelle/cbrain-plugins-brainstorm).
-
-## Test
-To test the tool, use the dataset and the pipeline from [this](https://github.com/CorentinLabelle/Brainstorm-Tool-Additional-Files) repository.
+## Boutique Descriptor
+The [Boutique Descriptor](https://boutiques.github.io/) of the tool has to be in a different [repository](https://github.com/CorentinLabelle/cbrain-plugins-brainstorm).
