@@ -1,6 +1,0 @@
-function path = sFile_get_channel_file_path(sFile)            
-    channelFile = string({sFile.ChannelFile});
-    path = fullfile(bst_get('BrainstormDbDir'), ...
-            bst_get('ProtocolInfo').Comment, ...
-            'data', channelFile);        
-end

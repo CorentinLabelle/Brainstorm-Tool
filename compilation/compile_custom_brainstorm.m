@@ -3,6 +3,11 @@ function compile_custom_brainstorm(with_plug_ins)
         with_plug_ins = 0;
     end
     clc
+    
+    if ~with_plug_ins
+        warning('Compiling Brainstorm WITHOUT plugins');
+    end
+    
     if ~brainstorm('status')
         brainstorm nogui
     end
@@ -26,8 +31,6 @@ function compile_custom_brainstorm(with_plug_ins)
     % Get new JAR file
     new_jar_file = get_new_jar_file();
     disp(['New JAR file:' newline new_jar_file]);
-    % Move JAR file
-    %copyfile(new_jar_file, get_bst_bin_folder());
 end
 
 function set_java_home_to_point_to_open_JDK()
@@ -40,9 +43,18 @@ function isSet = is_java_home_set()
     isSet = ~isempty(java_home) && isfolder(java_home);
 end
 
-function folders = get_folders_to_compile()
-    domainFolder = fullfile(get_brainstorm_tool_dir(), 'domain');
-    folders = domainFolder;
+function folder = get_folders_to_compile()
+    path_split = strsplit(mfilename('fullpath'), filesep);
+    src_folder = strjoin(path_split(1:end-2), filesep);
+    folder = fullfile(src_folder, 'functions');
+    answer = input([...
+        'The following folder will be compiled:' newline ...
+        folder ...
+        newline 'Do you want to continue ? (y/n): '], "s");
+    
+    if ~strcmpi(answer, 'y')
+        error('User answered NO, code stopped');
+    end
 end
 
 function compile_brainstorm_no_plugs()            
