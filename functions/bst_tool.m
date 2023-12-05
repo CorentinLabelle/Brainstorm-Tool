@@ -60,12 +60,13 @@ function output_folder = bst_tool(bids_directory, pipeline_file)
 
     try        
 
-        % Import BIDS dataset
-        sFiles =  import_bids(bids_directory);
+        % Insert 'process_import_bids' in pipeline
+        import_bids_process = import_bids(bids_directory);
+        pipeline = [import_bids_process pipeline];
         
         % Execute pipeline
-        %sFilesOut = bst_process('Run', sProcesses, sFiles, [], 0);
-        sFilesOut = bst_process('Run_EEGNET', pipeline, sFiles, [], 0);
+        sFilesIn = [];
+        sFilesOut = bst_process('Run_EEGNET', pipeline, sFilesIn, [], 0);
 
         % Copy original BIDS dataset to output folder
         disp('Copying original BIDS dataset...');
