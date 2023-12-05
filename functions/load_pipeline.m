@@ -53,7 +53,7 @@ function pipeline = load_json_pipeline(pipeline_path)
             process_parameters = processes(iProcess).Parameters;
         end
 
-        sProcess = process_load_sProcess(process_name);
+        sProcess = load_sProcess(process_name);
 
         parameter_names = fieldnames(process_parameters);
         for iParameter = 1:length(parameter_names)
@@ -74,14 +74,6 @@ function pipeline = load_json_pipeline(pipeline_path)
     pipeline = cell2mat(pipeline);
     
 end
-
-
-function sProcess = process_load_sProcess(process_name)
-    sProcess = panel_process_select('LoadExternalProcess', process_name);
-    if isempty(sProcess)
-        error(['Process not found: ' process_name]);
-    end
-end 
 
 %% Read json
 function structure = read_json(json_path)            
