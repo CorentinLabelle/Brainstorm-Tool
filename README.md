@@ -12,3 +12,6 @@ To create a valid pipeline in a `JSON` format, refer to this [repository](https:
 
 ## Boutique Descriptor
 The [Boutique Descriptor](https://boutiques.github.io/) of the tool has to be in a different [repository](https://github.com/CorentinLabelle/cbrain-plugins-brainstorm).
+
+## Report an issue
+If you experience any issues/bug with this tool, feel free to open a new issue on this repo or report it to the following address: corentinlabelle2@gmail.com
