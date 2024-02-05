@@ -45,7 +45,7 @@ instruction="${command_file} ${matlab_root} ${matlab_script} ${bids_dir} ${pipel
 echo -e "\n"$instruction"\n"
 
 # Display version
-echo -e "Brainstorm Wrapper Version: 27-Nov-2023"
+echo -e "Brainstorm Wrapper Version: 05-FEB-2024"
 
 # Execute
 $instruction
