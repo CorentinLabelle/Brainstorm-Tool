@@ -45,6 +45,7 @@ function output_folder = bst_tool(bids_directory, pipeline_file)
         warning(['Pipeline is empty: ' char(pipeline_path)]);
         return
     end
+    pipeline = modify_filepaths_in_pipeline_options(pipeline);
     
     % Start report
     bst_report('Start');
