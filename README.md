@@ -5,7 +5,11 @@ This tool is a wrapper around [Brainstorm](https://neuroimage.usc.edu/brainstorm
 Pipelines can be saved in two different formats, either `MAT` or `JSON`. Executing a MATLAB `M` file will not be an option.
 
 ### `MAT`
-This is the easiest solution. The compiled version of Brainstorm will soon be available on the [EEGNet platform](https://eegnet-dev.loris.ca/). Using the [interface](https://neuroimage.usc.edu/brainstorm/Tutorials/PipelineEditor?highlight=%28pipeline%29#Saving_a_pipeline), pipelines can be created and exported to `MAT` files.
+This is the easiest solution. Using the [interface](https://neuroimage.usc.edu/brainstorm/Tutorials/PipelineEditor?highlight=%28pipeline%29#Saving_a_pipeline) from the compiled version of Brainstorm, pipelines can be created and exported to `MAT` files. Currently, the online tool uses the 13-FEb-2024 version of Brainstorm (updated every couple of months through 2024). You can download the latest version of Brainstorm compiled [here](https://neuroimage.usc.edu/bst/download.php).
+
+#### Online tool version vs Brainstorm version
+- Brainstorm Online Tool v1.0.2 uses Brainstorm 13-Feb-2024
+
 
 ### `JSON`
 To create a valid pipeline in a `JSON` format, refer to this [repository](https://github.com/CorentinLabelle/Brainstorm-Tool-Additional-Files/tree/main/pipeline).
