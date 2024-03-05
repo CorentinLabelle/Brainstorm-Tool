@@ -3,8 +3,11 @@ function Output = export_output(sInputs, output_folder)
     nInputs = length(sInputs);
     Output = cell(1, nInputs);
     for iInput = 1:nInputs
-        disp(['Exporting file ' num2str(iInput) ' of ' num2str(nInputs)]);
-        tic
+        %disp(['Exporting file ' num2str(iInput) ' of ' num2str(nInputs)]);
+        %tic
+        if mod(iInput, round(nInputs * 0.2)) == 0 || iInput == nInputs
+            disp([num2str(iInput) ' of ' num2str(nInputs) ' files exported.']);
+        end
         sInput = sInputs(iInput);
         if strcmpi(sInput.FileType, 'timefreq')
             sInput = GetInputStruct(sInput.DataFile);
@@ -30,7 +33,7 @@ function Output = export_output(sInputs, output_folder)
         provenance_json_path = bst_fullfile(derivatives, [rawName '_provenance.json']);
         create_provenance_file(sInput, provenance_json_path);
         
-        toc
+        %toc
     end
     
 end

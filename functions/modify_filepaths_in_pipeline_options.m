@@ -1,33 +1,42 @@
-function pipeline = modify_filepaths_in_pipeline_options(pipeline)
-% Modify the paths in the pipeline's option.
-
+function pipeline = modify_filepaths_in_pipeline_options(pipeline, additionnal_files)
+% Modify the paths in the pipeline's options.
+    
+    % Loop over processes
     for iProcess = 1:length(pipeline)
-        process = pipeline(iProcess);
-
-        options = process.options;
+        options = pipeline(iProcess).options;
         option_names = fieldnames(options);
+        
+        % Loop over options
         for iOption = 1:length(option_names)
             option_name = option_names{iOption};
             option = options.(option_name);
-
+            
             if ismember(option.Type, {'filename', 'datafile'})
                 original_path = option.Value{1, 1};
-                final_path = find_file_in_container(original_path);
+                
+                % Get path relative to container
+                final_path = find_file_in_container(original_path, additionnal_files);
+                
+                % Edit original option
                 new_option = option_set_value(option, final_path);
                 pipeline(iProcess).options.(option_name) = new_option;
+                
+                disp('Path modified:');
+                disp([blanks(3) 'Original: ' original_path]);
+                disp([blanks(3) 'Edited: ' final_path]);
+                
             else
                 continue
             end
         end
     end
+    
 end
 
 
-function new_path = find_file_in_container(file_to_find)
+function new_path = find_file_in_container(file_to_find, additionnal_files)
 % Finds a file in the container input folder and modifies the original file
 % path so it is found in the container.
-
-    CONTAINER_INPUT_FOLDER = '/input';
 
     % Initialize
     new_path = '';
@@ -50,9 +59,10 @@ function new_path = find_file_in_container(file_to_find)
     
     % Remove base folder and check existence
     for i = 1:length(file_to_find_split)
-        path_to_test = fullfile(CONTAINER_INPUT_FOLDER, file_to_find_split{i:end});
+        path_to_test = fullfile(additionnal_files, file_to_find_split{end-i+1:end});
         if search_function(path_to_test)
             new_path = path_to_test;
+            break
         end
     end
     
