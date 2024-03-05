@@ -1,9 +1,7 @@
-function compile_custom_brainstorm(with_plug_ins)
-    arguments
-        with_plug_ins = 0;
-    end
+function compile_custom_brainstorm()
     clc
     
+    with_plug_ins = ask_for_plug_ins();
     if ~with_plug_ins
         warning('Compiling Brainstorm WITHOUT plugins');
     end
@@ -54,6 +52,19 @@ function folder = get_folders_to_compile()
     
     if ~strcmpi(answer, 'y')
         error('User answered NO, code stopped');
+    end
+end
+
+function with_plug_ins = ask_for_plug_ins()
+    answer = input(...
+        'Do you want to compile Brainstorm with the plug-ins ? (y/n): ', "s");
+    
+    if strcmpi(answer, 'y')
+        with_plug_ins = true;
+    elseif strcmpi(answer, 'n')
+        with_plug_ins = false;
+    else
+        error(['Invalid answer: ' answer]);
     end
 end
 
