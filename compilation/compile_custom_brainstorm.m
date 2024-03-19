@@ -9,36 +9,46 @@ function compile_custom_brainstorm()
     if ~brainstorm('status')
         brainstorm nogui
     end
-    if ~is_java_home_set()
-        set_java_home_to_point_to_open_JDK();
+    
+    % Add EEGLAB path
+    eeglab_path = uigetdir('', 'Select EEGLAB folder');
+    addpath(eeglab_path);
+    
+    if ~is_java_home_set()        
+        % Set JAVA_HOME to point to open JDK
+        java_home = uigetdir('', 'Select OpenJDK folder (jdk***)');
+        setenv('JAVA_HOME', java_home);        
     end    
-    if ~is_matlab_mcc_on_system_path()
-        add_matlab_mcc_to_system_path();
+    
+    if ~is_matlab_mcc_on_system_path()        
+        % Add matlab mcc to system path
+        mcc_folder = fullfile(matlabroot, 'bin');
+        setenv('PATH', [getenv('PATH') ':' mcc_folder]);
     end
+    
     folders_to_compile = get_folders_to_compile();
     destination_folder = fullfile(bst_get('BrainstormHomeDir'), "toolbox", "bst_tool_code");
-    copyfile(folders_to_compile, destination_folder);
+    copyfile(folders_to_compile, fullfile(destination_folder, 'bst_tool_code'));
+    copyfile('/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/eeglab/functions/', fullfile(destination_folder, 'eeglab_functions'));
+    copyfile('/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/eeglab/plugins/ICLabel/', fullfile(destination_folder, 'eeglab_iclabel'));
+    copyfile('/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/eeglab/plugins/firfilt/', fullfile(destination_folder, 'eeglab_firfilt'));
+    
     if with_plug_ins
-        compile_brainstorm();
+        brainstorm compile;
     else
-        compile_brainstorm_no_plugs();
+        brainstorm compile noplugs;
     end
+    
     % Remove custom folder from bst toolbox
     rmpath(genpath(destination_folder))
-    rmdir(destination_folder, 's');    
+    rmpath(eeglab_path);
+    
+    rmdir(destination_folder, 's');
+    
     % Get new JAR file
     new_jar_file = get_new_jar_file();
     disp(['New JAR file:' newline new_jar_file]);
-end
-
-function set_java_home_to_point_to_open_JDK()
-    java_home = uigetdir('', 'Select OpenJDK folder (jdk***)');
-    setenv('JAVA_HOME', java_home);            
-end
-
-function isSet = is_java_home_set()
-    java_home = getenv('JAVA_HOME');
-    isSet = ~isempty(java_home) && isfolder(java_home);
+    
 end
 
 function folder = get_folders_to_compile()
@@ -68,12 +78,9 @@ function with_plug_ins = ask_for_plug_ins()
     end
 end
 
-function compile_brainstorm_no_plugs()            
-    brainstorm compile noplugs;            
-end
-
-function compile_brainstorm()            
-    brainstorm compile;            
+function isSet = is_java_home_set()
+    java_home = getenv('JAVA_HOME');
+    isSet = ~isempty(java_home) && isfolder(java_home);
 end
 
 function bool = is_matlab_mcc_on_system_path()
@@ -86,13 +93,4 @@ function new_jar_file = get_new_jar_file()
     if ~isfile(new_jar_file)
         error(['New JAR file not found:' newline new_jar_file]);
     end
-end
-
-function bst_tool_bin_folder = get_bst_bin_folder()
-    bst_tool_bin_folder = fullfile(get_brainstorm_tool_dir(), 'compiled_tool', 'bin');
-end
-
-function add_matlab_mcc_to_system_path()
-    mcc_folder = fullfile(matlabroot, 'bin');
-    setenv('PATH', [getenv('PATH') ':' mcc_folder]);
 end
