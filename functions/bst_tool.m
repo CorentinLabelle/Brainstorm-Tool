@@ -37,7 +37,7 @@ function output_folder = bst_tool(bids_directory, pipeline_file, additionnal_fil
 %   │─── report_YYMMDD_HHmmss.html
 %   │─── report_YYMMDD_HHmmss.mat
 
-    if additionnal_files == '-'
+    if nargin < 3 || strcmp(additionnal_files, '-')
         additionnal_files = '';
     end
     
@@ -63,6 +63,15 @@ function output_folder = bst_tool(bids_directory, pipeline_file, additionnal_fil
             error(['BIDS folder does not exists: ' newline bids_directory]);
         end
 
+        % Load pipeline
+        disp(['Loading pipeline: ' pipeline_file]);
+        pipeline = load_pipeline(pipeline_file);
+        if isempty(pipeline)
+            warning(['Pipeline is empty: ' char(pipeline_path)]);
+            return
+        end
+        pipeline = modify_filepaths_in_pipeline_options(pipeline, additionnal_files);
+        
         % Get BIDS folder name
         split_path = strsplit(bids_directory, filesep);
         bids_folder_name = split_path{end-1};
@@ -74,17 +83,6 @@ function output_folder = bst_tool(bids_directory, pipeline_file, additionnal_fil
         disp(['Creating output folder: ' output_folder]);
         if ~isfolder(output_folder)
             mkdir(output_folder);
-        end
-
-        % Load pipeline
-        disp(['Loading pipeline: ' pipeline_file]);
-        pipeline = load_pipeline(pipeline_file);
-        if isempty(pipeline)
-            warning(['Pipeline is empty: ' char(pipeline_path)]);
-            return
-        end
-        if ~isempty(additionnal_files)
-            pipeline = modify_filepaths_in_pipeline_options(pipeline, additionnal_files);
         end
         
         % Start report
@@ -113,6 +111,9 @@ function output_folder = bst_tool(bids_directory, pipeline_file, additionnal_fil
         bids_output_folder = fullfile(output_folder, 'bids');
         disp([blanks(3) 'Source: ' bids_directory]);
         disp([blanks(3) 'Destination: ' bids_output_folder]);
+        if ~isfolder(bids_output_folder)
+            mkdir(bids_output_folder);
+        end
         copyfile(bids_directory, bids_output_folder);
         
         % Export outputs
@@ -120,6 +121,9 @@ function output_folder = bst_tool(bids_directory, pipeline_file, additionnal_fil
         bst_tool_folder = fullfile(bids_output_folder, 'derivatives', 'bst_tool');
         pipeline_output_folder = fullfile(bst_tool_folder, 'pipeline_output');
         disp([blanks(3) 'Destination: ' pipeline_output_folder]);
+        if ~isfolder(pipeline_output_folder)
+            mkdir(pipeline_output_folder);
+        end
         export_output(sFilesOut, pipeline_output_folder);
         
         % Save report to MAT
@@ -149,6 +153,9 @@ function output_folder = bst_tool(bids_directory, pipeline_file, additionnal_fil
         bst_output_folder = fullfile(output_folder, 'bst_db');
         disp([blanks(3) 'Source: ' current_protocol_folder]);
         disp([blanks(3) 'Destination: ' bst_output_folder]);
+        if ~isfolder(bst_output_folder)
+            mkdir(bst_output_folder);
+        end
         copyfile(current_protocol_folder, bst_output_folder);
         
     catch ME

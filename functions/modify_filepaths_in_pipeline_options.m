@@ -34,9 +34,16 @@ function pipeline = modify_filepaths_in_pipeline_options(pipeline, additionnal_f
 end
 
 
-function new_path = find_file_in_container(file_to_find, additionnal_files)
+function new_path = find_file_in_container(file_to_find, additional_files)
 % Finds a file in the container input folder and modifies the original file
 % path so it is found in the container.
+
+    if isempty(additional_files)
+       % No external file folder was given in input.
+       error(...
+           ['File not found in container, probably because no folder (for the addtional files) was given in input:' newline ...
+           file_to_find]);
+    end
 
     % Initialize
     new_path = '';
@@ -59,7 +66,7 @@ function new_path = find_file_in_container(file_to_find, additionnal_files)
     
     % Remove base folder and check existence
     for i = 1:length(file_to_find_split)
-        path_to_test = fullfile(additionnal_files, file_to_find_split{end-i+1:end});
+        path_to_test = fullfile(additional_files, file_to_find_split{end-i+1:end});
         if search_function(path_to_test)
             new_path = path_to_test;
             break
