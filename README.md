@@ -1,5 +1,5 @@
 # Brainstorm Tool
-This tool is a wrapper around [Brainstorm](https://neuroimage.usc.edu/brainstorm/Introduction) hosted on [CBRAIN](https://mcin.ca/technology/cbrain/) that allows the user to execute pipelines on EEG-BIDS dataset. The tutorial on how to use the tool on CBRAIN can be found [here](https://aces.github.io/cbrain-book/2-interfaces/user_User-Guides.html#getting-started).
+This tool is a wrapper around [Brainstorm](https://neuroimage.usc.edu/brainstorm/Introduction) (version 07-JAN-2025) hosted on [CBRAIN](https://mcin.ca/technology/cbrain/) that allows the user to execute pipelines on EEG-BIDS dataset. The tutorial on how to use the tool on CBRAIN can be found [here](https://aces.github.io/cbrain-book/2-interfaces/user_User-Guides.html#getting-started).
 
 ## Pipelines
 Pipelines can be saved in two different formats, either `MAT` or `JSON`. Executing a MATLAB `M` file will not be an option.
