@@ -10,12 +10,14 @@ This is the easiest solution. Using the [interface](https://neuroimage.usc.edu/b
 #### Online tool version vs Brainstorm version
 - Brainstorm Online Tool v1.0.2 uses Brainstorm 13-Feb-2024
 
-
 ### `JSON`
 To create a valid pipeline in a `JSON` format, refer to this [repository](https://github.com/CorentinLabelle/Brainstorm-Tool-Additional-Files/tree/main/pipeline).
 
 ## Boutique Descriptor
 The [Boutique Descriptor](https://boutiques.github.io/) of the tool has to be in a different [repository](https://github.com/CorentinLabelle/cbrain-plugins-brainstorm).
+
+## Compilation
+
 
 ## Report an issue
 If you experience any issues/bug with this tool, feel free to open a new issue on this repo or report it to the following address: corentinlabelle2@gmail.com

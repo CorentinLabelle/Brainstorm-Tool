@@ -1,4 +1,4 @@
-function compile_custom_brainstorm()
+function new_jar_file = compile_custom_brainstorm()
     clc
     
     with_plug_ins = ask_for_plug_ins();
@@ -9,10 +9,6 @@ function compile_custom_brainstorm()
     if ~brainstorm('status')
         brainstorm nogui
     end
-    
-    % Add EEGLAB path
-    eeglab_path = uigetdir('', 'Select EEGLAB folder');
-    addpath(eeglab_path);
     
     if ~is_java_home_set()        
         % Set JAVA_HOME to point to open JDK
@@ -26,12 +22,16 @@ function compile_custom_brainstorm()
         setenv('PATH', [getenv('PATH') ':' mcc_folder]);
     end
     
+    destination_folder = fullfile(bst_get('BrainstormHomeDir'), 'toolbox', 'bst_tool_code');
+        
+    % Add EEGLAB path
+    eeglab_path = uigetdir('', 'Select EEGLAB folder');
+    addpath(eeglab_path);
     folders_to_compile = get_folders_to_compile();
-    destination_folder = fullfile(bst_get('BrainstormHomeDir'), "toolbox", "bst_tool_code");
     copyfile(folders_to_compile, fullfile(destination_folder, 'bst_tool_code'));
-    copyfile('/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/eeglab/functions/', fullfile(destination_folder, 'eeglab_functions'));
-    copyfile('/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/eeglab/plugins/ICLabel/', fullfile(destination_folder, 'eeglab_iclabel'));
-    copyfile('/mnt/3b5a15cf-20ff-4840-8d84-ddbd428344e9/ALAB1/corentin/eeglab/plugins/firfilt/', fullfile(destination_folder, 'eeglab_firfilt'));
+    copyfile(fullfile(eeglab_path, 'functions'), fullfile(destination_folder, 'eeglab_functions'));
+    copyfile(fullfile(eeglab_path, 'plugins', 'ICLabel'), fullfile(destination_folder, 'eeglab_iclabel'));
+    copyfile(fullfile(eeglab_path, 'plugins', 'firfilt'), fullfile(destination_folder, 'eeglab_firfilt'));
     
     if with_plug_ins
         brainstorm compile;
